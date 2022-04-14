@@ -19,7 +19,7 @@ class JobsList {
   public:
     int job_id;
     int pid;
-    shared_ptr<Command>command;
+    shared_ptr<Command> command;
     time_t insertion_time;
     JobStatus job_status;
     JobEntry(int job_id, int pid, shared_ptr<Command>command, time_t insertion_time, JobStatus job_status);

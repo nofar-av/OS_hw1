@@ -8,6 +8,9 @@
 
 class Command {
 // TODO: Add your data members
+ protected:
+  string line;
+  vector<string> argv;
  public:
   Command(const char* cmd_line);
   virtual ~Command();
@@ -79,27 +82,6 @@ class QuitCommand : public BuiltInCommand {
 
 
 
-
-class JobsList {
- public:
-  class JobEntry {
-   // TODO: Add your data members
-  };
- // TODO: Add your data members
- public:
-  JobsList();
-  ~JobsList();
-  void addJob(Command* cmd, bool isStopped = false);
-  void printJobsList();
-  void killAllJobs();
-  void removeFinishedJobs();
-  JobEntry * getJobById(int jobId);
-  void removeJobById(int jobId);
-  JobEntry * getLastJob(int* lastJobId);
-  JobEntry *getLastStoppedJob(int *jobId);
-  // TODO: Add extra methods or modify exisitng ones as needed
-};
-
 class JobsCommand : public BuiltInCommand {
  // TODO: Add your data members
  public:
@@ -146,24 +128,5 @@ class TouchCommand : public BuiltInCommand {
   void execute() override;
 };
 
-
-class SmallShell {
- private:
-  // TODO: Add your data members
-  SmallShell();
- public:
-  Command *CreateCommand(const char* cmd_line);
-  SmallShell(SmallShell const&)      = delete; // disable copy ctor
-  void operator=(SmallShell const&)  = delete; // disable = operator
-  static SmallShell& getInstance() // make SmallShell singleton
-  {
-    static SmallShell instance; // Guaranteed to be destroyed.
-    // Instantiated on first use.
-    return instance;
-  }
-  ~SmallShell();
-  void executeCommand(const char* cmd_line);
-  // TODO: add extra methods as needed
-};
 
 #endif //SMASH_COMMAND_H_

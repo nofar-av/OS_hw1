@@ -1,5 +1,9 @@
+#include <string>
+
 #include "small_shell.h"
 #include "Commands.h"
+
+using namespace std;
 
 SmallShell::SmallShell() {
 // TODO: add your implementation
@@ -9,6 +13,10 @@ SmallShell::~SmallShell() {
 // TODO: add your implementation
 }
 
+void SmallShell::SetPrompt(string new_prompt = "smash")
+{
+  this->current_prompt = new_prompt;
+}
 /**
 * Creates and returns a pointer to Command class which matches the given command line (cmd_line)
 */

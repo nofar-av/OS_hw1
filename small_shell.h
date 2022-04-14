@@ -5,6 +5,7 @@
 class SmallShell {
  private:
   // TODO: Add your data members
+  string current_prompt;
   SmallShell();
  public:
   Command *CreateCommand(const char* cmd_line);
@@ -19,6 +20,7 @@ class SmallShell {
   ~SmallShell();
   void executeCommand(const char* cmd_line);
   // TODO: add extra methods as needed
+  void SetPrompt(string new_prompt = "smash");
 };
 
 #endif //SMALL_SHELL_H_

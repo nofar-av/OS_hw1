@@ -4,54 +4,59 @@
 #include <exception>
 #include <typeinfo>
 #include <string>
+#include <memory>
+
+#include "jobs.h"
+#include "Commands.h"
+using namespace std;
 
 
-class Exception : public std::exception
+class SmashException : public std::exception
 {
-private:
-    std::string error_message;
+protected:
+    string error_message;
 public:
-    Exception(JobEntry& job);
-    Exception() {};
-    ~Exception() {};
+    SmashException(const string cmd_name);
+    SmashException()  = default;
+    ~SmashException() = default;
     virtual const char* what() const noexcept override;
 };
-class InvalidlArguments : public Exception
+class InvalidlArguments : public SmashException
 {
 public:
-    InvalidlArguments() : Exception(JobEntry& job);
+    InvalidlArguments(const string cmd_name);
     ~InvalidlArguments() = default;
 };
-class JobIdDoesntExist : public Exception   
+class JobIdDoesntExist : public SmashException
 {
 public:
-    JobIdDoesntExist() : Exception(JobEntry& job);
+    JobIdDoesntExist(const string cmd_name, int job_id);
     ~JobIdDoesntExist() = default;
 };
-class JobAlreadyRunBG : public Exception
+class JobAlreadyRunBG : public SmashException
 {
 public:
-    JobAlreadyRunBG() : Exception(JobEntry& job);
+    JobAlreadyRunBG(const string cmd_name, int job_id);
     ~JobAlreadyRunBG() = default;
 };
 
-class OldpwdNotSet : public Exception
+class OldpwdNotSet : public SmashException
 {
 public:
-    OldpwdNotSet() : Exception(JobEntry& job);
+    OldpwdNotSet(const string cmd_name);
     ~OldpwdNotSet() = default;
 };
 
-class NoStoppedJobs : public Exception
+class NoStoppedJobs : public SmashException
 {
 public:
-    NoStoppedJobs() : Exception(JobEntry& job);
+    NoStoppedJobs(const string cmd_name);
     ~NoStoppedJobs() = default;
 };
-class TooManyArgs : public Exception
+class TooManyArgs : public SmashException
 {
 public:
-    TooManyArgs() : Exception(JobEntry& job);
+    TooManyArgs(const string cmd_name);
     ~TooManyArgs() = default;
 };
 

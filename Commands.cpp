@@ -82,7 +82,22 @@ void _removeBackgroundSign(char* cmd_line) {
 
 // TODO: Add your implementation for classes in Commands.h 
 
+Command::Command(const char *cmd_line, bool remove_command_line = true)
+    : cmd_s(cmd_line) {
+    argv = _parseCommandLine(cmd_line, remove_command_line);
+}
+
+string Command::getCommandLine() 
+{ 
+  return cmd_s; 
+}
 ShowPidCommand::execute()
 {
 
 }
+
+void GetCurrDirCommand::execute() {
+    string cwd = _getCwd();
+    cout << cwd << endl;
+}
+

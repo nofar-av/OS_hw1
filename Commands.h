@@ -5,6 +5,7 @@
 #include <memory>
 #include <string.h>
 #include "small_shell.h"
+#include "exceptions.h"
 
 #define COMMAND_ARGS_MAX_LENGTH (200)
 #define COMMAND_MAX_ARGS (20)
@@ -68,8 +69,9 @@ public:
 };
 
 class ChangeDirCommand : public BuiltInCommand {
-// TODO: Add your data members public:
-  ChangeDirCommand(const string cmd_line, vector<string> plastPwd);
+// TODO: Add your data members 
+public:  
+  ChangeDirCommand(const string cmd_line);
   virtual ~ChangeDirCommand() {}
   void execute() override;
 };

@@ -122,4 +122,23 @@ void GetCurrDirCommand::execute()
   cout << dir << endl;
 }
 
+ChangeDirCommand::ChangeDirCommand(const string cmd_line) : BuiltInCommand(cmd_line){}
 
+void ChangeDirCommand::execute()
+{
+  if(argv.size() > 2)
+  {
+    throw TooManyArgs(this->getName());
+  }
+  if(argv[1] == "-")
+  {
+    if(!(SmallShell::getInstance().isOldPwdSet()))
+    {
+      throw OldpwdNotSet(this->getName());
+    }
+    string oldpwd = SmallShell::getInstance().getOldPwd();
+    SmallShell::getInstance().changeCurrentDirectory(oldpwd);
+    return;  
+  }
+  SmallShell::getInstance().changeCurrentDirectory(this->argv[1]);
+}

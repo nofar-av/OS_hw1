@@ -1,12 +1,16 @@
 
 #include "small_shell.h"
 
+#define PWD_NOT_SET "-1"
 
 using namespace std;
 
 SmallShell::SmallShell() {
   this->pid = getpid();
   this->current_prompt = "smash";
+  this->current_pwd = getcwd(nullptr,0); // memory leak?
+  this->old_pwd = PWD_NOT_SET;
+
 // TODO: add your implementation
 }
 
@@ -26,6 +30,23 @@ void SmallShell::setPrompt(string new_prompt)
 int SmallShell::getPid()
 {
   return this->pid;
+}
+void SmallShell::changeCurrentDirectory(string new_pwd)
+{
+  this->old_pwd = this->current_pwd;
+  if(chdir(new_pwd.c_str()) == -1)
+  {
+    throw SyscallException("chdir");
+  }
+  this->current_pwd = getcwd(nullptr,0); //memory leak?
+}
+bool SmallShell::isOldPwdSet()
+{
+  return this->old_pwd != PWD_NOT_SET;
+}
+string SmallShell::getOldPwd()
+{
+  return this->old_pwd;
 }
 /**
 * Creates and returns a pointer to Command class which matches the given command line (cmd_line)
@@ -56,6 +77,8 @@ shared_ptr<Command> SmallShell::createCommand(const string cmd_line) {
     return shared_ptr<Command>(new ShowPidCommand(cmd_line));
   if(firstWord.compare("pwd") == 0)
     return shared_ptr<Command>(new GetCurrDirCommand(cmd_line));
+  if(firstWord.compare("cd") == 0)
+    return shared_ptr<Command>(new ChangeDirCommand(cmd_line));
   return nullptr;
 }
 
@@ -70,4 +93,3 @@ void SmallShell::executeCommand(const string cmd_line) {
 	  return;
   cmd->execute();
 }
-

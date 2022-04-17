@@ -2,10 +2,12 @@
 #define SMALL_SHELL_H_
 
 #include <memory>
+#include <iostream>
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #include "Commands.h"
+#include "exceptions.h"
 
 using namespace std;
 
@@ -18,6 +20,8 @@ class SmallShell {
  private:
   // TODO: Add your data members
   string current_prompt;
+  string old_pwd;
+  string current_pwd;
   int pid;
   SmallShell();
  public:
@@ -33,9 +37,12 @@ class SmallShell {
   ~SmallShell();
   void executeCommand(const string cmd_line);
   // TODO: add extra methods as needed
-  void setPrompt(string new_prompt = "smash");
+  void setPrompt(const string new_prompt = "smash");
   string getPrompt();
   int getPid();
+  void changeCurrentDirectory(const string new_pwd);
+  bool isOldPwdSet();
+  string getOldPwd();
 };
 
 #endif //SMALL_SHELL_H_

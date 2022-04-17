@@ -6,7 +6,6 @@
 #include <string>
 #include <memory>
 
-#include "jobs.h"
 #include "Commands.h"
 using namespace std;
 
@@ -20,22 +19,39 @@ public:
     BuiltInException(const string cmd_name);
     BuiltInException()  = default;
     ~BuiltInException() = default;
-    virtual const string  what() const noexcept override;
+    virtual const char* what() const noexcept override;
 };
+
+class TooManyArgs : public BuiltInException
+{
+public:
+    TooManyArgs(const string cmd_name);
+    ~TooManyArgs() = default;
+};
+
+class OldpwdNotSet : public BuiltInException
+{
+public:
+    OldpwdNotSet(const string cmd_name);
+    ~OldpwdNotSet() = default;
+};
+
 class SyscallException : public SmashException {
   private:
     string error_message;
 
   public:
     SyscallException(string syscall_name);
-    const string what() const noexcept override { return error_message.c_str(); }
+    const char* what() const noexcept override { return error_message.c_str(); }
 };
+
 class InvalidlArguments : public BuiltInException
 {
 public:
     InvalidlArguments(const string cmd_name);
     ~InvalidlArguments() = default;
 };
+
 class JobIdDoesntExist : public BuiltInException
 {
 public:
@@ -49,12 +65,6 @@ public:
     ~JobAlreadyRunBG() = default;
 };
 
-class OldpwdNotSet : public BuiltInException
-{
-public:
-    OldpwdNotSet(const string cmd_name);
-    ~OldpwdNotSet() = default;
-};
 
 class NoStoppedJobs : public BuiltInException
 {
@@ -62,11 +72,6 @@ public:
     NoStoppedJobs(const string cmd_name);
     ~NoStoppedJobs() = default;
 };
-class TooManyArgs : public BuiltInException
-{
-public:
-    TooManyArgs(const string cmd_name);
-    ~TooManyArgs() = default;
-};
+
 
 #endif /*EXCEPTIONS_H*/

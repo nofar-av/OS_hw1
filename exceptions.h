@@ -20,7 +20,7 @@ public:
     BuiltInException(const string cmd_name);
     BuiltInException()  = default;
     ~BuiltInException() = default;
-    virtual const char* what() const noexcept override;
+    virtual const string  what() const noexcept override;
 };
 class SyscallException : public SmashException {
   private:
@@ -28,7 +28,7 @@ class SyscallException : public SmashException {
 
   public:
     SyscallException(string syscall_name);
-    const char *what() const noexcept override { return error_message.c_str(); }
+    const string what() const noexcept override { return error_message.c_str(); }
 };
 class InvalidlArguments : public BuiltInException
 {

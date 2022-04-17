@@ -3,6 +3,8 @@
 
 #include <memory>
 #include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include "Commands.h"
 
 using namespace std;
@@ -19,7 +21,7 @@ class SmallShell {
   int pid;
   SmallShell();
  public:
-  shared_ptr<Command> createCommand(const char* cmd_line);
+  shared_ptr<Command> createCommand(const string cmd_line);
   SmallShell(SmallShell const&)      = delete; // disable copy ctor
   void operator=(SmallShell const&)  = delete; // disable = operator
   static SmallShell& getInstance() // make SmallShell singleton
@@ -29,7 +31,7 @@ class SmallShell {
     return instance;
   }
   ~SmallShell();
-  void executeCommand(const char* cmd_line);
+  void executeCommand(const string cmd_line);
   // TODO: add extra methods as needed
   void setPrompt(string new_prompt = "smash");
   string getPrompt();

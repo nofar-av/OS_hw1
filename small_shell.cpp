@@ -30,7 +30,7 @@ int SmallShell::getPid()
 /**
 * Creates and returns a pointer to Command class which matches the given command line (cmd_line)
 */
-shared_ptr<Command> SmallShell::createCommand(const char* cmd_line) {
+shared_ptr<Command> SmallShell::createCommand(const string cmd_line) {
 	// For example:
 /*
   string cmd_s = _trim(string(cmd_line));
@@ -48,7 +48,7 @@ shared_ptr<Command> SmallShell::createCommand(const char* cmd_line) {
     return new ExternalCommand(cmd_line);
   }
   */
-  string cmd_s = _trim(string(cmd_line));
+  string cmd_s = _trim(cmd_line);
   string firstWord = cmd_s.substr(0, cmd_s.find_first_of(" \n"));
   if(firstWord.compare("chprompt") == 0)
     return shared_ptr<Command>(new ChangePromptCommand(cmd_line));
@@ -59,13 +59,13 @@ shared_ptr<Command> SmallShell::createCommand(const char* cmd_line) {
   return nullptr;
 }
 
-void SmallShell::executeCommand(const char *cmd_line) {
+void SmallShell::executeCommand(const string cmd_line) {
   // TODO: Add your implementation here
   // for example:
   // Command* cmd = CreateCommand(cmd_line);
   // cmd->execute();
   // Please note that you must fork smash process for some commands (e.g., external commands....)
-  shared_ptr<Command> cmd = SmallShell::CreateCommand(cmd_line);
+  shared_ptr<Command> cmd = SmallShell::createCommand(cmd_line);
   if(cmd == nullptr)
 	  return;
   cmd->execute();

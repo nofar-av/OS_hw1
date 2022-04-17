@@ -41,27 +41,27 @@ string _trim(const string& s)
   return _rtrim(_ltrim(s));
 }
 
-int _parseCommandLine(const char* cmd_line, char** args) {
+int _parseCommandLine(const string &cmd_line, vector<string> &argv)
+{
   FUNC_ENTRY()
   int i = 0;
-  istringstream iss(_trim(string(cmd_line)).c_str());
-  for(string s; iss >> s; ) {
-    args[i] = (char*)malloc(s.length()+1);
-    memset(args[i], 0, s.length()+1);
-    strcpy(args[i], s.c_str());
-    args[++i] = NULL;
+  istringstream iss(_trim(cmd_line));
+  for (string s; iss >> s; i++)
+  {
+    argv.push_back(s);
   }
   return i;
 
   FUNC_EXIT()
 }
 
-bool _isBackgroundComamnd(const char* cmd_line) {
+
+bool _isBackgroundComamnd(const string  cmd_line) {
   const string str(cmd_line);
   return str[str.find_last_not_of(WHITESPACE)] == '&';
 }
 
-void _removeBackgroundSign(char* cmd_line) {
+void _removeBackgroundSign(string  cmd_line) {
   const string str(cmd_line);
   // find last character other than spaces
   unsigned int idx = str.find_last_not_of(WHITESPACE);
@@ -80,49 +80,46 @@ void _removeBackgroundSign(char* cmd_line) {
 }
 
 // TODO: Add your implementation for classes in Commands.h 
-
-Command::Command(const char *cmd_line, bool remove_command_line = true)
-    : cmd_s(cmd_line) {
-    argv = _parseCommandLine(cmd_line, remove_command_line);
+string Command::getName()
+{
+  return this->argv[0];
 }
+
+Command::Command(const string cmd_line)
+    : line(cmd_line) {
+    _parseCommandLine(cmd_line, argv);
+}
+BuiltInCommand::BuiltInCommand(const string cmd_line) : Command(cmd_line) {}
 
 string Command::getCommandLine() 
 { 
-  return cmd_s; 
+  return line; 
 }
-ShowPidCommand::execute()
-{
-  string word = "";
-  int j = 0;
-  for (int i = 0; i < line.size(); i++)
-  {
-    if (line[i] == ' ' && word.size() == 0)
-      continue;
-    if (line[i] == ' ' && word.size() > 0)
-    {
-      argv.push_back(word);
-      word = "";
-      j++;
-    }
-    if (line[i] != ' ')
-	    word += line[i];
-  }
-  if(line[line.size()-1] != ' ')
-    argv.push_back(word);
-}
-ChangePromptCommand::ChangePromptCommand (const char* cmd_line) : BuiltInCommand(cmd_line){}
+ChangePromptCommand::ChangePromptCommand (const string cmd_line) : BuiltInCommand(cmd_line){}
 
 void ChangePromptCommand::execute()
 {
-  string prompt = "smash";
   if(argv.size() > 1)
-    prompt = argv[1];
-  SmallShell::getInstance().SetPrompt(prompt);
-  return;
+    SmallShell::getInstance().setPrompt(argv[1]);
+  else
+  {
+    SmallShell::getInstance().setPrompt();
+  }
 }
 
-void GetCurrDirCommand::execute() {
-    string cwd = _getCwd();
-    cout << cwd << endl;
+ShowPidCommand::ShowPidCommand(const string cmd_line) : BuiltInCommand(cmd_line){}
+
+void ShowPidCommand::execute()
+{
+  cout << "smash pid is " << SmallShell::getInstance().getPid() << endl;
 }
+
+GetCurrDirCommand::GetCurrDirCommand(const string cmd_line) : BuiltInCommand(cmd_line){}
+
+void GetCurrDirCommand::execute()
+{
+  string dir = getcwd(nullptr,0);		// memory leak?
+  cout << dir << endl;
+}
+
 

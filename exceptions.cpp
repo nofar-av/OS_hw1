@@ -3,7 +3,7 @@
 using namespace std;
 
 
-const char* BuiltInException::what() const noexcept
+const string  BuiltInException::what() const noexcept
 {
     return error_message.c_str();
 }

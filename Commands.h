@@ -1,19 +1,21 @@
-#ifndef SMASH_COMMAND_H_
-#define SMASH_COMMAND_H_
+#ifndef COMMANDS_H_
+#define COMMANDS_H_
 
 #include <vector>
+#include <memory>
+#include <string.h>
+#include "small_shell.h"
 
 #define COMMAND_ARGS_MAX_LENGTH (200)
 #define COMMAND_MAX_ARGS (20)
 
+using namespace std;
+
 class Command {
-// TODO: Add your data members
- protected:
-  string line;
-  vector<string> argv;
+// TODO: Add your data members 
  public:
-  Command(const char* cmd_line);
-  virtual ~Command();
+  Command(const char* cmd_line) {}
+  virtual ~Command() = default;
   virtual void execute() = 0;
   //virtual void prepare();
   //virtual void cleanup();
@@ -21,6 +23,9 @@ class Command {
 };
 
 class BuiltInCommand : public Command {
+ protected:
+  string line;
+  vector<string> argv;
  public:
   BuiltInCommand(const char* cmd_line);
   virtual ~BuiltInCommand() {}
@@ -49,6 +54,14 @@ class RedirectionCommand : public Command {
   void execute() override;
   //void prepare() override;
   //void cleanup() override;
+};
+
+class ChangePromptCommand : public BuiltInCommand {
+// TODO: Add your data members public:
+public:
+  ChangePromptCommand(const char* cmd_line);
+  virtual ~ChangePromptCommand() {};
+  void execute() override;
 };
 
 class ChangeDirCommand : public BuiltInCommand {
@@ -128,5 +141,4 @@ class TouchCommand : public BuiltInCommand {
   void execute() override;
 };
 
-
-#endif //SMASH_COMMAND_H_
+#endif //COMMANDS_H_

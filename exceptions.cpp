@@ -1,42 +1,50 @@
 #include "exceptions.h"
+#include <errno.h>
+using namespace std;
 
 
-const char* Exception::what() const noexcept
+const char* BuiltInException::what() const noexcept
 {
     return error_message.c_str();
 }
-Exception::Exception(JobEntry& job)
+BuiltInException::BuiltInException(const string cmd_name)
 { 
-    error_message = "smash error:" + job.command.GetName() + ":" + error_message + "\n"; 
+    this->error_message = "smash error:" + cmd_name + ":" + this->error_message + "\n"; 
 }
-InvalidlArguments::InvalidlArguments() : Exception(JobEntry& job)
-{
-    error_message = "invalid arguments";
-    Exception::Exception(job);
+SyscallException::SyscallException(string syscall_name) {
+        this->error_message = "smash error: " + syscall_name + " failed";
 }
-JobIdDoesntExist::JobIdDoesntExist() : Exception(JobEntry& job)
+InvalidlArguments::InvalidlArguments(const string cmd_name) 
 {
-    error_message = "job-id" + job.JobId() + "does not exist";
-    Exception::Exception(job);
+    this->error_message = "invalid arguments";
+    BuiltInException::BuiltInException(cmd_name);
 }
-JobAlreadyRunBG::JobAlreadyRunBG() : Exception(JobEntry& job)
+JobIdDoesntExist::JobIdDoesntExist(const string cmd_name, int job_id)
 {
-    error_message = "job-id" + job.JobId() + "is already running in the background";
-    Exception::Exception(job);
+    this->error_message = "job-id" + job_id + "does not exist";
+    BuiltInException::BuiltInException(cmd_name);
 }
-OldpwdNotSet::OldpwdNotSet() : Exception(JobEntry& job)
-{
-    error_message = "OLDPWD not set";
-    Exception::Exception(job);
 }
-NoStoppedJobs::NoStoppedJobs() : Exception(JobEntry& job)
+JobAlreadyRunBG::JobAlreadyRunBG(const string cmd_name, int job_id)
 {
-    error_message = "there is no stopped jobs to resume";
-    Exception::Exception(job);
+    this->error_message = "job-id" + job_id + "is already running in the background";
+    BuiltInException::BuiltInException(cmd_name);
+}
+}
+OldpwdNotSet::OldpwdNotSet(const string cmd_name)
+{
+    this->error_message = "OLDPWD not set";
+    BuiltInException::BuiltInException(cmd_name);
+}
+NoStoppedJobs::NoStoppedJobs(const string cmd_name)
+{
+    this->error_message = "there is no stopped jobs to resume";
+    BuiltInException::BuiltInException(cmd_name);
 }
 
-TooManyArgs::TooManyArgs() : Exception(JobEntry& job)
+TooManyArgs::TooManyArgs(const string cmd_name)
 {
-    error_message = "too many arguments";
-    Exception::Exception(job);
+    this->error_message = "too many arguments";
+    BuiltInException::BuiltInException(cmd_name);
+}
 }

@@ -4,54 +4,68 @@
 #include <exception>
 #include <typeinfo>
 #include <string>
+#include <memory>
+
+#include "jobs.h"
+#include "Commands.h"
+using namespace std;
 
 
-class Exception : public std::exception
-{
-private:
-    std::string error_message;
+class SmashException : public std::exception
+{};
+class BuiltInException : public SmashException {
+protected:
+    string error_message;
 public:
-    Exception(JobEntry& job);
-    Exception() {};
-    ~Exception() {};
+    BuiltInException(const string cmd_name);
+    BuiltInException()  = default;
+    ~BuiltInException() = default;
     virtual const char* what() const noexcept override;
 };
-class InvalidlArguments : public Exception
+class SyscallException : public SmashException {
+  private:
+    string error_message;
+
+  public:
+    SyscallException(string syscall_name);
+    const char *what() const noexcept override { return error_message.c_str(); }
+};
+class InvalidlArguments : public BuiltInException
 {
 public:
-    InvalidlArguments() : Exception(JobEntry& job);
+    InvalidlArguments(const string cmd_name);
     ~InvalidlArguments() = default;
 };
-class JobIdDoesntExist : public Exception   
+class JobIdDoesntExist : public BuiltInException
 {
 public:
-    JobIdDoesntExist() : Exception(JobEntry& job);
+    JobIdDoesntExist(const string cmd_name, int job_id);
     ~JobIdDoesntExist() = default;
 };
-class JobAlreadyRunBG : public Exception
+class JobAlreadyRunBG : public BuiltInException
 {
 public:
-    JobAlreadyRunBG() : Exception(JobEntry& job);
+    JobAlreadyRunBG(const string cmd_name, int job_id);
     ~JobAlreadyRunBG() = default;
 };
 
-class OldpwdNotSet : public Exception
+class OldpwdNotSet : public BuiltInException
 {
 public:
-    OldpwdNotSet() : Exception(JobEntry& job);
+    OldpwdNotSet(const string cmd_name);
     ~OldpwdNotSet() = default;
 };
 
-class NoStoppedJobs : public Exception
+class NoStoppedJobs : public BuiltInException
 {
 public:
-    NoStoppedJobs() : Exception(JobEntry& job);
+    NoStoppedJobs(const string cmd_name);
     ~NoStoppedJobs() = default;
 };
-class TooManyArgs : public Exception
+class TooManyArgs : public BuiltInException
 {
 public:
-    TooManyArgs() : Exception(JobEntry& job);
+    TooManyArgs(const string cmd_name);
     ~TooManyArgs() = default;
 };
 

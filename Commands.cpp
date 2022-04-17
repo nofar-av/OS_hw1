@@ -81,8 +81,16 @@ void _removeBackgroundSign(char* cmd_line) {
 
 // TODO: Add your implementation for classes in Commands.h 
 
+Command::Command(const char *cmd_line, bool remove_command_line = true)
+    : cmd_s(cmd_line) {
+    argv = _parseCommandLine(cmd_line, remove_command_line);
+}
 
-BuiltInCommand::BuiltInCommand(const char* cmd_line) : Command(cmd_line), line(cmd_line)
+string Command::getCommandLine() 
+{ 
+  return cmd_s; 
+}
+ShowPidCommand::execute()
 {
   string word = "";
   int j = 0;
@@ -113,19 +121,8 @@ void ChangePromptCommand::execute()
   return;
 }
 
-ShowPidCommand::ShowPidCommand(const char* cmd_line) : BuiltInCommand(cmd_line){}
-
-void ShowPidCommand::execute()
-{
-  cout << "smash pid is " + SmallShell::getInstance().getPid() << endl;
-  return;
+void GetCurrDirCommand::execute() {
+    string cwd = _getCwd();
+    cout << cwd << endl;
 }
 
-GetCurrDirCommand::GetCurrDirCommand(const char* cmd_line) : BuiltInCommand(cmd_line){}
-
-void GetCurrDirCommand::execute()
-{
-  char* dir = getcwd(nullptr,0); 		
-  cout << dir << endl;
-  free(dir);
-}

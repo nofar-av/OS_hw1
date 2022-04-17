@@ -17,6 +17,7 @@ class Command {
   Command(const char* cmd_line) {}
   virtual ~Command() = default;
   virtual void execute() = 0;
+  virtual string getName() = 0;
   //virtual void prepare();
   //virtual void cleanup();
   // TODO: Add your extra methods if needed

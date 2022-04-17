@@ -1,14 +1,25 @@
 #ifndef SMALL_SHELL_H_
 #define SMALL_SHELL_H_
 
+#include <memory>
+#include <string.h>
+#include "Commands.h"
+
+using namespace std;
+
+string _ltrim(const std::string& s);
+string _rtrim(const std::string& s);
+string _trim(const std::string& s);
+class Command;
 
 class SmallShell {
  private:
   // TODO: Add your data members
   string current_prompt;
+  int pid;
   SmallShell();
  public:
-  Command *CreateCommand(const char* cmd_line);
+  shared_ptr<Command> createCommand(const char* cmd_line);
   SmallShell(SmallShell const&)      = delete; // disable copy ctor
   void operator=(SmallShell const&)  = delete; // disable = operator
   static SmallShell& getInstance() // make SmallShell singleton
@@ -20,7 +31,9 @@ class SmallShell {
   ~SmallShell();
   void executeCommand(const char* cmd_line);
   // TODO: add extra methods as needed
-  void SetPrompt(string new_prompt = "smash");
+  void setPrompt(string new_prompt = "smash");
+  string getPrompt();
+  int getPid();
 };
 
 #endif //SMALL_SHELL_H_

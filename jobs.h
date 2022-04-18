@@ -18,7 +18,7 @@ class JobsList {
   class JobEntry {
   public:
     int job_id;
-    int pid;
+    pid_t pid;
     shared_ptr<Command> command;
     time_t insertion_time;
     JobStatus job_status;

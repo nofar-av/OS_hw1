@@ -31,7 +31,12 @@ bool JobsList::JobEntry::isStopped() const
 
 void JobsList::JobEntry::print(bool full_print = true) const
 {
-    cout<<"["<<this->job_id<<"]"<<endl;
+    cout<<"["<<this->job_id<<"]"<< this->command->getCommandLine<< " : "<<this->pid << this->insertion_time<< " secs";
+    if (this->isStopped)
+    {
+        cout<<" (stopped)";
+    }
+    cout<<endl;
 }
 
 JobsList::JobsList() : job_entries(), max_job_id(EMPTY_JOB_ID) {}
@@ -40,6 +45,29 @@ void JobsList::addJob(shared_ptr<Command> command, int pid,  bool isStopped = fa
 {
     int job_id = this->max_job_id + 1;
     this->max_job_id ++;
-    //JobEntry new_job = new JobEntry(job_id, )
+    time_t time = _getTime();
+    JobEntry new_job = new JobEntry(job_id, pid, command, time, isStopped);
     this->job_entries.push_back(new_job);
+}
+//TODO: do we need pointers in the vector?
+void JobsList::printJobsList()
+{
+    for (int i = 0; i < this->job_entries.size(); i++)
+    {
+        this->job_entries[i]->print();
+    }
+}
+
+//TODO:: how to check if a job is finished
+void JobsList::removeFinishedJobs()
+{
+    for (int i = 0; i < this->job_entries.size(); i++)
+    {
+        if (this->job_entries[i]->isStopped())
+        {
+            continue;
+        }
+        pid_t curr_pid = this->job_entries[i]->pid;
+
+    }
 }

@@ -13,7 +13,7 @@ SmallShell::SmallShell() {
   this->old_pwd = PWD_NOT_SET;
   this->fg_job_id = NO_FG;
   this->fg_pid = NO_FG;
-  this->jobs_list = new JobsList();
+  this->jobs_list = shared_ptr<JobsList>(new JobsList());
 
 // TODO: add your implementation
 }
@@ -109,7 +109,6 @@ void SmallShell::executeCommand(const string cmd_line) {
   } catch (SmashException &err) {
       cerr << err.what(); // TODO: check prints to stderr
   }
-  cout<<"finished execute"<<endl;
 }
 
 void SmallShell::addJob (shared_ptr<Command> command, pid_t pid, bool is_stopped)
@@ -134,7 +133,7 @@ void SmallShell::setForeground (shared_ptr<Command> command, pid_t pid)
   this->jobs_list->removeFgJob();
 }
 
-JobsList* SmallShell::getJobs()
+shared_ptr<JobsList> SmallShell::getJobs()
 {
   return this->jobs_list;
 }

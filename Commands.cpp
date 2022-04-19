@@ -181,7 +181,7 @@ void ExternalCommand::execute()
   }
 }
 
-JobsCommand::JobsCommand(const string cmd_line, JobsList* jobs) : BuiltInCommand(cmd_line)
+JobsCommand::JobsCommand(const string cmd_line, shared_ptr<JobsList> jobs) : BuiltInCommand(cmd_line)
 {
   this->jobs_list = jobs;
 }

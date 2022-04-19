@@ -26,7 +26,7 @@ class SmallShell {
   string current_pwd;
   pid_t pid;
   SmallShell();
-  JobsList* jobs_list;
+  shared_ptr<JobsList> jobs_list;
   pid_t fg_pid;
   int fg_job_id;
  public:
@@ -54,7 +54,7 @@ class SmallShell {
   void sendSignal(const string signal);
   void bg ();
   void fg ();
-  JobsList* getJobs();
+  shared_ptr<JobsList> getJobs();
 };
 
 #endif //SMALL_SHELL_H_

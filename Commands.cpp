@@ -169,13 +169,25 @@ void ExternalCommand::execute()
   }
   else //father
   {
+    shared_ptr<Command> cmnd (this);
     if (this->is_background)
     {
-      SmallShell::getInstance().addJob(shared_ptr<Command>(this), pid, false);
+      SmallShell::getInstance().addJob(cmnd, pid, false);
     }
     else
     {
-      SmallShell::getInstance().setForeground(shared_ptr<Command>(this), pid);
+      SmallShell::getInstance().setForeground(cmnd, pid);
     }
   }
 }
+
+JobsCommand::JobsCommand(const string cmd_line, JobsList* jobs) : BuiltInCommand(cmd_line)
+{
+  this->jobs_list = jobs;
+}
+
+void JobsCommand::execute()
+{
+  this->jobs_list->printJobsList();
+}
+

@@ -60,16 +60,15 @@ void JobsList::addJob(shared_ptr<Command> command, pid_t pid,  bool is_stopped)
     shared_ptr<JobEntry> new_job (new JobEntry(job_id, pid, command, time, status));
     this->job_entries.push_back(shared_ptr<JobEntry>(new_job));
 }
-//TODO: do we need pointers in the vector?
+
 void JobsList::printJobsList()
 {
-    for (size_t i = 0; i < this->job_entries.size(); i++)
+    for (auto it = this->job_entries.end(); it < this->job_entries.end(); it++)
     {
-        this->job_entries[i]->print();
+        (*it)->print();
     }
 }
 
-//TODO:: how to check if a job is finished
 void JobsList::removeFinishedJobs()
 {
     for (auto it = this->job_entries.begin(); it != this->job_entries.end(); it++)

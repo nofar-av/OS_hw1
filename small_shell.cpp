@@ -83,9 +83,10 @@ shared_ptr<Command> SmallShell::createCommand(const string cmd_line) {
     return shared_ptr<Command>(new GetCurrDirCommand(cmd_line));
   else if(firstWord.compare("cd") == 0)
     return shared_ptr<Command>(new ChangeDirCommand(cmd_line));
+  else if(firstWord.compare("jobs") == 0)
+    return shared_ptr<Command>(new JobsCommand(cmd_line, SmallShell::getInstance().getJobs()));
   else 
     return shared_ptr<Command>(new ExternalCommand(cmd_line));
-  return nullptr;
 }
 
 void SmallShell::executeCommand(const string cmd_line) {
@@ -108,6 +109,7 @@ void SmallShell::executeCommand(const string cmd_line) {
   } catch (SmashException &err) {
       cerr << err.what(); // TODO: check prints to stderr
   }
+  cout<<"finished execute"<<endl;
 }
 
 void SmallShell::addJob (shared_ptr<Command> command, pid_t pid, bool is_stopped)
@@ -130,4 +132,9 @@ void SmallShell::setForeground (shared_ptr<Command> command, pid_t pid)
   this->fg_pid = NO_FG;
   this->fg_job_id = NO_FG;
   this->jobs_list->removeFgJob();
+}
+
+JobsList* SmallShell::getJobs()
+{
+  return this->jobs_list;
 }

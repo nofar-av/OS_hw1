@@ -106,9 +106,10 @@ class QuitCommand : public BuiltInCommand {
 
 class JobsCommand : public BuiltInCommand {
  // TODO: Add your data members
+ JobsList* jobs_list;
  public:
   JobsCommand(const string cmd_line, JobsList* jobs);
-  virtual ~JobsCommand() {}
+  virtual ~JobsCommand() ;
   void execute() override;
 };
 

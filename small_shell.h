@@ -54,6 +54,7 @@ class SmallShell {
   void sendSignal(const string signal);
   void bg ();
   void fg ();
+  JobsList* getJobs();
 };
 
 #endif //SMALL_SHELL_H_

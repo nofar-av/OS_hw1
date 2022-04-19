@@ -11,35 +11,41 @@ using namespace std;
 #define EMPTY_JOB_ID -1
 enum JobStatus { STOPPED, FINISHED, BG_ACTIVE };
 
-class JobsList {
-    vector<shared_ptr<JobEntry>> job_entries;
-    int max_job_id;
- public:
-  class JobEntry {
-  public:
+class Command;
+
+class JobEntry {
     int job_id;
     pid_t pid;
     shared_ptr<Command> command;
     time_t insertion_time;
     JobStatus job_status;
-    JobEntry(int job_id, int pid, shared_ptr<Command>command, time_t insertion_time, JobStatus job_status);
+  public:
+    JobEntry(int job_id, pid_t pid, shared_ptr<Command>command, time_t insertion_time, JobStatus job_status);
     ~JobEntry() = default;
     bool isFinished() const;
     bool isStopped() const;
     void print(bool full_print = true) const;
-  };
+    pid_t getPid ();
+    int getJobId();
+};
+
+class JobsList {
+    vector<shared_ptr<JobEntry>> job_entries;
+    int max_job_id;
  // TODO: Add your data members
  public:
   JobsList();
   ~JobsList() = default;
-  void addJob(shared_ptr<Command> command, int pid,  bool isStopped = false);
+  void addJob(shared_ptr<Command> command, pid_t pid,  bool is_stopped = false);
   void printJobsList();
   void killAllJobs();
   void removeFinishedJobs();
-  JobEntry * getJobById(int jobId);
+  shared_ptr<JobEntry> getJobById(int jobId);
   void removeJobById(int jobId);
-  JobEntry * getLastJob(int* lastJobId);
-  JobEntry *getLastStoppedJob(int *jobId);
+  shared_ptr<JobEntry> getLastJob(int& lastJobId);
+  shared_ptr<JobEntry> getLastStoppedJob(int& jobId);
+  void removeFgJob();
+  int getFGJobID();
   // TODO: Add extra methods or modify exisitng ones as needed
 };
 

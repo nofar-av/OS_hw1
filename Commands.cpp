@@ -10,7 +10,7 @@
 
 
 using namespace std;
-
+#define ERROR -1
 #if 0
 #define FUNC_ENTRY()  \
   cout << __PRETTY_FUNCTION__ << " --> " << endl;
@@ -61,7 +61,7 @@ bool _isBackgroundComamnd(const string  cmd_line) {
   return str[str.find_last_not_of(WHITESPACE)] == '&';
 }
 
-void _removeBackgroundSign(string  cmd_line) {
+void _removeBackgroundSign(string&  cmd_line) {
   const string str(cmd_line);
   // find last character other than spaces
   unsigned int idx = str.find_last_not_of(WHITESPACE);
@@ -141,4 +141,41 @@ void ChangeDirCommand::execute()
     return;  
   }
   SmallShell::getInstance().changeCurrentDirectory(this->argv[1]);
+}
+
+ExternalCommand::ExternalCommand(const string cmd_line) : Command(cmd_line)
+{
+  this->is_background = _isBackgroundComamnd(cmd_line);
+  this->line_no_background = this->line;
+  _removeBackgroundSign(this->line_no_background);
+}
+
+void ExternalCommand::execute() 
+{
+  pid_t pid = fork();
+  if (pid == ERROR) //failed
+  {
+    throw SyscallException("fork");
+  }
+  else if (pid == 0) //child
+  {
+    if (setpgrp() == ERROR)
+    {
+      throw SyscallException("setgrp");
+    }
+    if (execlp("/bin/bash", "/bin/bash", "-c", line_no_background.c_str(), nullptr) == ERROR) {
+        throw SyscallException("execv");
+    }
+  }
+  else //father
+  {
+    if (this->is_background)
+    {
+      SmallShell::getInstance().addJob(shared_ptr<Command>(this), pid, false);
+    }
+    else
+    {
+      SmallShell::getInstance().setForeground(shared_ptr<Command>(this), pid);
+    }
+  }
 }

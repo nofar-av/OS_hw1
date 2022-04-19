@@ -4,12 +4,16 @@
 #define PWD_NOT_SET "-1"
 
 using namespace std;
-
+#define NO_FG -1
+#define ERROR -1
 SmallShell::SmallShell() {
   this->pid = getpid();
   this->current_prompt = "smash";
   this->current_pwd = getcwd(nullptr,0); // memory leak?
   this->old_pwd = PWD_NOT_SET;
+  this->fg_job_id = NO_FG;
+  this->fg_pid = NO_FG;
+  this->jobs_list = new JobsList();
 
 // TODO: add your implementation
 }
@@ -73,12 +77,14 @@ shared_ptr<Command> SmallShell::createCommand(const string cmd_line) {
   string firstWord = cmd_s.substr(0, cmd_s.find_first_of(" \n"));
   if(firstWord.compare("chprompt") == 0)
     return shared_ptr<Command>(new ChangePromptCommand(cmd_line));
-  if(firstWord.compare("showpid") == 0)
+  else if(firstWord.compare("showpid") == 0)
     return shared_ptr<Command>(new ShowPidCommand(cmd_line));
-  if(firstWord.compare("pwd") == 0)
+  else if(firstWord.compare("pwd") == 0)
     return shared_ptr<Command>(new GetCurrDirCommand(cmd_line));
-  if(firstWord.compare("cd") == 0)
+  else if(firstWord.compare("cd") == 0)
     return shared_ptr<Command>(new ChangeDirCommand(cmd_line));
+  else 
+    return shared_ptr<Command>(new ExternalCommand(cmd_line));
   return nullptr;
 }
 
@@ -88,13 +94,11 @@ void SmallShell::executeCommand(const string cmd_line) {
   // Command* cmd = CreateCommand(cmd_line);
   // cmd->execute();
   // Please note that you must fork smash process for some commands (e.g., external commands....)
-  shared_ptr<Command> cmd = SmallShell::createCommand(cmd_line);
-  if(cmd == nullptr)
-	  return;
-  cmd->execute();
+
+
   //   jobs.updateJobList();
   try {
-      Command *cmd = CreateCommand(cmd_line);
+      shared_ptr<Command> cmd = SmallShell::createCommand(cmd_line);
       if (cmd == nullptr) {
           return;
       }
@@ -104,4 +108,26 @@ void SmallShell::executeCommand(const string cmd_line) {
   } catch (SmashException &err) {
       cerr << err.what(); // TODO: check prints to stderr
   }
+}
+
+void SmallShell::addJob (shared_ptr<Command> command, pid_t pid, bool is_stopped)
+{
+  this->jobs_list->addJob(command, pid, is_stopped);
+}
+
+void SmallShell::setForeground (shared_ptr<Command> command, pid_t pid)
+{
+
+  this->fg_pid = pid;
+  this->fg_job_id = this->jobs_list->getFGJobID();
+  int status;
+  if (waitpid(pid, &status, WUNTRACED) == ERROR) {
+      throw SyscallException("waitpid");
+  }
+  if (WIFSTOPPED(status)) {
+      this->jobs_list->addJob(command, pid, true);
+  }
+  this->fg_pid = NO_FG;
+  this->fg_job_id = NO_FG;
+  this->jobs_list->removeFgJob();
 }

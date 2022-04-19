@@ -6,6 +6,7 @@
 #include <string.h>
 #include "small_shell.h"
 #include "exceptions.h"
+#include "jobs.h"
 
 #define COMMAND_ARGS_MAX_LENGTH (200)
 #define COMMAND_MAX_ARGS (20)
@@ -36,6 +37,8 @@ class BuiltInCommand : public Command {
 };
 
 class ExternalCommand : public Command {
+  bool is_background;
+  string line_no_background;
  public:
   ExternalCommand(const string cmd_line);
   virtual ~ExternalCommand() {}
@@ -91,7 +94,7 @@ class ShowPidCommand : public BuiltInCommand {
   void execute() override;
 };
 
-class JobsList;
+
 class QuitCommand : public BuiltInCommand {
 // TODO: Add your data members public:
   QuitCommand(const string cmd_line, JobsList* jobs);

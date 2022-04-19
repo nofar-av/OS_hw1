@@ -10,66 +10,87 @@
 using namespace std;
 
 
-class SmashException : public std::exception
+class SmashException : public exception //std::exception
 {};
-class BuiltInException : public SmashException {
-protected:
+
+class TooManyArgs : public SmashException
+{
     string error_message;
 public:
-    BuiltInException(const string cmd_name);
-    BuiltInException()  = default;
-    ~BuiltInException() = default;
-    virtual const char* what() const noexcept override;
-};
-
-class TooManyArgs : public BuiltInException
-{
-public:
-    TooManyArgs(const string cmd_name);
+    TooManyArgs(const string cmd_name) 
+    {
+        this->error_message = "smash error:" + cmd_name + ":" + "too many arguments" + "\n"; 
+    }
     ~TooManyArgs() = default;
+    const char* what() const noexcept override
+    {
+        return error_message.c_str();
+    }
 };
 
-class OldpwdNotSet : public BuiltInException
+class OldpwdNotSet : public SmashnException
 {
+    string error_message;
 public:
-    OldpwdNotSet(const string cmd_name);
-    ~OldpwdNotSet() = default;
+    OldpwdNotSet(const string cmd_name)
+    {
+        this->error_message = "smash error:" + cmd_name + ":" + " too many arguments" + "\n"; 
+    }    
+    const char* what() const noexcept override { return error_message.c_str(); }
 };
 
 class SyscallException : public exception {
     string error_message;
-
   public:
-    SyscallException(string syscall_name);
+    SyscallException(string syscall_name) 
+    {
+        this->error_message = "smash error: " + syscall_name + " failed";
+    }
     const char* what() const noexcept override { return error_message.c_str(); }
 };
 
-class InvalidlArguments : public BuiltInException
+class InvalidlArguments : public SmashException
 {
+    string error_message;
 public:
-    InvalidlArguments(const string cmd_name);
-    ~InvalidlArguments() = default;
+    InvalidlArguments(const string cmd_name)
+    {
+        this->error_message = "smash error:" + cmd_name + ":" + " invalid arguments" + "\n"; 
+    }    
+    const char* what() const noexcept override { return error_message.c_str(); }
 };
 
-class JobIdDoesntExist : public BuiltInException
+class JobIdDoesntExist : public SmashException
 {
+    string error_message;
 public:
-    JobIdDoesntExist(const string cmd_name, int job_id);
-    ~JobIdDoesntExist() = default;
+    JobIdDoesntExist(const string cmd_name, int job_id)
+    {
+        this->error_message = "smash error:" + cmd_name + ":" + "job-id" + job_id + "does not exist" + "\n"; 
+    }    
+    const char* what() const noexcept override { return error_message.c_str(); }
 };
-class JobAlreadyRunBG : public BuiltInException
+class JobAlreadyRunBG : public SmashnException
 {
+    string error_message;
 public:
-    JobAlreadyRunBG(const string cmd_name, int job_id);
-    ~JobAlreadyRunBG() = default;
+    JobAlreadyRunBG(const string cmd_name, int job_id)
+    {
+        this->error_message = "smash error:" + cmd_name + ":" + "job-id" + job_id + "is already running in the background" + "\n"; 
+    }  
+    const char* what() const noexcept override { return error_message.c_str(); }
 };
 
 
-class NoStoppedJobs : public BuiltInException
+class NoStoppedJobs : public SmashException
 {
+    string error_message;
 public:
-    NoStoppedJobs(const string cmd_name);
-    ~NoStoppedJobs() = default;
+    NoStoppedJobs(const string cmd_name)
+    {
+        this->error_message = "smash error:" + cmd_name + ":" + "there is no stopped jobs to resume" + "\n"; 
+    }  
+    const char* what() const noexcept override { return error_message.c_str(); }
 };
 
 

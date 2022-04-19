@@ -36,8 +36,7 @@ public:
     ~OldpwdNotSet() = default;
 };
 
-class SyscallException : public SmashException {
-  private:
+class SyscallException : public exception {
     string error_message;
 
   public:

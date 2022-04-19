@@ -92,4 +92,16 @@ void SmallShell::executeCommand(const string cmd_line) {
   if(cmd == nullptr)
 	  return;
   cmd->execute();
+  //   jobs.updateJobList();
+  try {
+      Command *cmd = CreateCommand(cmd_line);
+      if (cmd == nullptr) {
+          return;
+      }
+      cmd->execute();
+  } catch (SyscallException &err) {
+      perror(err.what()); // TODO: check prints to stderr
+  } catch (SmashException &err) {
+      cerr << err.what(); // TODO: check prints to stderr
+  }
 }

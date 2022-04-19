@@ -31,7 +31,8 @@ bool JobEntry::isStopped() const
 
 void JobEntry::print(bool full_print) const
 {
-    cout<<"["<<this->job_id<<"]"<< this->command->getCommandLine() << " : "<<this->pid << this->insertion_time<< " secs";
+    double diff = difftime(_getTime(), this->insertion_time);
+    cout<<"["<<this->job_id<<"] "<< this->command->getCommandLine() << " : "<< this->pid << diff << " secs";
     if (this->isStopped())
     {
         cout<<" (stopped)";
@@ -63,7 +64,7 @@ void JobsList::addJob(shared_ptr<Command> command, pid_t pid,  bool is_stopped)
 
 void JobsList::printJobsList()
 {
-    for (auto it = this->job_entries.end(); it < this->job_entries.end(); it++)
+    for (auto it = this->job_entries.begin(); it < this->job_entries.end(); it++)
     {
         (*it)->print();
     }

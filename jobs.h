@@ -8,7 +8,7 @@
 #include "Commands.h"
 using namespace std;
 
-#define EMPTY_JOB_ID -1
+#define EMPTY_JOB_ID 0
 enum JobStatus { STOPPED, FINISHED, BG_ACTIVE };
 
 class Command;

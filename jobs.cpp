@@ -3,6 +3,7 @@
 //#include "small_shell.h"
 #include "Commands.h"
 using namespace std;
+#include <vector>
 
 #define ERROR -1
 
@@ -19,8 +20,12 @@ JobEntry::JobEntry(int job_id, pid_t pid, shared_ptr<Command> command,
     : job_id(job_id), pid(pid), command(command),
       insertion_time(insertion_time), job_status(job_status) {}
 
-bool JobEntry::isFinished() const
+bool JobEntry::isFinished() 
 {
+    if (waitpid(this->pid, nullptr, WNOHANG) != 0)
+    {
+        this->job_status = FINISHED;
+    }
     return (this->job_status == FINISHED);
 }
 
@@ -28,6 +33,7 @@ bool JobEntry::isStopped() const
 {
     return (this->job_status == STOPPED);
 }
+
 
 void JobEntry::print(bool full_print) const
 {
@@ -59,30 +65,31 @@ void JobsList::addJob(shared_ptr<Command> command, pid_t pid,  bool is_stopped)
     time_t time = _getTime();
     JobStatus status = (is_stopped) ? STOPPED : BG_ACTIVE;
     shared_ptr<JobEntry> new_job (new JobEntry(job_id, pid, command, time, status));
-    this->job_entries.push_back(shared_ptr<JobEntry>(new_job));
+    this->job_entries[job_id] = shared_ptr<JobEntry>(new_job);
 }
 
-void JobsList::printJobsList()
+void JobsList::printJobsList() 
 {
-    for (auto it = this->job_entries.begin(); it < this->job_entries.end(); it++)
+    this->removeFinishedJobs();
+    for (auto it = this->job_entries.begin(); it != this->job_entries.end(); it++)
     {
-        (*it)->print();
+        (*it->second).print();
     }
 }
 
 void JobsList::removeFinishedJobs()
 {
+    vector<int> jobs_to_erase;
     for (auto it = this->job_entries.begin(); it != this->job_entries.end(); it++)
     {
-        if ((*it)->isFinished())
+        if ((*(it->second)).isFinished())
         {
-            int job_id = (*it)->getJobId();
-            if (job_id == this->max_job_id - 1)
-            {
-                this->max_job_id -- ;
-            }
-            this->job_entries.erase(it);
+            jobs_to_erase.push_back(it->first);
         }
+    }
+    for (auto it = jobs_to_erase.begin(); it != jobs_to_erase.end(); it++)
+    {
+        this->job_entries.erase(*it);
     }
 }
 

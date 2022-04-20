@@ -3,9 +3,9 @@
 
 #include <memory>
 #include <string>
-#include <vector>
+#include <unordered_map>
 
-#include "Commands.h"
+//#include "Commands.h"
 using namespace std;
 
 #define EMPTY_JOB_ID 0
@@ -22,7 +22,7 @@ class JobEntry {
   public:
     JobEntry(int job_id, pid_t pid, shared_ptr<Command>command, time_t insertion_time, JobStatus job_status);
     ~JobEntry() = default;
-    bool isFinished() const;
+    bool isFinished();
     bool isStopped() const;
     void print(bool full_print = true) const;
     pid_t getPid ();
@@ -30,7 +30,7 @@ class JobEntry {
 };
 
 class JobsList {
-    vector<shared_ptr<JobEntry>> job_entries;
+    unordered_map<int, shared_ptr<JobEntry>> job_entries;
     int max_job_id;
  // TODO: Add your data members
  public:

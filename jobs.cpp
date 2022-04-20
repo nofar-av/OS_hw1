@@ -6,6 +6,7 @@ using namespace std;
 #include <vector>
 
 #define ERROR -1
+#define DOSENT_EXIST 0
 
 time_t _getTime() {
     time_t curr_time;
@@ -15,9 +16,9 @@ time_t _getTime() {
     return curr_time;
 }
 
-JobEntry::JobEntry(int job_id, pid_t pid, shared_ptr<Command> command,
+JobEntry::JobEntry(int job_id, pid_t pid, string cmd_line,
                    time_t insertion_time, JobStatus job_status)
-    : job_id(job_id), pid(pid), command(command),
+    : job_id(job_id), pid(pid), cmd_line(cmd_line),
       insertion_time(insertion_time), job_status(job_status) {}
 
 bool JobEntry::isFinished() 
@@ -38,12 +39,12 @@ bool JobEntry::isStopped() const
 void JobEntry::print(bool full_print) const
 {
     double diff = difftime(_getTime(), this->insertion_time);
-    cout<<"["<<this->job_id<<"] "<< this->command->getCommandLine() << " : "<< this->pid << diff << " secs";
+    cout<<"["<<this->job_id<<"] "<< this->cmd_line << " : "<< this->pid << " " << diff << " secs";
     if (this->isStopped())
     {
         cout<<" (stopped)";
     }
-    cout<<endl;
+    cout << endl;
 }
 
 pid_t JobEntry::getPid ()
@@ -58,14 +59,14 @@ int JobEntry::getJobId()
 
 JobsList::JobsList() : job_entries(), max_job_id(EMPTY_JOB_ID) {}
 
-void JobsList::addJob(shared_ptr<Command> command, pid_t pid,  bool is_stopped)
+void JobsList::addJob(string cmd_line, pid_t pid,  bool is_stopped)
 {
-    int job_id = this->max_job_id + 1;
     this->max_job_id ++;
+    int job_id = this->max_job_id;
     time_t time = _getTime();
     JobStatus status = (is_stopped) ? STOPPED : BG_ACTIVE;
-    shared_ptr<JobEntry> new_job (new JobEntry(job_id, pid, command, time, status));
-    this->job_entries[job_id] = shared_ptr<JobEntry>(new_job);
+    shared_ptr<JobEntry> new_job (new JobEntry(job_id, pid, cmd_line, time, status));
+    this->job_entries[job_id] = new_job;
 }
 
 void JobsList::printJobsList() 
@@ -79,6 +80,7 @@ void JobsList::printJobsList()
 
 void JobsList::removeFinishedJobs()
 {
+    int max = EMPTY_JOB_ID;
     vector<int> jobs_to_erase;
     for (auto it = this->job_entries.begin(); it != this->job_entries.end(); it++)
     {
@@ -86,7 +88,12 @@ void JobsList::removeFinishedJobs()
         {
             jobs_to_erase.push_back(it->first);
         }
+        else
+        {
+            max = (max < (it->first)) ? (it->first) : max;
+        }
     }
+    this->max_job_id = max;
     for (auto it = jobs_to_erase.begin(); it != jobs_to_erase.end(); it++)
     {
         this->job_entries.erase(*it);
@@ -102,4 +109,20 @@ int JobsList::getFGJobID()
 void JobsList::removeFgJob()
 {
     this->max_job_id--;
+}
+pid_t JobsList::getPid(int job_id)
+{
+    if (this->job_entries.find(job_id) == this->job_entries.end())
+    {
+        return DOSENT_EXIST;
+    }
+    return this->job_entries[job_id]->getPid();//TODO: Eficciency
+}
+bool JobsList::isEmpty() const
+{
+    return this->job_entries.empty();
+}
+pid_t JobsList::getMaxJobPid() 
+{
+    return this->job_entries[this->max_job_id]->getPid();
 }

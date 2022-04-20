@@ -6,10 +6,20 @@
 using namespace std;
 #define NO_FG -1
 #define ERROR -1
+#define MAX_PATH_SIZE 80
+
+string _getCwd() {
+    char current_path[MAX_PATH_SIZE];
+    if (getcwd(current_path, MAX_PATH_SIZE) == NULL) {
+        throw SyscallException("getcwd");
+    }
+    return string(current_path);
+}
+
 SmallShell::SmallShell() {
   this->pid = getpid();
   this->current_prompt = "smash";
-  this->current_pwd = getcwd(nullptr,0); // memory leak?
+  this->current_pwd = _getCwd(); 
   this->old_pwd = PWD_NOT_SET;
   this->fg_job_id = NO_FG;
   this->fg_pid = NO_FG;
@@ -42,7 +52,7 @@ void SmallShell::changeCurrentDirectory(string new_pwd)
   {
     throw SyscallException("chdir");
   }
-  this->current_pwd = getcwd(nullptr,0); //memory leak?
+  this->current_pwd = _getCwd();
 }
 bool SmallShell::isOldPwdSet()
 {
@@ -85,6 +95,8 @@ shared_ptr<Command> SmallShell::createCommand(const string cmd_line) {
     return shared_ptr<Command>(new ChangeDirCommand(cmd_line));
   else if(firstWord.compare("jobs") == 0)
     return shared_ptr<Command>(new JobsCommand(cmd_line, SmallShell::getInstance().getJobs()));
+  else if(firstWord.compare("fg") == 0)
+    return shared_ptr<Command>(new ForegroundCommand(cmd_line, SmallShell::getInstance().getJobs()));
   else 
     return shared_ptr<Command>(new ExternalCommand(cmd_line));
 }
@@ -111,26 +123,15 @@ void SmallShell::executeCommand(const string cmd_line) {
   }
 }
 
-void SmallShell::addJob (shared_ptr<Command> command, pid_t pid, bool is_stopped)
+void SmallShell::addJob (string cmd_line, pid_t pid, bool is_stopped)
 {
-  this->jobs_list->addJob(command, pid, is_stopped);
+  this->jobs_list->addJob(cmd_line, pid, is_stopped);
 }
 
-void SmallShell::setForeground (shared_ptr<Command> command, pid_t pid)
+void SmallShell::setFgJob(pid_t pid)
 {
-
   this->fg_pid = pid;
-  this->fg_job_id = this->jobs_list->getFGJobID();
-  int status;
-  if (waitpid(pid, &status, WUNTRACED) == ERROR) {
-      throw SyscallException("waitpid");
-  }
-  if (WIFSTOPPED(status)) {
-      this->jobs_list->addJob(command, pid, true);
-  }
-  this->fg_pid = NO_FG;
-  this->fg_job_id = NO_FG;
-  this->jobs_list->removeFgJob();
+  this->fg_job_id = (pid == NO_FG) ? NO_FG : this->jobs_list->getFGJobID();
 }
 
 shared_ptr<JobsList> SmallShell::getJobs()

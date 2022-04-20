@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <string>
-#include <unordered_map>
+#include <map>
 
 //#include "Commands.h"
 using namespace std;
@@ -16,11 +16,11 @@ class Command;
 class JobEntry {
     int job_id;
     pid_t pid;
-    shared_ptr<Command> command;
+    string cmd_line;
     time_t insertion_time;
     JobStatus job_status;
   public:
-    JobEntry(int job_id, pid_t pid, shared_ptr<Command>command, time_t insertion_time, JobStatus job_status);
+    JobEntry(int job_id, pid_t pid, string cmd_line, time_t insertion_time, JobStatus job_status);
     ~JobEntry() = default;
     bool isFinished();
     bool isStopped() const;
@@ -30,13 +30,13 @@ class JobEntry {
 };
 
 class JobsList {
-    unordered_map<int, shared_ptr<JobEntry>> job_entries;
+    map<int, shared_ptr<JobEntry>> job_entries;
     int max_job_id;
  // TODO: Add your data members
  public:
   JobsList();
   ~JobsList() = default;
-  void addJob(shared_ptr<Command> command, pid_t pid,  bool is_stopped = false);
+  void addJob(string cmd_line, pid_t pid,  bool is_stopped = false);
   void printJobsList();
   void killAllJobs();
   void removeFinishedJobs();
@@ -46,6 +46,9 @@ class JobsList {
   shared_ptr<JobEntry> getLastStoppedJob(int& jobId);
   void removeFgJob();
   int getFGJobID();
+  pid_t getPid(int job_id);
+  bool isEmpty() const;
+  pid_t getMaxJobPid() ;
   // TODO: Add extra methods or modify exisitng ones as needed
 };
 

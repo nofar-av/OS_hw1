@@ -11,6 +11,9 @@
 
 using namespace std;
 #define ERROR -1
+#define NO_FG -1
+#define NO_ID -1
+
 #if 0
 #define FUNC_ENTRY()  \
   cout << __PRETTY_FUNCTION__ << " --> " << endl;
@@ -93,7 +96,7 @@ BuiltInCommand::BuiltInCommand(const string cmd_line) : Command(cmd_line) {}
 
 string Command::getCommandLine() 
 { 
-  return line; 
+  return this->line; 
 }
 ChangePromptCommand::ChangePromptCommand (const string cmd_line) : BuiltInCommand(cmd_line){}
 
@@ -169,25 +172,87 @@ void ExternalCommand::execute()
   }
   else //father
   {
-    shared_ptr<Command> cmnd (this);
+    
     if (this->is_background)
     {
-      SmallShell::getInstance().addJob(cmnd, pid, false);
+      SmallShell::getInstance().addJob(this->line, pid, false);
     }
     else
     {
-      SmallShell::getInstance().setForeground(cmnd, pid);
+      SmallShell::getInstance().setFgJob(pid);
+      int status;
+      if (waitpid(pid, &status, WUNTRACED) == ERROR) {
+        throw SyscallException("waitpid");
+      }
+      if (WIFSTOPPED(status)) {
+        SmallShell::getInstance().addJob(this->line, pid, true);
+      }
+      SmallShell::getInstance().setFgJob(NO_FG);
     }
   }
 }
 
-JobsCommand::JobsCommand(const string cmd_line, shared_ptr<JobsList> jobs) : BuiltInCommand(cmd_line)
-{
-  this->jobs_list = jobs;
-}
+JobsCommand::JobsCommand(const string cmd_line, shared_ptr<JobsList> jobs) : BuiltInCommand(cmd_line), jobs_list(jobs)
+{}
 
 void JobsCommand::execute()
 {
   this->jobs_list->printJobsList();
 }
 
+ForegroundCommand::ForegroundCommand(const string cmd_line, shared_ptr<JobsList> jobs) : 
+                                    BuiltInCommand(cmd_line), jobs_list(jobs)
+{
+  if(this->argv.size() > 2)
+  {
+    throw InvalidlArguments(this->line);
+  }
+  else if(this->argv.size() > 1)
+  {
+    this->job_id = stoi(this->argv[1]);
+  }
+  else
+  {
+    this->job_id = NO_ID;
+  }
+}
+
+void ForegroundCommand::execute()
+{
+  if(this->job_id != NO_ID)
+  {
+    pid_t pid = this->jobs_list->getPid(this->job_id);
+    if(pid == 0)
+    {
+      throw JobIdDoesntExist(this->line, this->job_id);
+    }
+    SmallShell::getInstance().setFgJob(pid);
+    int status;
+      if (waitpid(pid, &status, WUNTRACED) == ERROR) {
+        throw SyscallException("waitpid");
+      }
+      if (WIFSTOPPED(status)) {
+        SmallShell::getInstance().addJob(this->line, pid, true);
+      }
+      SmallShell::getInstance().setFgJob(NO_FG);//TODO: function for this
+      this->jobs_list->removeFinishedJobs();
+  }
+  else
+  {
+    if(this->jobs_list->isEmpty())
+    {
+      throw JobsListEmpty(this->line);
+    }
+    pid_t pid = this->jobs_list->getMaxJobPid();
+    SmallShell::getInstance().setFgJob(pid);
+    int status;
+      if (waitpid(pid, &status, WUNTRACED) == ERROR) {
+        throw SyscallException("waitpid");
+      }
+      if (WIFSTOPPED(status)) {
+        SmallShell::getInstance().addJob(this->line, pid, true);
+      }
+      SmallShell::getInstance().setFgJob(NO_FG);//TODO: function for this
+      this->jobs_list->removeFinishedJobs();
+  }
+}

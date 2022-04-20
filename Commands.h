@@ -123,8 +123,10 @@ class KillCommand : public BuiltInCommand {
 
 class ForegroundCommand : public BuiltInCommand {
  // TODO: Add your data members
+ int job_id;
+ shared_ptr<JobsList> jobs_list;
  public:
-  ForegroundCommand(const string cmd_line, JobsList* jobs);
+  ForegroundCommand(const string cmd_line, shared_ptr<JobsList> jobs);
   virtual ~ForegroundCommand() {}
   void execute() override;
 };

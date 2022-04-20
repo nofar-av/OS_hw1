@@ -48,13 +48,13 @@ class SmallShell {
   void changeCurrentDirectory(const string new_pwd);
   bool isOldPwdSet();
   string getOldPwd();
-  void addJob (shared_ptr<Command> command, pid_t pid, bool is_stopped); 
+  void addJob (string cmd_line, pid_t pid, bool is_stopped); 
   void updateJobsList();
-  void setForeground (shared_ptr<Command> command, pid_t pid);
   void sendSignal(const string signal);
   void bg ();
   void fg ();
   shared_ptr<JobsList> getJobs();
+  void setFgJob(pid_t pid);
 };
 
 #endif //SMALL_SHELL_H_

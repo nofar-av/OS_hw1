@@ -88,5 +88,15 @@ public:
     const char* what() const noexcept override { return error_message.c_str(); }
 };
 
+class JobsListEmpty : public SmashException {
+    string error_message;
+public:
+    JobsListEmpty(const string cmd_name)
+    {
+        this->error_message = "smash error:" + cmd_name + ":" + "jobs list is empty" + "\n"; 
+    }  
+    const char* what() const noexcept override { return error_message.c_str(); }
+};
+
 
 #endif /*EXCEPTIONS_H*/

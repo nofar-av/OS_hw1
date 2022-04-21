@@ -4,11 +4,13 @@
 #include <memory>
 #include <string>
 #include <map>
+#include <sys/wait.h>
 
 //#include "Commands.h"
 using namespace std;
 
 #define EMPTY_JOB_ID 0
+#define NO_JOB 0
 enum JobStatus { STOPPED, FINISHED, BG_ACTIVE };
 
 class Command;
@@ -23,10 +25,12 @@ class JobEntry {
     JobEntry(int job_id, pid_t pid, string cmd_line, time_t insertion_time, JobStatus job_status);
     ~JobEntry() = default;
     bool isFinished();
-    bool isStopped() const;
-    void print(bool full_print = true) const;
-    pid_t getPid ();
-    int getJobId();
+    bool isStopped();
+    void print(bool full_print = true);
+    pid_t getPid () const;
+    int getJobId() const;
+    void activate();
+    void updateStatus();
 };
 
 class JobsList {
@@ -36,14 +40,14 @@ class JobsList {
  public:
   JobsList();
   ~JobsList() = default;
-  void addJob(string cmd_line, pid_t pid,  bool is_stopped = false);
+  void addJob(string cmd_line, pid_t pid,  bool is_stopped = false, int job_id = NO_JOB);
   void printJobsList();
   void killAllJobs();
   void removeFinishedJobs();
   shared_ptr<JobEntry> getJobById(int jobId);
   void removeJobById(int jobId);
-  shared_ptr<JobEntry> getLastJob(int& lastJobId);
-  shared_ptr<JobEntry> getLastStoppedJob(int& jobId);
+  shared_ptr<JobEntry> getLastJob();
+  shared_ptr<JobEntry> getLastStoppedJob();
   void removeFgJob();
   int getFGJobID();
   pid_t getPid(int job_id);

@@ -11,6 +11,8 @@
 #include "jobs.h"
 using namespace std;
 
+#define NO_FG -1
+
 string _ltrim(const std::string& s);
 string _rtrim(const std::string& s);
 string _trim(const std::string& s);
@@ -29,6 +31,7 @@ class SmallShell {
   shared_ptr<JobsList> jobs_list;
   pid_t fg_pid;
   int fg_job_id;
+  string fg_cmd;
  public:
   shared_ptr<Command> createCommand(const string cmd_line);
   SmallShell(SmallShell const&)      = delete; // disable copy ctor
@@ -48,13 +51,15 @@ class SmallShell {
   void changeCurrentDirectory(const string new_pwd);
   bool isOldPwdSet();
   string getOldPwd();
-  void addJob (string cmd_line, pid_t pid, bool is_stopped); 
+  void addJob (string cmd_line, pid_t pid, bool is_stopped, int job_id = NO_JOB); 
   void updateJobsList();
   void sendSignal(const string signal);
   void bg ();
   void fg ();
   shared_ptr<JobsList> getJobs();
-  void setFgJob(pid_t pid);
+  void setFgJob(pid_t pid = NO_FG, string cmd_line = "");
+  pid_t getFgPid();
+  void addFgJobToJobsList();
 };
 
 #endif //SMALL_SHELL_H_

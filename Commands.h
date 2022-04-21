@@ -6,7 +6,7 @@
 #include <string.h>
 #include "small_shell.h"
 #include "exceptions.h"
-#include "jobs.h"
+#include "jobs.h"    
 
 #define COMMAND_ARGS_MAX_LENGTH (200)
 #define COMMAND_MAX_ARGS (20)
@@ -97,7 +97,9 @@ class ShowPidCommand : public BuiltInCommand {
 
 class QuitCommand : public BuiltInCommand {
 // TODO: Add your data members public:
-  QuitCommand(const string cmd_line, JobsList* jobs);
+  shared_ptr<JobsList> jobs_list;
+public:
+  QuitCommand(const string cmd_line, shared_ptr<JobsList> jobs);
   virtual ~QuitCommand() {}
   void execute() override;
 };
@@ -115,8 +117,9 @@ class JobsCommand : public BuiltInCommand {
 
 class KillCommand : public BuiltInCommand {
  // TODO: Add your data members
+ shared_ptr<JobsList> jobs_list;
  public:
-  KillCommand(const string cmd_line, JobsList* jobs);
+  KillCommand(const string cmd_line, shared_ptr<JobsList> jobs);
   virtual ~KillCommand() {}
   void execute() override;
 };
@@ -136,7 +139,7 @@ class BackgroundCommand : public BuiltInCommand {
  int job_id;
  shared_ptr<JobsList> jobs_list;
  public:
-  BackgroundCommand(const string cmd_line, JobsList* jobs);
+  BackgroundCommand(const string cmd_line, shared_ptr<JobsList> jobs);
   virtual ~BackgroundCommand() {}
   void execute() override;
 };

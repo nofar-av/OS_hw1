@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define NO_FG -1
+
 #define ERROR -1
 #define MAX_PATH_SIZE 80
 
@@ -24,8 +24,8 @@ SmallShell::SmallShell() {
   this->old_pwd = PWD_NOT_SET;
   this->fg_job_id = NO_FG;
   this->fg_pid = NO_FG;
+  this->fg_cmd = "";
   this->jobs_list = shared_ptr<JobsList>(new JobsList());
-
 // TODO: add your implementation
 }
 
@@ -96,8 +96,14 @@ shared_ptr<Command> SmallShell::createCommand(const string cmd_line) {
     return shared_ptr<Command>(new ChangeDirCommand(cmd_line));
   else if(firstWord.compare("jobs") == 0)
     return shared_ptr<Command>(new JobsCommand(cmd_line, SmallShell::getInstance().getJobs()));
+  else if(firstWord.compare("kill") == 0)
+    return shared_ptr<Command>(new KillCommand(cmd_line, SmallShell::getInstance().getJobs()));
   else if(firstWord.compare("fg") == 0)
     return shared_ptr<Command>(new ForegroundCommand(cmd_line, SmallShell::getInstance().getJobs()));
+  else if(firstWord.compare("bg") == 0)
+    return shared_ptr<Command>(new BackgroundCommand(cmd_line, SmallShell::getInstance().getJobs()));
+  else if(firstWord.compare("quit") == 0)
+    return shared_ptr<Command>(new QuitCommand(cmd_line, SmallShell::getInstance().getJobs()));
   else 
     return shared_ptr<Command>(new ExternalCommand(cmd_line));
 }
@@ -124,18 +130,34 @@ void SmallShell::executeCommand(const string cmd_line) {
   }
 }
 
-void SmallShell::addJob (string cmd_line, pid_t pid, bool is_stopped)
+void SmallShell::addJob (string cmd_line, pid_t pid, bool is_stopped, int job_id)
 {
   this->jobs_list->addJob(cmd_line, pid, is_stopped);
 }
 
-void SmallShell::setFgJob(pid_t pid)
+void SmallShell::setFgJob(pid_t pid, string cmd_line)
 {
   this->fg_pid = pid;
   this->fg_job_id = (pid == NO_FG) ? NO_FG : this->jobs_list->getFGJobID();
+  this->fg_cmd = cmd_line;
 }
 
 shared_ptr<JobsList> SmallShell::getJobs()
 {
   return this->jobs_list;
+}
+void SmallShell::addFgJobToJobsList()
+{
+  this->addJob(this->fg_cmd, this->fg_pid, true, this->fg_job_id);
+  pid_t pid = this->fg_pid;
+  this->setFgJob();
+  if (kill(pid, SIGTSTP) == ERROR)
+  {
+    throw SyscallException("kill");
+  }
+  cout << "smash: proccess " << pid << " was stopped" << endl;
+}
+pid_t SmallShell::getFgPid()
+{
+  return this->fg_pid;
 }

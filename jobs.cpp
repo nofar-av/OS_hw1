@@ -20,53 +20,77 @@ JobEntry::JobEntry(int job_id, pid_t pid, string cmd_line,
                    time_t insertion_time, JobStatus job_status)
     : job_id(job_id), pid(pid), cmd_line(cmd_line),
       insertion_time(insertion_time), job_status(job_status) {}
-
-bool JobEntry::isFinished() 
+void JobEntry::updateStatus()
 {
     if (waitpid(this->pid, nullptr, WNOHANG) != 0)
     {
         this->job_status = FINISHED;
     }
+}
+bool JobEntry::isFinished() 
+{
+    this->updateStatus();
     return (this->job_status == FINISHED);
 }
 
-bool JobEntry::isStopped() const
+bool JobEntry::isStopped()
 {
+    this->updateStatus();
     return (this->job_status == STOPPED);
 }
 
 
-void JobEntry::print(bool full_print) const
+void JobEntry::print(bool full_print)
 {
-    double diff = difftime(_getTime(), this->insertion_time);
-    cout<<"["<<this->job_id<<"] "<< this->cmd_line << " : "<< this->pid << " " << diff << " secs";
-    if (this->isStopped())
+    if(!full_print)
     {
-        cout<<" (stopped)";
+        cout << this->pid << ": " << this->cmd_line << endl;
     }
-    cout << endl;
+    else
+    {
+        double diff = difftime(_getTime(), this->insertion_time);
+        cout<<"["<<this->job_id<<"] "<< this->cmd_line << " : "<< this->pid << " " << diff << " secs";
+        if (this->isStopped())
+        {
+            cout<<" (stopped)";
+        }
+        cout << endl;
+    }
 }
 
-pid_t JobEntry::getPid ()
+pid_t JobEntry::getPid () const
 {
     return this->pid;
 }
 
-int JobEntry::getJobId()
+int JobEntry::getJobId() const
 {
     return this->job_id;
 }
 
+void JobEntry::activate()
+{
+    if (kill(this->pid, SIGCONT) == ERROR) 
+    {
+        throw SyscallException("kill");
+    }
+    this->job_status = BG_ACTIVE;
+}
+
 JobsList::JobsList() : job_entries(), max_job_id(EMPTY_JOB_ID) {}
 
-void JobsList::addJob(string cmd_line, pid_t pid,  bool is_stopped)
+void JobsList::addJob(string cmd_line, pid_t pid, bool is_stopped, int job_id)
 {
-    this->max_job_id ++;
-    int job_id = this->max_job_id;
+    int new_job_id = job_id;
+    if(job_id == NO_JOB)
+    {
+        this->max_job_id ++;
+        new_job_id = this->max_job_id;
+    }
     time_t time = _getTime();
     JobStatus status = (is_stopped) ? STOPPED : BG_ACTIVE;
-    shared_ptr<JobEntry> new_job (new JobEntry(job_id, pid, cmd_line, time, status));
-    this->job_entries[job_id] = new_job;
+    shared_ptr<JobEntry> new_job (new JobEntry(new_job_id, pid, cmd_line, time, status));
+    this->job_entries[new_job_id] = new_job;
 }
 
 void JobsList::printJobsList() 
@@ -127,7 +151,7 @@ pid_t JobsList::getMaxJobPid()
     return this->job_entries[this->max_job_id]->getPid();
 }
 
-bool JobsList::isJobRunning(int job)
+bool JobsList::isJobRunning(int job_id)
 {
     if (this->job_entries.find(job_id) == this->job_entries.end())
     {
@@ -136,4 +160,42 @@ bool JobsList::isJobRunning(int job)
     shared_ptr<JobEntry> job = this->job_entries[job_id];
     return (!(job->isStopped() || job->isFinished()));
     //TODO: Eficciency
+}
+shared_ptr<JobEntry> JobsList::getJobById(int job_id)
+{
+    if (this->job_entries.find(job_id) == this->job_entries.end())
+    {
+        return nullptr;
+    }
+    return this->job_entries.find(job_id)->second;
+}
+shared_ptr<JobEntry> JobsList::getLastStoppedJob()
+{
+    for (auto iter = this->job_entries.rbegin(); iter != this->job_entries.rend(); ++iter) 
+    {
+        if(iter->second->isStopped())
+        {
+            return iter->second;
+        }
+    }
+    return nullptr;
+}
+void JobsList::killAllJobs()
+{
+    this->removeFinishedJobs();
+    cout << "sending SIGKILL signal to " << this->job_entries.size() << " jobs:" << endl;
+    for (auto it = this->job_entries.begin(); it != this->job_entries.end(); it++)
+    {
+        it->second->updateStatus();
+        if(!(it->second->isFinished()))
+        {
+            if (kill(it->second->getPid(), SIGKILL) == ERROR) 
+            {
+                throw SyscallException("kill");
+            }
+            it->second->print(false);
+        }
+    }
+    //this->removeFinishedJobs();
+
 }

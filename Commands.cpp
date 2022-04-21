@@ -88,6 +88,21 @@ bool is_num (const string& str)
 }
 
 // TODO: Add your implementation for classes in Commands.h 
+void runInFg(pid_t pid, const string& line)
+{
+  SmallShell& smash = SmallShell::getInstance(); 
+  smash.setFgJob(pid, line);
+  int status;
+  if (waitpid(pid, &status, WUNTRACED) == ERROR) {
+    throw SyscallException("waitpid");
+  }
+  if (WIFSTOPPED(status)) {
+    smash.addJob(line, pid, true);
+  }
+  smash.setFgJob();//TODO: function for this
+  smash.getJobs()->removeFinishedJobs();
+}
+
 string Command::getName()
 {
   return this->argv[0];
@@ -130,14 +145,16 @@ void GetCurrDirCommand::execute()
   cout << dir << endl;
 }
 
-ChangeDirCommand::ChangeDirCommand(const string cmd_line) : BuiltInCommand(cmd_line){}
-
-void ChangeDirCommand::execute()
+ChangeDirCommand::ChangeDirCommand(const string cmd_line) : BuiltInCommand(cmd_line)
 {
   if(argv.size() > 2)
   {
     throw TooManyArgs(this->getName());
   }
+}
+
+void ChangeDirCommand::execute()
+{
   if(argv[1] == "-")
   {
     if(!(SmallShell::getInstance().isOldPwdSet()))
@@ -184,15 +201,7 @@ void ExternalCommand::execute()
     }
     else
     {
-      SmallShell::getInstance().setFgJob(pid);
-      int status;
-      if (waitpid(pid, &status, WUNTRACED) == ERROR) {
-        throw SyscallException("waitpid");
-      }
-      if (WIFSTOPPED(status)) {
-        SmallShell::getInstance().addJob(this->line, pid, true);
-      }
-      SmallShell::getInstance().setFgJob(NO_FG);
+      runInFg(pid, this->line);
     }
   }
 }
@@ -204,11 +213,43 @@ void JobsCommand::execute()
 {
   this->jobs_list->printJobsList();
 }
+KillCommand::KillCommand(const string cmd_line, shared_ptr<JobsList> jobs) : 
+                                    BuiltInCommand(cmd_line), jobs_list(jobs)
+{
+  if (argv.size() != 3 || (argv[1])[0] != '-' || !is_num(this->argv[2] ))
+  {
+    throw InvalidlArguments(this->line);
+  }
+  if(!is_num(argv[1].substr(1)))
+  {
+    throw InvalidlArguments(this->line);
+  }
+}
+
+void KillCommand::execute()
+{
+  int job_id = stoi(argv[2]);
+  int signum = stoi(argv[1].substr(1));
+  if(signum <= 0 || signum > 31)
+  {
+    throw InvalidlArguments(this->line);
+  }
+  shared_ptr<JobEntry> job = SmallShell::getInstance().getJobs()->getJobById(job_id);
+  if(job == nullptr)
+  {
+    throw JobIdDoesntExist(this->argv[0], job_id);
+  }
+  if (kill(job->getPid(), signum) == ERROR)
+  {
+    throw SyscallException("kill");
+  }
+  cout << "signal number " << signum << " was sent to pid " << job->getPid() << endl;
+}
 
 ForegroundCommand::ForegroundCommand(const string cmd_line, shared_ptr<JobsList> jobs) : 
                                     BuiltInCommand(cmd_line), jobs_list(jobs)
 {
-  if(this->argv.size() > 2)
+  if(this->argv.size() > 2 || !is_num(this->argv[1]))
   {
     throw InvalidlArguments(this->line);
   }
@@ -229,18 +270,9 @@ void ForegroundCommand::execute()
     pid_t pid = this->jobs_list->getPid(this->job_id);
     if(pid == 0)
     {
-      throw JobIdDoesntExist(this->line, this->job_id);
+      throw JobIdDoesntExist(this->argv[0], this->job_id);
     }
-    SmallShell::getInstance().setFgJob(pid);
-    int status;
-      if (waitpid(pid, &status, WUNTRACED) == ERROR) {
-        throw SyscallException("waitpid");
-      }
-      if (WIFSTOPPED(status)) {
-        SmallShell::getInstance().addJob(this->line, pid, true);
-      }
-      SmallShell::getInstance().setFgJob(NO_FG);//TODO: function for this
-      this->jobs_list->removeFinishedJobs();
+    runInFg(pid, this->line);
   }
   else
   {
@@ -249,21 +281,11 @@ void ForegroundCommand::execute()
       throw JobsListEmpty(this->line);
     }
     pid_t pid = this->jobs_list->getMaxJobPid();
-    SmallShell::getInstance().setFgJob(pid);
-    int status;
-      if (waitpid(pid, &status, WUNTRACED) == ERROR) {
-        throw SyscallException("waitpid");
-      }
-      if (WIFSTOPPED(status)) {
-        SmallShell::getInstance().addJob(this->line, pid, true);
-      }
-      SmallShell::getInstance().setFgJob(NO_FG);//TODO: function for this
-      this->jobs_list->removeFinishedJobs();
+    runInFg(pid, this->line);
   }
 }
 
-
-BackgroundCommand::BackgroundCommand(const string cmd_line, JobsList* jobs) : 
+BackgroundCommand::BackgroundCommand(const string cmd_line, shared_ptr<JobsList> jobs) : 
                                     BuiltInCommand(cmd_line), jobs_list(jobs)
 {
   if(this->argv.size() > 2)
@@ -286,27 +308,40 @@ BackgroundCommand::BackgroundCommand(const string cmd_line, JobsList* jobs) :
 
 void BackgroundCommand::execute() 
 {
-  pid_t pid;
+  shared_ptr<JobEntry> job;
   if (this->job_id == NO_ID)
   {
-    pid = this->jobs_list->getLastJob()->getPid();
-    if (pid == NO_ID)
+    job = this->jobs_list->getLastStoppedJob();
+    if (job == nullptr)
     {
       throw NoStoppedJobs(this->line);
     }
   }
   else
   {
-    pid = this->jobs_list->getPid(this->job_id);
-    if (pid == NO_ID)
+    job = this->jobs_list->getJobById(this->job_id);
+    if (job == nullptr)
     {
-      throw JobIdDoesntExist(this->line, this-job_id);
-    }
-    bool is_running = this->jobs_list->isJobRunning(this->job_id);
-    if (!is_running)
-    {
-      throw JobAlreadyRunBG(this->line, this->job_id);
+      throw JobIdDoesntExist(this->argv[0], this->job_id);
     }
   }
+  bool is_running = this->jobs_list->isJobRunning(this->job_id);
+    if (!is_running)
+    {
+      throw JobAlreadyRunBG(this->argv[0], this->job_id);
+    }
+    job->activate();
   //now continue job and change status in the list
+}
+QuitCommand::QuitCommand(const string cmd_line, shared_ptr<JobsList> jobs) : 
+                                    BuiltInCommand(cmd_line), jobs_list(jobs)
+{}
+
+void QuitCommand::execute()
+{
+  if(this->argv.size() > 1 && this->argv[1] == "kill")
+  {
+    this->jobs_list->killAllJobs();
+  }
+  exit(1);
 }

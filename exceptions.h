@@ -5,8 +5,8 @@
 #include <typeinfo>
 #include <string>
 #include <memory>
-
 #include "Commands.h"
+
 using namespace std;
 
 
@@ -18,7 +18,7 @@ class TooManyArgs : public SmashException {
 public:
     TooManyArgs(const string cmd_name) 
     {
-        this->error_message = "smash error:" + cmd_name + ":" + "too many arguments" + "\n"; 
+        this->error_message = "smash error: " + cmd_name + ":" + "too many arguments" + "\n"; 
     }
     ~TooManyArgs() = default;
     const char* what() const noexcept override
@@ -32,7 +32,7 @@ class OldpwdNotSet : public SmashException {
 public:
     OldpwdNotSet(const string cmd_name)
     {
-        this->error_message = "smash error:" + cmd_name + ":" + " too many arguments" + "\n"; 
+        this->error_message = "smash error: " + cmd_name + ":" + " OLDPWD not set" + "\n"; 
     }    
     const char* what() const noexcept override { return error_message.c_str(); }
 };
@@ -52,7 +52,7 @@ class InvalidlArguments : public SmashException {
 public:
     InvalidlArguments(const string cmd_name)
     {
-        this->error_message = "smash error:" + cmd_name + ":" + " invalid arguments" + "\n"; 
+        this->error_message = "smash error: " + cmd_name + ":" + " invalid arguments" + "\n"; 
     }    
     const char* what() const noexcept override { return error_message.c_str(); }
 };
@@ -62,7 +62,7 @@ class JobIdDoesntExist : public SmashException {
 public:
     JobIdDoesntExist(const string cmd_name, int job_id)
     {
-        this->error_message = "smash error:" + cmd_name + ":" + "job-id" + to_string(job_id) + "does not exist" + "\n"; 
+        this->error_message = "smash error: " + cmd_name + ": job-id " + to_string(job_id) + " does not exist" + "\n"; 
     }    
     const char* what() const noexcept override { return error_message.c_str(); }
 };
@@ -72,7 +72,7 @@ class JobAlreadyRunBG : public SmashException {
 public:
     JobAlreadyRunBG(const string cmd_name, int job_id)
     {
-        this->error_message = "smash error:" + cmd_name + ":" + "job-id" + to_string(job_id) + "is already running in the background" + "\n"; 
+        this->error_message = "smash error: " + cmd_name + ":" + "job-id" + to_string(job_id) + "is already running in the background" + "\n"; 
     }  
     const char* what() const noexcept override { return error_message.c_str(); }
 };
@@ -83,7 +83,7 @@ class NoStoppedJobs : public SmashException {
 public:
     NoStoppedJobs(const string cmd_name)
     {
-        this->error_message = "smash error:" + cmd_name + ":" + "there is no stopped jobs to resume" + "\n"; 
+        this->error_message = "smash error: " + cmd_name + ":" + "there is no stopped jobs to resume" + "\n"; 
     }  
     const char* what() const noexcept override { return error_message.c_str(); }
 };
@@ -93,7 +93,7 @@ class JobsListEmpty : public SmashException {
 public:
     JobsListEmpty(const string cmd_name)
     {
-        this->error_message = "smash error:" + cmd_name + ":" + "jobs list is empty" + "\n"; 
+        this->error_message = "smash error: " + cmd_name + ":" + "jobs list is empty" + "\n"; 
     }  
     const char* what() const noexcept override { return error_message.c_str(); }
 };

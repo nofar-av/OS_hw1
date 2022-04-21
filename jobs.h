@@ -49,6 +49,7 @@ class JobsList {
   pid_t getPid(int job_id);
   bool isEmpty() const;
   pid_t getMaxJobPid() ;
+  bool isJobRunning(int job);
   // TODO: Add extra methods or modify exisitng ones as needed
 };
 

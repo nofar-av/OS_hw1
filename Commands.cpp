@@ -82,6 +82,11 @@ void _removeBackgroundSign(string&  cmd_line) {
   cmd_line[str.find_last_not_of(WHITESPACE, idx) + 1] = 0;
 }
 
+bool is_num (const string& str)
+{
+  return !str.empty() && str.find_first_not_of("0123456789") == string::npos;
+}
+
 // TODO: Add your implementation for classes in Commands.h 
 string Command::getName()
 {
@@ -255,4 +260,53 @@ void ForegroundCommand::execute()
       SmallShell::getInstance().setFgJob(NO_FG);//TODO: function for this
       this->jobs_list->removeFinishedJobs();
   }
+}
+
+
+BackgroundCommand::BackgroundCommand(const string cmd_line, JobsList* jobs) : 
+                                    BuiltInCommand(cmd_line), jobs_list(jobs)
+{
+  if(this->argv.size() > 2)
+  {
+    throw InvalidlArguments(this->line);
+  }
+  else if(this->argv.size() == 1)
+  {
+    this->job_id = NO_ID;
+  }
+  else if (!is_num(this->argv[1]))
+  {
+    throw InvalidlArguments(this->line);
+  }
+  else
+  {
+    this->job_id = stoi(this->argv[1]);
+  }
+}
+
+void BackgroundCommand::execute() 
+{
+  pid_t pid;
+  if (this->job_id == NO_ID)
+  {
+    pid = this->jobs_list->getLastJob()->getPid();
+    if (pid == NO_ID)
+    {
+      throw NoStoppedJobs(this->line);
+    }
+  }
+  else
+  {
+    pid = this->jobs_list->getPid(this->job_id);
+    if (pid == NO_ID)
+    {
+      throw JobIdDoesntExist(this->line, this-job_id);
+    }
+    bool is_running = this->jobs_list->isJobRunning(this->job_id);
+    if (!is_running)
+    {
+      throw JobAlreadyRunBG(this->line, this->job_id);
+    }
+  }
+  //now continue job and change status in the list
 }

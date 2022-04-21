@@ -133,6 +133,8 @@ class ForegroundCommand : public BuiltInCommand {
 
 class BackgroundCommand : public BuiltInCommand {
  // TODO: Add your data members
+ int job_id;
+ shared_ptr<JobsList> jobs_list;
  public:
   BackgroundCommand(const string cmd_line, JobsList* jobs);
   virtual ~BackgroundCommand() {}

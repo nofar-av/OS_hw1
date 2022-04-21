@@ -126,3 +126,14 @@ pid_t JobsList::getMaxJobPid()
 {
     return this->job_entries[this->max_job_id]->getPid();
 }
+
+bool JobsList::isJobRunning(int job)
+{
+    if (this->job_entries.find(job_id) == this->job_entries.end())
+    {
+        return false;
+    }
+    shared_ptr<JobEntry> job = this->job_entries[job_id];
+    return (!(job->isStopped() || job->isFinished()));
+    //TODO: Eficciency
+}

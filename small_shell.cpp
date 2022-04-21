@@ -4,6 +4,7 @@
 #define PWD_NOT_SET "-1"
 
 using namespace std;
+
 #define NO_FG -1
 #define ERROR -1
 #define MAX_PATH_SIZE 80

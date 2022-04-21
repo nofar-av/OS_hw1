@@ -4,7 +4,7 @@
 #include <memory>
 #include <iostream>
 #include <string.h>
-#include <sys/wait.h>
+//#include <sys/wait.h>
 #include <unistd.h>
 #include "Commands.h"
 #include "exceptions.h"

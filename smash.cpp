@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
         if(cmd_line == "")
         {
             continue;
-        }
+        }//check if needed
         smash.executeCommand(cmd_line);
     }
     return 0;

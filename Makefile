@@ -2,9 +2,9 @@
 SUBMITTERS := <student1-ID>_<student2-ID>
 COMPILER := g++
 COMPILER_FLAGS := --std=c++11 -Wall
-SRCS := Commands.cpp  smash.cpp small_shell.cpp jobs.cpp #signals.cpp
+SRCS := Commands.cpp smash.cpp small_shell.cpp jobs.cpp signals.cpp
 OBJS=$(subst .cpp,.o,$(SRCS))
-HDRS := Commands.h  small_shell.h jobs.h exceptions.h #signals.h
+HDRS := Commands.h  small_shell.h jobs.h exceptions.h signals.h
 TESTS_INPUTS := $(wildcard test_input*.txt)
 TESTS_OUTPUTS := $(subst input,output,$(TESTS_INPUTS))
 SMASH_BIN := smash

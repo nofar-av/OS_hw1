@@ -145,6 +145,9 @@ class BackgroundCommand : public BuiltInCommand {
 };
 
 class TailCommand : public BuiltInCommand {
+  int num_lines;
+  string file_name;
+  int ReadNLines(int lines, int fd_read, int fd_write = -1);
  public:
   TailCommand(const string cmd_line);
   virtual ~TailCommand() {}
@@ -156,6 +159,15 @@ class TouchCommand : public BuiltInCommand {
   TouchCommand(const string cmd_line);
   virtual ~TouchCommand() {}
   void execute() override;
+};
+
+class TimeoutCommand : public BuiltInCommand {
+  
+ public:
+  TimeoutCommand(const string cmd_line);
+  virtual ~TimeoutCommand() {}
+  void execute() override;
+
 };
 
 #endif //COMMANDS_H_

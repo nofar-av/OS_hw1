@@ -39,6 +39,10 @@ bool JobEntry::isStopped()
     return (this->job_status == STOPPED);
 }
 
+string JobEntry::getLine()
+{
+    return this->cmd_line;
+}
 
 void JobEntry::print(bool full_print)
 {
@@ -146,9 +150,9 @@ bool JobsList::isEmpty() const
 {
     return this->job_entries.empty();
 }
-pid_t JobsList::getMaxJobPid() 
+shared_ptr<JobEntry> JobsList::getMaxJob() 
 {
-    return this->job_entries[this->max_job_id]->getPid();
+    return this->job_entries[this->max_job_id];
 }
 
 bool JobsList::isJobRunning(int job_id)
@@ -198,4 +202,8 @@ void JobsList::killAllJobs()
     }
     //this->removeFinishedJobs();
 
+}
+void JobsList::removeJobById(int jobId)
+{
+    this->job_entries.erase(jobId);
 }

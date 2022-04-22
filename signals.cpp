@@ -21,7 +21,7 @@ void ctrlCHandler(int sig_num) {
   {
     return;
   }
-  if (kill(pid, SIGINT) == ERROR)
+  if (kill(pid, SIGKILL) == ERROR)
   {
     throw SyscallException("kill");
   }
@@ -31,5 +31,7 @@ void ctrlCHandler(int sig_num) {
 
 void alarmHandler(int sig_num) {
   // TODO: Add your implementation
+  cout << "smash: got an alarm" << endl;
+  
 }
 

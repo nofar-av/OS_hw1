@@ -31,6 +31,7 @@ class JobEntry {
     int getJobId() const;
     void activate();
     void updateStatus();
+    string getLine();
 };
 
 class JobsList {
@@ -52,8 +53,9 @@ class JobsList {
   int getFGJobID();
   pid_t getPid(int job_id);
   bool isEmpty() const;
-  pid_t getMaxJobPid() ;
+  shared_ptr<JobEntry> getMaxJob() ;
   bool isJobRunning(int job);
+  
   // TODO: Add extra methods or modify exisitng ones as needed
 };
 

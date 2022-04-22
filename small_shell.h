@@ -57,8 +57,9 @@ class SmallShell {
   void bg ();
   void fg ();
   shared_ptr<JobsList> getJobs();
-  void setFgJob(pid_t pid = NO_FG, string cmd_line = "");
+  void setFgJob(pid_t pid = NO_FG, string cmd_line = "", int job_id = NO_FG);
   pid_t getFgPid();
+  int getFgJobId();
   void addFgJobToJobsList();
 };
 

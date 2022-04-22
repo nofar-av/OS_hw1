@@ -6,6 +6,9 @@
 #include "Commands.h"
 #include <time.h>
 #include <utime.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 
 
@@ -13,6 +16,7 @@ using namespace std;
 #define ERROR -1
 #define NO_FG -1
 #define NO_ID -1
+#define N 10
 
 #if 0
 #define FUNC_ENTRY()  \
@@ -88,16 +92,16 @@ bool is_num (const string& str)
 }
 
 // TODO: Add your implementation for classes in Commands.h 
-void runInFg(pid_t pid, const string& line)
+void runInFg(pid_t pid, const string& line, int job_id)
 {
   SmallShell& smash = SmallShell::getInstance(); 
-  smash.setFgJob(pid, line);
+  smash.setFgJob(pid, line, job_id);
   int status;
   if (waitpid(pid, &status, WUNTRACED) == ERROR) {
     throw SyscallException("waitpid");
   }
   if (WIFSTOPPED(status)) {
-    smash.addJob(line, pid, true);
+    smash.addJob(line, pid, true, job_id);
   }
   smash.setFgJob();//TODO: function for this
   smash.getJobs()->removeFinishedJobs();
@@ -194,14 +198,14 @@ void ExternalCommand::execute()
   }
   else //father
   {
-    
+    SmallShell& smash = SmallShell::getInstance();
     if (this->is_background)
     {
-      SmallShell::getInstance().addJob(this->line, pid, false);
+      smash.addJob(this->line, pid, false);
     }
     else
     {
-      runInFg(pid, this->line);
+      runInFg(pid, this->line, smash.getJobs()->getFGJobID());
     }
   }
 }
@@ -249,7 +253,7 @@ void KillCommand::execute()
 ForegroundCommand::ForegroundCommand(const string cmd_line, shared_ptr<JobsList> jobs) : 
                                     BuiltInCommand(cmd_line), jobs_list(jobs)
 {
-  if(this->argv.size() > 2 || !is_num(this->argv[1]))
+  if(this->argv.size() > 2 || (this->argv.size() > 1 && !is_num(this->argv[1])))
   {
     throw InvalidlArguments(this->line);
   }
@@ -265,14 +269,14 @@ ForegroundCommand::ForegroundCommand(const string cmd_line, shared_ptr<JobsList>
 
 void ForegroundCommand::execute()
 {
+  shared_ptr<JobEntry> job;
   if(this->job_id != NO_ID)
   {
-    pid_t pid = this->jobs_list->getPid(this->job_id);
-    if(pid == 0)
+    job = this->jobs_list->getJobById(this->job_id);
+    if(job == nullptr)
     {
       throw JobIdDoesntExist(this->argv[0], this->job_id);
     }
-    runInFg(pid, this->line);
   }
   else
   {
@@ -280,9 +284,12 @@ void ForegroundCommand::execute()
     {
       throw JobsListEmpty(this->line);
     }
-    pid_t pid = this->jobs_list->getMaxJobPid();
-    runInFg(pid, this->line);
+    job = this->jobs_list->getMaxJob();
   }
+  cout << job->getLine() << " : " << job->getPid() << endl;
+  job->activate();
+  this->jobs_list->removeJobById(this->job_id);
+  runInFg(job->getPid(), job->getLine(), job->getJobId());
 }
 
 BackgroundCommand::BackgroundCommand(const string cmd_line, shared_ptr<JobsList> jobs) : 
@@ -344,4 +351,91 @@ void QuitCommand::execute()
     this->jobs_list->killAllJobs();
   }
   exit(1);
+}
+
+/*TimeoutCommand::TimeoutCommand(const string cmd_line) : BuiltInCommand(cmd_line)
+{
+  SmallShell& smash = SmallShell::getInstance();
+  shared_ptr<Command> cmd = smash.createCommand(this->line.substr(7));
+
+}*/
+TailCommand::TailCommand(const string cmd_line) : BuiltInCommand(cmd_line)
+{
+  if(this->argv.size() > 3 || this->argv.size() < 2)
+  {
+    throw InvalidlArguments(cmd_line);
+  }
+  if(this->argv.size() == 3)
+  {
+    if(!is_num(this->argv[1].substr(1)))
+    {
+      throw InvalidlArguments(cmd_line);
+    }
+    this->num_lines = stoi(this->argv[1].substr(1));
+    if(this->num_lines < 0)
+    {
+      throw InvalidlArguments(cmd_line);
+    }
+    this->file_name = this->argv[2];
+  }
+  else
+  {
+    this->num_lines = N;
+    this->file_name = this->argv[1];
+  }
+}
+
+void TailCommand::execute()
+{
+  int fd = open(this->file_name.c_str(), O_RDONLY);
+  if(fd == ERROR)
+  {
+    throw SyscallException("open");
+  }
+  int fd_faster = dup(fd);
+  
+  if(this->ReadNLines(this->num_lines, fd_faster) == ERROR)
+  {
+    this->ReadNLines(this->num_lines, fd, 1);
+    return;
+  }
+  while(this->ReadNLines(1, fd_faster) != ERROR)
+  {
+    this->ReadNLines(1, fd);
+  }
+  this->ReadNLines(this->num_lines, fd, 1);
+
+  
+
+  if(close(fd) == ERROR)
+  {
+    throw SyscallException("close");
+  }
+}
+int TailCommand::ReadNLines(int lines, int fd_read, int fd_write)
+{
+  int i = 0;
+  char ch;
+  ssize_t rv = read(fd_read, &ch, 1);
+  while(rv != ERROR && i < lines)
+  {
+      if(rv == EOF)
+      {
+          return rv;
+      }
+      else if(rv == ERROR)
+      {
+        throw SyscallException("read");
+      }
+      if(ch == '\n')
+      {
+          i++;
+      }
+      if(fd_write != -1 && write(fd_write, &ch, 1) == ERROR)
+      {
+        throw SyscallException("write");
+      }
+      rv = read(fd_read, &ch, 1);
+  }
+  return rv;
 }

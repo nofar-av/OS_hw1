@@ -84,8 +84,14 @@ shared_ptr<Command> SmallShell::createCommand(const string cmd_line) {
     return new ExternalCommand(cmd_line);
   }
   */
+  bool alarm = false;
   string cmd_s = _trim(cmd_line);
   string firstWord = cmd_s.substr(0, cmd_s.find_first_of(" \n"));
+  if(firstWord.compare("timeout") == 0)
+  {
+    firstWord = cmd_s.substr(7, cmd_s.find_first_of(" \n"));
+    alarm = true;
+  }
   if(firstWord.compare("chprompt") == 0)
     return shared_ptr<Command>(new ChangePromptCommand(cmd_line));
   else if(firstWord.compare("showpid") == 0)
@@ -104,6 +110,9 @@ shared_ptr<Command> SmallShell::createCommand(const string cmd_line) {
     return shared_ptr<Command>(new BackgroundCommand(cmd_line, SmallShell::getInstance().getJobs()));
   else if(firstWord.compare("quit") == 0)
     return shared_ptr<Command>(new QuitCommand(cmd_line, SmallShell::getInstance().getJobs()));
+  else if(firstWord.compare("tail") == 0)
+    return shared_ptr<Command>(new TailCommand(cmd_line));
+  
   else 
     return shared_ptr<Command>(new ExternalCommand(cmd_line));
 }
@@ -132,13 +141,13 @@ void SmallShell::executeCommand(const string cmd_line) {
 
 void SmallShell::addJob (string cmd_line, pid_t pid, bool is_stopped, int job_id)
 {
-  this->jobs_list->addJob(cmd_line, pid, is_stopped);
+  this->jobs_list->addJob(cmd_line, pid, is_stopped, job_id);
 }
 
-void SmallShell::setFgJob(pid_t pid, string cmd_line)
+void SmallShell::setFgJob(pid_t pid, string cmd_line, int job_id)
 {
   this->fg_pid = pid;
-  this->fg_job_id = (pid == NO_FG) ? NO_FG : this->jobs_list->getFGJobID();
+  this->fg_job_id = job_id;
   this->fg_cmd = cmd_line;
 }
 
@@ -148,10 +157,14 @@ shared_ptr<JobsList> SmallShell::getJobs()
 }
 void SmallShell::addFgJobToJobsList()
 {
-  this->addJob(this->fg_cmd, this->fg_pid, true, this->fg_job_id);
   pid_t pid = this->fg_pid;
+  if(pid == NO_FG)
+  {
+    return;
+  }
+  //this->addJob(this->fg_cmd, this->fg_pid, true, this->fg_job_id);
   this->setFgJob();
-  if (kill(pid, SIGTSTP) == ERROR)
+  if (kill(pid, SIGSTOP) == ERROR)
   {
     throw SyscallException("kill");
   }
@@ -160,4 +173,8 @@ void SmallShell::addFgJobToJobsList()
 pid_t SmallShell::getFgPid()
 {
   return this->fg_pid;
+}
+int SmallShell::getFgJobId()
+{
+  return this->fg_job_id;
 }

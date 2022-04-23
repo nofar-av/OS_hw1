@@ -63,15 +63,16 @@ int _parseCommandLine(const string &cmd_line, vector<string> &argv)
 }
 
 
-bool _isBackgroundComamnd(const string  cmd_line) {
+bool _isBackgroundComamnd(const string cmd_line) {
   const string str(cmd_line);
   return str[str.find_last_not_of(WHITESPACE)] == '&';
 }
 
-bool _isIORedirection(const string  cmd_line) {
+bool _isIORedirection(const string cmd_line) {
   const string str(cmd_line);
   size_t found = str.find(">");
-  return (found!=std::string::npos);
+  size_t found2 = str.find(">>");
+  return (found!=std::string::npos || found2!=std::string::npos);
 }
 
 void _removeBackgroundSign(string&  cmd_line) {
@@ -113,6 +114,26 @@ void runInFg(pid_t pid, const string& line, int job_id)
   smash.getJobs()->removeFinishedJobs();
 }
 
+void Command::removeRedirectionPart()
+{
+  size_t found = this->line.find(">");
+  if(found == string::npos)
+  {
+    found = this->line.find(">>"); 
+  }
+  this->line = this->line.substr(0,found);
+  vector<string>::iterator it;
+  for (it = argv.begin(); it != argv.end(); it++)
+  {
+    if(*it == ">" || *it == ">>")
+    {
+      break;
+    }
+  }
+  vector<string> subargv = {argv.begin() , it};
+  this->argv = subargv;
+}
+
 string Command::getName()
 {
   return this->argv[0];
@@ -144,7 +165,31 @@ ShowPidCommand::ShowPidCommand(const string cmd_line) : BuiltInCommand(cmd_line)
 
 void ShowPidCommand::execute()
 {
+  int stdout_fd;
+  if (_isIORedirection(this->line))
+  {
+    string output_file = findFileName(this->argv);
+    size_t found = this->line.find(">>");
+    bool to_cat = (found != std::string::npos);
+    stdout_fd = dup(1);
+    close(1);
+    if (to_cat)
+    {
+      open(output_file.c_str(), O_APPEND);
+  
+    }
+    else
+    {
+      open(output_file.c_str(), O_WRONLY);
+    }
+  }
   cout << "smash pid is " << SmallShell::getInstance().getPid() << endl;
+  if (_isIORedirection(this->line))
+    {
+      close(1);
+      dup(stdout_fd);
+      close(stdout_fd);//changing back to stdout
+    }
 }
 
 GetCurrDirCommand::GetCurrDirCommand(const string cmd_line) : BuiltInCommand(cmd_line){}
@@ -185,17 +230,18 @@ ExternalCommand::ExternalCommand(const string cmd_line) : Command(cmd_line)
   _removeBackgroundSign(this->line_no_background);
 }
 
-string findFileName(vector<string>  argv)
+string findFileName(const vector<string>&  argv)
 {
   for (auto it = argv.begin(); it != argv.end(); it++)
   {
-    if (*it == "<" || *it == "<<")
+    if (*it == ">" || *it == ">>")
     {
-      it--;
+      it++;
       return *it;
     }
   }
 }
+
 
 void ExternalCommand::execute() 
 {
@@ -223,6 +269,10 @@ void ExternalCommand::execute()
   }
   else if (pid == 0) //child
   {
+    if (_isIORedirection(this->line))
+    {
+      this->Command::removeRedirectionPart(); 
+    } 
     if (setpgrp() == ERROR)
     {
       throw SyscallException("setgrp");
@@ -236,6 +286,7 @@ void ExternalCommand::execute()
     if (_isIORedirection(this->line))
     {
       close(1);
+      dup(stdout_fd);
       close(stdout_fd);//changing back to stdout
     }
     SmallShell& smash = SmallShell::getInstance();
@@ -247,6 +298,130 @@ void ExternalCommand::execute()
     {
       runInFg(pid, this->line, smash.getJobs()->getFGJobID());
     }
+  }
+}
+PipeCommand::PipeCommand(const string cmd_line) : Command(cmd_line)
+{
+  this->pipe_err = (this->line.find("|&") != string::npos);
+  size_t index_pipe = this->line.find("|");
+  this->left_cmd = this->line.substr(0,index_pipe);
+  this->right_cmd = this->line.substr(index_pipe + 1 + this->pipe_err);
+}
+
+void PipeCommand::execute()
+{
+  SmallShell& smash = SmallShell::getInstance();
+  shared_ptr<Command> left = smash.createCommand(this->left_cmd);
+  shared_ptr<Command> right = smash.createCommand(this->right_cmd);
+  int fd[2];
+  if(pipe(fd) == ERROR)
+  {
+    throw SyscallException("pipe");
+  }
+  pid_t left_pid, right_pid;
+  left_pid = fork();
+  if(left_pid < 0)
+  {
+    throw SyscallException("fork");
+  }
+  else if(left_pid == 0)//left cmd
+  {
+    if (setpgrp() == ERROR)
+    {
+      throw SyscallException("setgrp");
+    }
+    int fd_to_close = this->pipe_err ? 2 : 1;
+    int fd_back_up = dup(fd_to_close);//
+    close(fd_to_close);
+    dup2(fd[1],fd_to_close);
+    close(fd[1]);
+    left->execute();
+    close(fd_to_close);
+    dup2(fd_back_up, fd_to_close);
+    close(fd_back_up);//check if syscall success
+  
+    exit(0);
+  }
+  else
+  {
+    right_pid = fork();
+    if(right_pid < 0)
+    {
+      throw SyscallException("fork");
+    }
+    if(right_pid == 0)//right cmd
+    {
+      if (setpgrp() == ERROR)
+      {
+        throw SyscallException("setgrp");
+      }
+      int fd_back_up = dup(0);
+      if(close(0) == ERROR)
+      {
+        throw SyscallException("close");
+      }
+      if(dup2(fd[0],0) == ERROR)
+      {
+        throw SyscallException("dup2");
+      }
+      if(close(fd[0]) == ERROR)
+      {
+        throw SyscallException("close");
+      }
+      right->execute();
+      close(0);
+      if(dup(fd_back_up) == ERROR)
+      {
+        throw SyscallException("dup");
+      }
+      close(fd_back_up);
+
+      exit(0);
+    }
+  }
+  close(fd[0]);
+  close(fd[1]);
+  
+}
+RedirectionCommand::RedirectionCommand(const string cmd_line) : Command(cmd_line)
+{
+  this->cat = (this->line.find(">>") != string::npos);
+  size_t index_end_cmd = this->line.find(">");
+  this->cmd = this->line.substr(0,index_end_cmd);
+  string str = this->cat ? ">>" : ">";
+  vector<string>::iterator it = find(this->argv.begin(),this->argv.end(), str);
+  this->filename = *(++it);
+}
+
+void RedirectionCommand::execute()
+{
+  SmallShell& smash = SmallShell::getInstance();
+  shared_ptr<Command> cmd = smash.createCommand(this->cmd);
+  pid_t pid = fork();
+  if(pid < 0)
+  {
+    throw SyscallException("fork");
+  }
+  if(pid == 0)
+  {
+    if (setpgrp() == ERROR)
+    {
+      throw SyscallException("setgrp");
+    }
+    dup(1);
+    close(1);
+    int fd;
+    if (this->cat)
+    {
+      fd = open(this->filename.c_str(), O_APPEND);//check if success
+    }
+    else
+    {
+      fd = open(this->filename.c_str(), O_WRONLY);
+    }
+    cmd->execute();
+    close(fd);
+    exit(0);
   }
 }
 
@@ -396,9 +571,11 @@ void QuitCommand::execute()
 
 /*TimeoutCommand::TimeoutCommand(const string cmd_line) : BuiltInCommand(cmd_line)
 {
-  SmallShell& smash = SmallShell::getInstance();
-  shared_ptr<Command> cmd = smash.createCommand(this->line.substr(7));
-
+  if(this->argv.size() < 2 || !is_num(this->argv[1]))
+  {
+    throw InvalidlArguments(this->line);
+  }
+  this->duration = stoi(this->argv[1]);
 }*/
 TailCommand::TailCommand(const string cmd_line) : BuiltInCommand(cmd_line)
 {
@@ -433,20 +610,22 @@ void TailCommand::execute()
   {
     throw SyscallException("open");
   }
-  int fd_faster = dup(fd);
-  
+  int fd_faster = open(this->file_name.c_str(), O_RDONLY);
   if(this->ReadNLines(this->num_lines, fd_faster) == ERROR) //file shorter than N lines
   {
     this->ReadNLines(this->num_lines, fd, 1);
-    return;
   }
-  while(this->ReadNLines(1, fd_faster) != ERROR)
+  else 
   {
-    this->ReadNLines(1, fd);
+    while(this->ReadNLines(1, fd_faster) != ERROR)
+    {
+      this->ReadNLines(1, fd);
+    }
+    this->ReadNLines(this->num_lines, fd, 1);
   }
-  this->ReadNLines(this->num_lines, fd, 1);
   if(close(fd) == ERROR)
   {
+    close(fd_faster);
     throw SyscallException("close");
   }
   if(close(fd_faster) == ERROR)
@@ -465,11 +644,7 @@ int TailCommand::ReadNLines(int lines, int fd_read, int fd_write)
     {
         return -1;
     }
-    else if(rv == ERROR)
-    {
-      throw SyscallException("read");
-    }
-    if(ch == '\n')
+    else if(ch == '\n')
     {
         i++;
     }
@@ -477,17 +652,41 @@ int TailCommand::ReadNLines(int lines, int fd_read, int fd_write)
     {
       throw SyscallException("write");
     }
+    if(i == lines)
+    {
+      return rv;
+    }
     rv = read(fd_read, &ch, 1);
+    if(rv == ERROR)
+    {
+      throw SyscallException("read");
+    }
   }
   return rv;
 }
 
-TouchCommand::TouchCommand(const string cmd_line) :  BuiltInCommand(cmd_line)
+TouchCommand::TouchCommand(const string cmd_line) :  BuiltInCommand(cmd_line), timestamp()
 {
+  if(this->argv.size() != 3)
+  {
+    throw InvalidlArguments(this->line);
+  }
   this->file_name = this->argv[1];
+  strptime(this->argv[2].c_str(), "%S:%M:%H:%d:%m:%Y", &this->timestamp);
 }
 
 void TouchCommand::execute()
 {
-  time_t curr_time = _getTime();
+  time_t set_time = mktime(&this->timestamp);
+  if(set_time == ERROR)
+  {
+    throw SyscallException("mktime");
+  }
+  utimbuf times;
+  times.actime = set_time;
+  times.modtime = set_time;
+  if(utime(this->file_name.c_str(), &times) == ERROR)
+  {
+    throw SyscallException("utime");
+  }
 }

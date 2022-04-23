@@ -1,0 +1,42 @@
+Commands.cpp
+Commands.h
+Commands.o
+Makefile
+README.txt
+a.out
+exceptions.h
+jobs.cpp
+jobs.h
+jobs.o
+signals.cpp
+signals.h
+signals.o
+small_shell.cpp
+small_shell.h
+small_shell.o
+smash
+smash.cpp
+smash.o
+t.txt
+test_expected_output1.txt
+test_input1.txt
+test_output1.txt
+3 12:02 README.txt
+-rwxr-xr-x 1 omer omer 787328 Apr 23 19:12 a.out
+-rw-r--r-- 1 omer omer   2930 Apr 23 14:12 exceptions.h
+-rw-r--r-- 1 omer omer   5148 Apr 23 12:57 jobs.cpp
+-rw-r--r-- 1 omer omer   1547 Apr 23 17:24 jobs.h
+-rw-r--r-- 1 omer omer 162760 Apr 23 12:02 jobs.o
+-rw-r--r-- 1 omer omer    816 Apr 23 12:02 signals.cpp
+-rw-r--r-- 1 omer omer    177 Apr 23 12:02 signals.h
+-rw-r--r-- 1 omer omer  16344 Apr 23 12:02 signals.o
+-rw-r--r-- 1 omer omer   5621 Apr 23 19:11 small_shell.cpp
+-rw-r--r-- 1 omer omer   1773 Apr 23 12:02 small_shell.h
+-rw-r--r-- 1 omer omer 175616 Apr 23 12:02 small_shell.o
+-rw-r--r-- 1 omer omer 205880 Apr 23 12:02 smash
+-rw-r--r-- 1 omer omer    792 Apr 23 12:02 smash.cpp
+-rw-r--r-- 1 omer omer   9248 Apr 23 12:02 smash.o
+-rw-r--r-- 1 omer omer    262 Apr 23 19:13 t.txt
+-rw-r--r-- 1 omer omer    104 Apr 23 12:02 test_expected_output1.txt
+-rw-r--r-- 1 omer omer     86 Apr 23 13:08 test_input1.txt
+-rw-r--r-- 1 omer omer    130 Apr 23 12:02 test_output1.txt

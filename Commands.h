@@ -6,24 +6,28 @@
 #include <string.h>
 #include "small_shell.h"
 #include "exceptions.h"
-#include "jobs.h"    
+#include "jobs.h"
+#include <algorithm>    
 
 #define COMMAND_ARGS_MAX_LENGTH (200)
 #define COMMAND_MAX_ARGS (20)
 
 using namespace std;
 
+string findFileName(const vector<string>&  argv);
 class Command {
 // TODO: Add your data members 
  protected:
   string line;
   vector<string> argv;
+  void removeRedirectionPart();
  public:
   Command(const string cmd_line);
   virtual ~Command() = default;
   virtual void execute() = 0;
   string getName();
   string getCommandLine();
+  
   //virtual void prepare();
   //virtual void cleanup();
   // TODO: Add your extra methods if needed
@@ -47,6 +51,9 @@ class ExternalCommand : public Command {
 
 class PipeCommand : public Command {
   // TODO: Add your data members
+  string right_cmd;
+  string left_cmd;
+  bool pipe_err;
  public:
   PipeCommand(const string cmd_line);
   virtual ~PipeCommand() {}
@@ -55,6 +62,9 @@ class PipeCommand : public Command {
 
 class RedirectionCommand : public Command {
  // TODO: Add your data members
+ string cmd;
+ string filename;
+ bool cat;
  public:
   explicit RedirectionCommand(const string cmd_line);
   virtual ~RedirectionCommand() {}
@@ -147,7 +157,7 @@ class BackgroundCommand : public BuiltInCommand {
 class TailCommand : public BuiltInCommand {
   int num_lines;
   string file_name;
-  int ReadNLines(int lines, int fd_read, int fd_write = 1);
+  int ReadNLines(int lines, int fd_read, int fd_write = -1);
  public:
   TailCommand(const string cmd_line);
   virtual ~TailCommand() {}
@@ -156,6 +166,7 @@ class TailCommand : public BuiltInCommand {
 
 class TouchCommand : public BuiltInCommand {
   string file_name;
+  tm timestamp;
  public:
   TouchCommand(const string cmd_line);
   virtual ~TouchCommand() {}
@@ -163,7 +174,7 @@ class TouchCommand : public BuiltInCommand {
 };
 
 class TimeoutCommand : public BuiltInCommand {
-  
+ int duration; 
  public:
   TimeoutCommand(const string cmd_line);
   virtual ~TimeoutCommand() {}

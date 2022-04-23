@@ -16,6 +16,17 @@ string _getCwd() {
     }
     return string(current_path);
 }
+bool _isPipeCmd(const string cmd_line) {
+  const string str(cmd_line);
+  size_t found = str.find("|");
+  return (found != std::string::npos);
+}
+bool _isIOCmd(const string cmd_line) {
+  const string str(cmd_line);
+  size_t found = str.find(">");
+  return (found != std::string::npos);
+}
+
 
 SmallShell::SmallShell() {
   this->pid = getpid();
@@ -63,6 +74,7 @@ string SmallShell::getOldPwd()
 {
   return this->old_pwd;
 }
+
 /**
 * Creates and returns a pointer to Command class which matches the given command line (cmd_line)
 */
@@ -92,7 +104,15 @@ shared_ptr<Command> SmallShell::createCommand(const string cmd_line) {
     firstWord = cmd_s.substr(7, cmd_s.find_first_of(" \n"));
     alarm = true;
   }
-  if(firstWord.compare("chprompt") == 0)
+  if(_isIOCmd(cmd_s))
+  {
+    return shared_ptr<Command>(new RedirectionCommand(cmd_line));
+  }
+  if(_isPipeCmd(cmd_s))
+  {
+    return shared_ptr<Command>(new PipeCommand(cmd_line));
+  }
+  else if(firstWord.compare("chprompt") == 0)
     return shared_ptr<Command>(new ChangePromptCommand(cmd_line));
   else if(firstWord.compare("showpid") == 0)
     return shared_ptr<Command>(new ShowPidCommand(cmd_line));
@@ -112,6 +132,8 @@ shared_ptr<Command> SmallShell::createCommand(const string cmd_line) {
     return shared_ptr<Command>(new QuitCommand(cmd_line, SmallShell::getInstance().getJobs()));
   else if(firstWord.compare("tail") == 0)
     return shared_ptr<Command>(new TailCommand(cmd_line));
+  else if(firstWord.compare("touch") == 0)
+    return shared_ptr<Command>(new TouchCommand(cmd_line));
   
   else 
     return shared_ptr<Command>(new ExternalCommand(cmd_line));

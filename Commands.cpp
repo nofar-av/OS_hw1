@@ -331,13 +331,14 @@ void BackgroundCommand::execute()
     {
       throw JobIdDoesntExist(this->argv[0], this->job_id);
     }
-  }
-  bool is_running = this->jobs_list->isJobRunning(this->job_id);
+    bool is_running = this->jobs_list->isJobRunning(this->job_id);
     if (!is_running)
     {
       throw JobAlreadyRunBG(this->argv[0], this->job_id);
     }
-    job->activate();
+  }
+  cout<< job->getLine() << " : " << job->getPid() << endl;
+  job->activate();
   //now continue job and change status in the list
 }
 QuitCommand::QuitCommand(const string cmd_line, shared_ptr<JobsList> jobs) : 

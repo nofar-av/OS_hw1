@@ -72,7 +72,7 @@ class JobAlreadyRunBG : public SmashException {
 public:
     JobAlreadyRunBG(const string cmd_name, int job_id)
     {
-        this->error_message = "smash error: " + cmd_name + ":" + "job-id" + to_string(job_id) + "is already running in the background" + "\n"; 
+        this->error_message = "smash error: " + cmd_name + ":" + "job-id " + to_string(job_id) + " is already running in the background" + "\n"; 
     }  
     const char* what() const noexcept override { return error_message.c_str(); }
 };

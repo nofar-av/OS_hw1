@@ -26,6 +26,10 @@ void JobEntry::updateStatus()
     {
         this->job_status = FINISHED;
     }
+    else
+    {
+        this->job_status = BG_ACTIVE;
+    }
 }
 bool JobEntry::isFinished() 
 {

@@ -155,6 +155,7 @@ class TailCommand : public BuiltInCommand {
 };
 
 class TouchCommand : public BuiltInCommand {
+  string file_name;
  public:
   TouchCommand(const string cmd_line);
   virtual ~TouchCommand() {}

@@ -68,6 +68,12 @@ bool _isBackgroundComamnd(const string  cmd_line) {
   return str[str.find_last_not_of(WHITESPACE)] == '&';
 }
 
+bool _isIORedirection(const string  cmd_line) {
+  const string str(cmd_line);
+  size_t found = str.find(">");
+  return (found!=std::string::npos);
+}
+
 void _removeBackgroundSign(string&  cmd_line) {
   const string str(cmd_line);
   // find last character other than spaces
@@ -179,8 +185,37 @@ ExternalCommand::ExternalCommand(const string cmd_line) : Command(cmd_line)
   _removeBackgroundSign(this->line_no_background);
 }
 
+string findFileName(vector<string>  argv)
+{
+  for (auto it = argv.begin(); it != argv.end(); it++)
+  {
+    if (*it == "<" || *it == "<<")
+    {
+      it--;
+      return *it;
+    }
+  }
+}
+
 void ExternalCommand::execute() 
 {
+  int stdout_fd;
+  if (_isIORedirection(this->line))
+  {
+    string output_file = findFileName(this->argv);
+    size_t found = this->line.find(">>");
+    bool to_cat = (found != std::string::npos);
+    stdout_fd = dup(1);
+    close(1);
+    if (to_cat)
+    {
+      open(output_file.c_str(), O_APPEND);
+    }
+    else
+    {
+      open(output_file.c_str(), O_WRONLY);
+    }
+  }
   pid_t pid = fork();
   if (pid == ERROR) //failed
   {
@@ -198,6 +233,11 @@ void ExternalCommand::execute()
   }
   else //father
   {
+    if (_isIORedirection(this->line))
+    {
+      close(1);
+      close(stdout_fd);//changing back to stdout
+    }
     SmallShell& smash = SmallShell::getInstance();
     if (this->is_background)
     {
@@ -440,4 +480,14 @@ int TailCommand::ReadNLines(int lines, int fd_read, int fd_write)
     rv = read(fd_read, &ch, 1);
   }
   return rv;
+}
+
+TouchCommand::TouchCommand(const string cmd_line) :  BuiltInCommand(cmd_line)
+{
+  this->file_name = this->argv[1];
+}
+
+void TouchCommand::execute()
+{
+  time_t curr_time = _getTime();
 }

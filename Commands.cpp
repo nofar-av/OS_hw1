@@ -395,7 +395,7 @@ void TailCommand::execute()
   }
   int fd_faster = dup(fd);
   
-  if(this->ReadNLines(this->num_lines, fd_faster) == ERROR)
+  if(this->ReadNLines(this->num_lines, fd_faster) == ERROR) //file shorter than N lines
   {
     this->ReadNLines(this->num_lines, fd, 1);
     return;
@@ -405,10 +405,11 @@ void TailCommand::execute()
     this->ReadNLines(1, fd);
   }
   this->ReadNLines(this->num_lines, fd, 1);
-
-  
-
   if(close(fd) == ERROR)
+  {
+    throw SyscallException("close");
+  }
+  if(close(fd_faster) == ERROR)
   {
     throw SyscallException("close");
   }
@@ -420,23 +421,23 @@ int TailCommand::ReadNLines(int lines, int fd_read, int fd_write)
   ssize_t rv = read(fd_read, &ch, 1);
   while(rv != ERROR && i < lines)
   {
-      if(rv == EOF)
-      {
-          return rv;
-      }
-      else if(rv == ERROR)
-      {
-        throw SyscallException("read");
-      }
-      if(ch == '\n')
-      {
-          i++;
-      }
-      if(fd_write != -1 && write(fd_write, &ch, 1) == ERROR)
-      {
-        throw SyscallException("write");
-      }
-      rv = read(fd_read, &ch, 1);
+    if(rv == 0) //EOF
+    {
+        return -1;
+    }
+    else if(rv == ERROR)
+    {
+      throw SyscallException("read");
+    }
+    if(ch == '\n')
+    {
+        i++;
+    }
+    if(fd_write != -1 && write(fd_write, &ch, 1) == ERROR)
+    {
+      throw SyscallException("write");
+    }
+    rv = read(fd_read, &ch, 1);
   }
   return rv;
 }

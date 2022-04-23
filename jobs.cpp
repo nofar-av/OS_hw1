@@ -20,7 +20,8 @@ JobEntry::JobEntry(int job_id, pid_t pid, string cmd_line,
                    time_t insertion_time, JobStatus job_status)
     : job_id(job_id), pid(pid), cmd_line(cmd_line),
       insertion_time(insertion_time), job_status(job_status) {}
-void JobEntry::updateStatus()
+
+void JobEntry::updateStatus()   //TODO:: is problematic 
 {
     if (waitpid(this->pid, nullptr, WNOHANG) != 0)
     {

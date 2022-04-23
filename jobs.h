@@ -15,6 +15,8 @@ enum JobStatus { STOPPED, FINISHED, BG_ACTIVE };
 
 class Command;
 
+time_t _getTime();
+
 class JobEntry {
     int job_id;
     pid_t pid;

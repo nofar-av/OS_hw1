@@ -68,13 +68,6 @@ bool _isBackgroundComamnd(const string cmd_line) {
   return str[str.find_last_not_of(WHITESPACE)] == '&';
 }
 
-bool _isIORedirection(const string cmd_line) {
-  const string str(cmd_line);
-  size_t found = str.find(">");
-  size_t found2 = str.find(">>");
-  return (found!=std::string::npos || found2!=std::string::npos);
-}
-
 void _removeBackgroundSign(string&  cmd_line) {
   const string str(cmd_line);
   // find last character other than spaces
@@ -165,31 +158,7 @@ ShowPidCommand::ShowPidCommand(const string cmd_line) : BuiltInCommand(cmd_line)
 
 void ShowPidCommand::execute()
 {
-  int stdout_fd;
-  if (_isIORedirection(this->line))
-  {
-    string output_file = findFileName(this->argv);
-    size_t found = this->line.find(">>");
-    bool to_cat = (found != std::string::npos);
-    stdout_fd = dup(1);
-    close(1);
-    if (to_cat)
-    {
-      open(output_file.c_str(), O_APPEND);
-  
-    }
-    else
-    {
-      open(output_file.c_str(), O_WRONLY);
-    }
-  }
   cout << "smash pid is " << SmallShell::getInstance().getPid() << endl;
-  if (_isIORedirection(this->line))
-    {
-      close(1);
-      dup(stdout_fd);
-      close(stdout_fd);//changing back to stdout
-    }
 }
 
 GetCurrDirCommand::GetCurrDirCommand(const string cmd_line) : BuiltInCommand(cmd_line){}
@@ -239,10 +208,6 @@ void ExternalCommand::execute()
   }
   else if (pid == 0) //child
   {
-    if (_isIORedirection(this->line))
-    {
-      this->Command::removeRedirectionPart(); 
-    } 
     if (setpgrp() == ERROR)
     {
       throw SyscallException("setgrp");

@@ -27,7 +27,7 @@ class Command {
   virtual void execute() = 0;
   string getName();
   string getCommandLine();
-  
+  pid_tchildExecute();
   //virtual void prepare();
   //virtual void cleanup();
   // TODO: Add your extra methods if needed
@@ -175,6 +175,7 @@ class TouchCommand : public BuiltInCommand {
 
 class TimeoutCommand : public BuiltInCommand {
  int duration; 
+ string cmd;
  public:
   TimeoutCommand(const string cmd_line);
   virtual ~TimeoutCommand() {}

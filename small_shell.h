@@ -29,9 +29,11 @@ class SmallShell {
   pid_t pid;
   SmallShell();
   shared_ptr<JobsList> jobs_list;
+  shared_ptr<TimedJobsList> timed_jobs;
   pid_t fg_pid;
   int fg_job_id;
   string fg_cmd;
+  bool is_running;
  public:
   shared_ptr<Command> createCommand(const string cmd_line);
   SmallShell(SmallShell const&)      = delete; // disable copy ctor
@@ -61,6 +63,9 @@ class SmallShell {
   pid_t getFgPid();
   int getFgJobId();
   void addFgJobToJobsList();
+  void stopRun();
+  bool isRunning() const;
+  void addTimedJob()
 };
 
 #endif //SMALL_SHELL_H_

@@ -260,14 +260,19 @@ void PipeCommand::execute()
       throw SyscallException("setgrp");
     }
     int fd_to_close = this->pipe_err ? 2 : 1;
-    int fd_back_up = dup(fd_to_close);//
-    close(fd_to_close);
-    dup2(fd[1],fd_to_close);
-    close(fd[1]);
+    if(close(fd_to_close) == ERROR)
+    {
+      throw SyscallException("close");
+    }
+    if(dup2(fd[1],fd_to_close) == ERROR)
+    {
+      throw SyscallException("dup2");
+    }
+    if(close(fd[1]) == ERROR)
+    {
+      throw SyscallException("close");
+    }
     left->execute();
-    close(fd_to_close);
-    dup2(fd_back_up, fd_to_close);
-    close(fd_back_up);//check if syscall success
   
     exit(0);
   }
@@ -298,12 +303,10 @@ void PipeCommand::execute()
         throw SyscallException("close");
       }
       right->execute();
-      close(0);
-      if(dup(fd_back_up) == ERROR)
+      if(close(0) == ERROR)
       {
-        throw SyscallException("dup");
+        throw SyscallException("close");
       }
-      close(fd_back_up);
 
       exit(0);
     }
@@ -342,11 +345,19 @@ void RedirectionCommand::execute()
     int fd;
     if (this->cat)
     {
-      fd = open(this->filename.c_str(), O_APPEND);//check if success
+      fd = open(this->filename.c_str(), O_APPEND, 00777);//check if success
+      if (fd == ERROR)
+      {
+        this->cat = false;
+      }
     }
-    else
+    if(!this->cat)
     {
-      fd = open(this->filename.c_str(), O_WRONLY);
+      fd = open(this->filename.c_str(), O_CREAT | O_WRONLY | O_TRUNC, 00777);
+      if (fd == ERROR)
+      {
+        throw SyscallException("open");
+      }
     }
     cmd->execute();
     close(fd);
@@ -495,17 +506,9 @@ void QuitCommand::execute()
   {
     this->jobs_list->killAllJobs();
   }
-  exit(1);
+  SmallShell::getInstance().stopRun();
 }
 
-/*TimeoutCommand::TimeoutCommand(const string cmd_line) : BuiltInCommand(cmd_line)
-{
-  if(this->argv.size() < 2 || !is_num(this->argv[1]))
-  {
-    throw InvalidlArguments(this->line);
-  }
-  this->duration = stoi(this->argv[1]);
-}*/
 TailCommand::TailCommand(const string cmd_line) : BuiltInCommand(cmd_line)
 {
   if(this->argv.size() > 3 || this->argv.size() < 2)
@@ -618,4 +621,54 @@ void TouchCommand::execute()
   {
     throw SyscallException("utime");
   }
+}
+TimeoutCommand::TimeoutCommand(const string cmd_line) : BuiltInCommand(cmd_line)
+{
+  if(this->argv.size() < 2 || !is_num(this->argv[1]))
+  {
+    throw InvalidlArguments(this->line);
+  }
+  this->duration = stoi(this->argv[1]);
+  size_t found = this->line.find(this->argv[1]);
+  this->cmd = this->line.substr(found + 1);
+}
+
+void TimeoutCommand::execute()
+{
+  if(this->duration == 0)
+  {
+    cout << "smash: got an alarm" << endl << "smash:" << this->line << " timed out!" << endl;
+    return;
+  }
+  SmallShell& smash = SmallShell::getInstance();
+  shared_ptr<Command> command = smash.createCommand(this->cmd);
+  //smash.addTimedJob(command,this->duration);
+  if (command->is_background)
+  {
+    smash.addJob(this->line, pid, false);
+  }
+  else
+  {
+    runInFg(pid, this->line, smash.getJobs()->getFGJobID());
+  }
+  
+}
+pid_t Command::childExecute()  
+{
+  pid_t pid = fork();
+  if (pid == ERROR) //failed
+  {
+    throw SyscallException("fork");
+  }
+  else if (pid == 0) //child
+  {
+    if (setpgrp() == ERROR)
+    {
+      throw SyscallException("setgrp");
+    }
+    if (execlp("/bin/bash", "/bin/bash", "-c", line_no_background.c_str(), nullptr) == ERROR) {
+        throw SyscallException("execv");
+    }
+  }
+  return pid;
 }

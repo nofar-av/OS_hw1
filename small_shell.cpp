@@ -37,6 +37,7 @@ SmallShell::SmallShell() {
   this->fg_pid = NO_FG;
   this->fg_cmd = "";
   this->jobs_list = shared_ptr<JobsList>(new JobsList());
+  this->is_running = true;
 // TODO: add your implementation
 }
 
@@ -73,6 +74,14 @@ bool SmallShell::isOldPwdSet()
 string SmallShell::getOldPwd()
 {
   return this->old_pwd;
+}
+void SmallShell::stopRun()
+{
+  this->is_running = false;
+}
+bool SmallShell::isRunning() const
+{
+  return this->is_running;
 }
 
 /**

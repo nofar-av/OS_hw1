@@ -230,38 +230,8 @@ ExternalCommand::ExternalCommand(const string cmd_line) : Command(cmd_line)
   _removeBackgroundSign(this->line_no_background);
 }
 
-string findFileName(const vector<string>&  argv)
-{
-  for (auto it = argv.begin(); it != argv.end(); it++)
-  {
-    if (*it == ">" || *it == ">>")
-    {
-      it++;
-      return *it;
-    }
-  }
-}
-
-
 void ExternalCommand::execute() 
 {
-  int stdout_fd;
-  if (_isIORedirection(this->line))
-  {
-    string output_file = findFileName(this->argv);
-    size_t found = this->line.find(">>");
-    bool to_cat = (found != std::string::npos);
-    stdout_fd = dup(1);
-    close(1);
-    if (to_cat)
-    {
-      open(output_file.c_str(), O_APPEND);
-    }
-    else
-    {
-      open(output_file.c_str(), O_WRONLY);
-    }
-  }
   pid_t pid = fork();
   if (pid == ERROR) //failed
   {
@@ -283,12 +253,6 @@ void ExternalCommand::execute()
   }
   else //father
   {
-    if (_isIORedirection(this->line))
-    {
-      close(1);
-      dup(stdout_fd);
-      close(stdout_fd);//changing back to stdout
-    }
     SmallShell& smash = SmallShell::getInstance();
     if (this->is_background)
     {

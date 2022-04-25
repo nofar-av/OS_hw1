@@ -381,8 +381,15 @@ void RedirectionCommand::execute()
       }
     }
     cmd->execute();
-    close(fd);
+    if(close(fd) == ERROR)
+    {
+      throw SyscallException("close");
+    }
     exit(0);
+  }
+  if (waitpid(pid, nullptr, WUNTRACED) == ERROR)
+  {
+    throw SyscallException("waitpid");
   }
 }
 

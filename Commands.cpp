@@ -240,6 +240,8 @@ PipeCommand::PipeCommand(const string cmd_line) : Command(cmd_line)
 void PipeCommand::execute()
 {
   SmallShell& smash = SmallShell::getInstance();
+  _removeBackgroundSign(this->left_cmd);
+  _removeBackgroundSign(this->right_cmd);
   shared_ptr<Command> left = smash.createCommand(this->left_cmd);
   shared_ptr<Command> right = smash.createCommand(this->right_cmd);
   int fd[2];
@@ -276,6 +278,11 @@ void PipeCommand::execute()
   
     exit(0);
   }
+
+  else if (close(fd[1]) == ERROR)
+  {
+    throw SyscallException("close");
+  }
   else
   {
     right_pid = fork();
@@ -289,7 +296,10 @@ void PipeCommand::execute()
       {
         throw SyscallException("setgrp");
       }
-      int fd_back_up = dup(0);
+      if(dup(0) == ERROR)
+      {
+        throw SyscallException("dup");
+      }
       if(close(0) == ERROR)
       {
         throw SyscallException("close");
@@ -307,12 +317,23 @@ void PipeCommand::execute()
       {
         throw SyscallException("close");
       }
-
+      
       exit(0);
     }
   }
-  close(fd[0]);
-  close(fd[1]);
+  if (waitpid(left_pid, nullptr, WUNTRACED) == ERROR)
+  {
+    throw SyscallException("waitpid");
+  }
+
+  if (waitpid(right_pid, nullptr, WUNTRACED) == ERROR)
+  {
+    throw SyscallException("waitpid");
+  }
+  if(close(fd[0]) == ERROR)
+  {
+    throw SyscallException("close");
+  }
   
 }
 RedirectionCommand::RedirectionCommand(const string cmd_line) : Command(cmd_line)
@@ -345,7 +366,7 @@ void RedirectionCommand::execute()
     int fd;
     if (this->cat)
     {
-      fd = open(this->filename.c_str(), O_APPEND, 00777);//check if success
+      fd = open(this->filename.c_str(), O_APPEND | O_CREAT | O_WRONLY, 00777);
       if (fd == ERROR)
       {
         this->cat = false;
@@ -642,7 +663,8 @@ void TimeoutCommand::execute()
   }
   SmallShell& smash = SmallShell::getInstance();
   shared_ptr<Command> command = smash.createCommand(this->cmd);
-  //smash.addTimedJob(command,this->duration);
+}
+  /*smash.addTimedJob(command,this->duration);
   if (command->is_background)
   {
     smash.addJob(this->line, pid, false);
@@ -671,4 +693,4 @@ pid_t Command::childExecute()
     }
   }
   return pid;
-}
+}*/

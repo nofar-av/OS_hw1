@@ -61,10 +61,10 @@ class JobsList {
   // TODO: Add extra methods or modify exisitng ones as needed
 };
 
-class TimedJobsList {
+/*class TimedJobsList {
   map<time_t, vector<shared_ptr<JobEntry>>> job_entries;
   int max_job_id;
   public:
     
-};
+};*/
 #endif //JOBS_H_

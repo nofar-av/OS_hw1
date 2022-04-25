@@ -29,7 +29,7 @@ class SmallShell {
   pid_t pid;
   SmallShell();
   shared_ptr<JobsList> jobs_list;
-  shared_ptr<TimedJobsList> timed_jobs;
+  //shared_ptr<TimedJobsList> timed_jobs;
   pid_t fg_pid;
   int fg_job_id;
   string fg_cmd;
@@ -65,7 +65,7 @@ class SmallShell {
   void addFgJobToJobsList();
   void stopRun();
   bool isRunning() const;
-  void addTimedJob()
+  void addTimedJob();
 };
 
 #endif //SMALL_SHELL_H_

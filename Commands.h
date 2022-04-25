@@ -27,7 +27,7 @@ class Command {
   virtual void execute() = 0;
   string getName();
   string getCommandLine();
-  pid_tchildExecute();
+  pid_t childExecute();
   //virtual void prepare();
   //virtual void cleanup();
   // TODO: Add your extra methods if needed

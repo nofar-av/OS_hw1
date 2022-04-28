@@ -85,6 +85,10 @@ void JobEntry::activate()
     }
     this->job_status = BG_ACTIVE;
 }
+time_t JobEntry::getTime() const
+{
+    return this->insertion_time;
+}
 
 JobsList::JobsList() : job_entries(), max_job_id(EMPTY_JOB_ID) {}
 
@@ -211,4 +215,60 @@ void JobsList::killAllJobs()
 void JobsList::removeJobById(int jobId)
 {
     this->job_entries.erase(jobId);
+}
+
+
+int TimedJobsList::addTimedJob(int sec, shared_ptr<JobEntry> job)
+{
+    if(this->job_entries.size() == 0)
+    {
+        if(alarm(sec) == -1)
+        {
+            throw SyscallException("alarm");
+        }
+    }
+    time_t to_die = sec + job->getTime();
+    auto it = this->job_entries.find(to_die);
+    if (it == this->job_entries.end())
+    {
+        this->job_entries[to_die] = vector<shared_ptr<JobEntry>>();
+    }
+    this->job_entries[to_die].push_back(job);
+    it = this->job_entries.begin();
+    return it->first - _getTime();
+}
+
+void TimedJobsList::gotAlarm()
+{
+    time_t curr = _getTime();
+    auto it = this->job_entries.find(curr);
+    if (it != this->job_entries.end())
+    {
+        for (auto itr = it->second.begin(); itr != it->second.end();)
+        {
+            (*itr)->updateStatus();
+            if(!(*itr)->isFinished())
+            {
+                if (kill((*itr)->getPid(), SIGKILL) == ERROR) 
+                {
+                throw SyscallException("kill");
+                }
+                cout << "smash: timeout "<< _getTime() - (*itr)->getTime() << " " << (*itr)->getLine() << " timed out!" << endl;
+                auto tmp_itr = itr++;
+                it->second.erase(itr);
+                itr = tmp_itr;
+            }
+            else
+                itr++;
+        }
+    }
+    it = this->job_entries.begin();
+    if(it == this->job_entries.end())
+    {
+        return;
+    }
+    if(alarm(it->first - _getTime()) == -1)
+    {
+        throw SyscallException("alarm");
+    }
 }

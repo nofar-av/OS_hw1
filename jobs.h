@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <map>
+#include <vector>
 #include <sys/wait.h>
 
 //#include "Commands.h"
@@ -34,6 +35,7 @@ class JobEntry {
     void activate();
     void updateStatus();
     string getLine();
+    time_t getTime() const;
 };
 
 class JobsList {
@@ -61,10 +63,12 @@ class JobsList {
   // TODO: Add extra methods or modify exisitng ones as needed
 };
 
-/*class TimedJobsList {
+class TimedJobsList {
   map<time_t, vector<shared_ptr<JobEntry>>> job_entries;
-  int max_job_id;
   public:
-    
-};*/
+  TimedJobsList() = default;
+  ~TimedJobsList() = default;
+  int addTimedJob(int alarm, shared_ptr<JobEntry> job);
+  void gotAlarm();
+};
 #endif //JOBS_H_

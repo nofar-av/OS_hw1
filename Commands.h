@@ -7,7 +7,8 @@
 #include "small_shell.h"
 #include "exceptions.h"
 #include "jobs.h"
-#include <algorithm>    
+#include <algorithm>   
+#include "signals.h" 
 
 #define COMMAND_ARGS_MAX_LENGTH (200)
 #define COMMAND_MAX_ARGS (20)
@@ -20,9 +21,12 @@ class Command {
  protected:
   string line;
   vector<string> argv;
+  int duration;
   void removeRedirectionPart();
+  
  public:
-  Command(const string cmd_line);
+  void setDuration(int duration);
+  Command(const string cmd_line, int duration = -1);
   virtual ~Command() = default;
   virtual void execute() = 0;
   string getName();
@@ -44,7 +48,7 @@ class ExternalCommand : public Command {
   bool is_background;
   string line_no_background;
  public:
-  ExternalCommand(const string cmd_line);
+  ExternalCommand(const string cmd_line, int duration = -1);
   virtual ~ExternalCommand() {}
   void execute() override;
 };
@@ -173,9 +177,8 @@ class TouchCommand : public BuiltInCommand {
   void execute() override;
 };
 
-class TimeoutCommand : public BuiltInCommand {
- int duration; 
- string cmd;
+class TimeoutCommand : public BuiltInCommand { 
+  string cmd;
  public:
   TimeoutCommand(const string cmd_line);
   virtual ~TimeoutCommand() {}

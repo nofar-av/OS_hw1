@@ -5,6 +5,7 @@
 #include "Commands.h"
 #include "signals.h"
 #include "small_shell.h"
+#define ERROR -1
 
 int main(int argc, char* argv[]) {
     if(signal(SIGTSTP , ctrlZHandler)==SIG_ERR) {
@@ -14,6 +15,13 @@ int main(int argc, char* argv[]) {
         perror("smash error: failed to set ctrl-C handler");
     }
     //TODO: setup sig alarm handler
+    struct sigaction alarm;
+    alarm.sa_handler = alarmHandler;
+    alarm.sa_flags = SA_RESTART;
+    if (sigaction(SIGALRM, &alarm, nullptr) == ERROR)
+    {
+        perror("smash error: failed to set ALARM handler");
+    }
 
     SmallShell& smash = SmallShell::getInstance();
     while(smash.isRunning()) {

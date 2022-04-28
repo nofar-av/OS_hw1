@@ -38,6 +38,7 @@ SmallShell::SmallShell() {
   this->fg_cmd = "";
   this->jobs_list = shared_ptr<JobsList>(new JobsList());
   this->is_running = true;
+  this->timed_jobs = shared_ptr<TimedJobsList>(new TimedJobsList());
 // TODO: add your implementation
 }
 
@@ -84,6 +85,15 @@ bool SmallShell::isRunning() const
   return this->is_running;
 }
 
+void SmallShell::gotAlarm()
+{
+  this->timed_jobs->gotAlarm();
+}
+int SmallShell::addTimedJob(int duration, shared_ptr<JobEntry> job)
+{
+  return this->timed_jobs->addTimedJob(duration, job);
+}
+
 /**
 * Creates and returns a pointer to Command class which matches the given command line (cmd_line)
 */
@@ -105,14 +115,9 @@ shared_ptr<Command> SmallShell::createCommand(const string cmd_line) {
     return new ExternalCommand(cmd_line);
   }
   */
-  bool alarm = false;
   string cmd_s = _trim(cmd_line);
   string firstWord = cmd_s.substr(0, cmd_s.find_first_of(" \n"));
-  if(firstWord.compare("timeout") == 0)
-  {
-    firstWord = cmd_s.substr(7, cmd_s.find_first_of(" \n"));
-    alarm = true;
-  }
+  
   if(_isIOCmd(cmd_s))
   {
     return shared_ptr<Command>(new RedirectionCommand(cmd_line));
@@ -143,7 +148,8 @@ shared_ptr<Command> SmallShell::createCommand(const string cmd_line) {
     return shared_ptr<Command>(new TailCommand(cmd_line));
   else if(firstWord.compare("touch") == 0)
     return shared_ptr<Command>(new TouchCommand(cmd_line));
-  
+  else if(firstWord.compare("timeout") == 0)
+    return shared_ptr<Command>(new TimeoutCommand(cmd_line));
   else 
     return shared_ptr<Command>(new ExternalCommand(cmd_line));
 }

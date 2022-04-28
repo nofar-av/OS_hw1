@@ -29,9 +29,10 @@ void ctrlCHandler(int sig_num) {
   smash.setFgJob();
 }
 
-void alarmHandler(int sig_num) {
+void alarmHandler(int sec) {
   // TODO: Add your implementation
   cout << "smash: got an alarm" << endl;
-  
+  SmallShell& smash = SmallShell::getInstance();
+  smash.gotAlarm();
 }
 

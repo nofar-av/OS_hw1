@@ -132,8 +132,13 @@ string Command::getName()
   return this->argv[0];
 }
 
-Command::Command(const string cmd_line)
-    : line(cmd_line) {
+void Command::setDuration(int duration)
+{
+  this->duration = duration;
+}
+
+Command::Command(const string cmd_line, int duration)
+    : line(cmd_line), duration(duration) {
     _parseCommandLine(cmd_line, argv);
 }
 BuiltInCommand::BuiltInCommand(const string cmd_line) : Command(cmd_line) {}
@@ -171,7 +176,7 @@ void GetCurrDirCommand::execute()
 
 ChangeDirCommand::ChangeDirCommand(const string cmd_line) : BuiltInCommand(cmd_line)
 {
-  if(argv.size() > 2)
+  if(argv.size() > 2 || argv.size() == 1)
   {
     throw TooManyArgs(this->getName());
   }
@@ -192,7 +197,8 @@ void ChangeDirCommand::execute()
   SmallShell::getInstance().changeCurrentDirectory(this->argv[1]);
 }
 
-ExternalCommand::ExternalCommand(const string cmd_line) : Command(cmd_line)
+ExternalCommand::ExternalCommand(const string cmd_line, int duration) : 
+                                Command(cmd_line, duration)
 {
   this->is_background = _isBackgroundComamnd(cmd_line);
   this->line_no_background = this->line;
@@ -219,12 +225,30 @@ void ExternalCommand::execute()
   else //father
   {
     SmallShell& smash = SmallShell::getInstance();
-    if (this->is_background)
+    if(this->duration > 0)
+    {
+      if (this->is_background)
+      {
+        int job_id = smash.getJobs()->getFGJobID();
+        smash.addJob(this->line, pid, false, job_id);
+        shared_ptr<JobEntry> job = smash.getJobs()->getJobById(job_id);
+        int sec = smash.addTimedJob(this->duration, job);
+        //alarmHandler(sec);
+      }
+      else
+      {
+        shared_ptr<JobEntry> job = shared_ptr<JobEntry>(new JobEntry(smash.getJobs()->getFGJobID(), pid, this->line, _getTime()));
+        runInFg(pid, this->line, smash.getJobs()->getFGJobID());
+      }
+    }
+
+    else if (this->is_background)
     {
       smash.addJob(this->line, pid, false);
     }
     else
     {
+
       runInFg(pid, this->line, smash.getJobs()->getFGJobID());
     }
   }
@@ -658,7 +682,8 @@ TimeoutCommand::TimeoutCommand(const string cmd_line) : BuiltInCommand(cmd_line)
   }
   this->duration = stoi(this->argv[1]);
   size_t found = this->line.find(this->argv[1]);
-  this->cmd = this->line.substr(found + 1);
+  this->cmd = this->line.substr(found + this->argv[1].size());
+  this->cmd = _trim(this->cmd);
 }
 
 void TimeoutCommand::execute()
@@ -670,19 +695,10 @@ void TimeoutCommand::execute()
   }
   SmallShell& smash = SmallShell::getInstance();
   shared_ptr<Command> command = smash.createCommand(this->cmd);
+  command->setDuration(this->duration);
+  command->execute();
 }
-  /*smash.addTimedJob(command,this->duration);
-  if (command->is_background)
-  {
-    smash.addJob(this->line, pid, false);
-  }
-  else
-  {
-    runInFg(pid, this->line, smash.getJobs()->getFGJobID());
-  }
-  
-}
-pid_t Command::childExecute()  
+/*pid_t Command::childExecute()  
 {
   pid_t pid = fork();
   if (pid == ERROR) //failed

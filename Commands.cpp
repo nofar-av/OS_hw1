@@ -67,7 +67,7 @@ bool _isBackgroundComamnd(const string cmd_line) {
   const string str(cmd_line);
   return str[str.find_last_not_of(WHITESPACE)] == '&';
 }
-
+ 
 void _removeBackgroundSign(string&  cmd_line) {
   const string str(cmd_line);
   // find last character other than spaces

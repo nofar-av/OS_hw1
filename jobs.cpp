@@ -23,6 +23,10 @@ JobEntry::JobEntry(int job_id, pid_t pid, string cmd_line,
 
 void JobEntry::updateStatus()   //TODO:: is problematic 
 {
+    if(this->job_status == STOPPED)
+    {
+        return;
+    }
     if (waitpid(this->pid, nullptr, WNOHANG) != 0)
     {
         this->job_status = FINISHED;

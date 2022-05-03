@@ -1,0 +1,18 @@
+smash> submitted by Eran
+smash> smash> smash> smash> smash> smash> sleep 200& : 28428
+smash: got ctrl-Z
+smash: process 28428 was stopped
+smash> [1] sleep 100& : 28427 0 secs
+[2] sleep 200& : 28428 0 secs (stopped)
+smash> sleep 100& : 28427
+smash: got ctrl-C
+smash: process 28427 was killed
+smash> [2] sleep 200& : 28428 0 secs (stopped)
+smash> smash> sleep 300& : 28442
+smash: got ctrl-Z
+smash: process 28442 was stopped
+smash> [2] sleep 200& : 28428 0 secs (stopped)
+[3] sleep 300& : 28442 0 secs (stopped)
+smash> smash: sending SIGKILL signal to 2 jobs:
+28428: sleep 200&
+28442: sleep 300&

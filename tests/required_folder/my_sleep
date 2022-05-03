@@ -1,0 +1,9 @@
+#! /bin/sh
+
+END=$(( $1 - 2 ))
+for i in $(seq 0 2 $END)
+do
+    echo $i
+    sleep 2
+done
+echo end: $1

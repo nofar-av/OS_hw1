@@ -25,7 +25,7 @@ void ctrlCHandler(int sig_num) {
   {
     throw SyscallException("kill");
   }
-  cout << "smash: proccess " << pid << " was killed" << endl;
+  cout << "smash: process " << pid << " was killed" << endl;
   smash.setFgJob();
 }
 

@@ -134,10 +134,6 @@ void Command::removeRedirectionPart()
   this->argv = subargv;
 }
 
-string Command::getName()
-{
-  return this->argv[0];
-}
 
 void Command::setDuration(int duration)
 {
@@ -185,7 +181,7 @@ ChangeDirCommand::ChangeDirCommand(const string cmd_line) : BuiltInCommand(cmd_l
 {
   if(argv.size() > 2 || argv.size() == 1)
   {
-    throw TooManyArgs(this->getName());
+    throw TooManyArgs(this->argv[0]);
   }
 }
 
@@ -195,7 +191,7 @@ void ChangeDirCommand::execute()
   {
     if(!(SmallShell::getInstance().isOldPwdSet()))
     {
-      throw OldpwdNotSet(this->getName());
+      throw OldpwdNotSet(this->argv[0]);
     }
     string oldpwd = SmallShell::getInstance().getOldPwd();
     SmallShell::getInstance().changeCurrentDirectory(oldpwd);
@@ -432,11 +428,11 @@ KillCommand::KillCommand(const string cmd_line, shared_ptr<JobsList> jobs) :
 {
   if (argv.size() != 3 || (argv[1])[0] != '-' || !is_num(this->argv[2] ))
   {
-    throw InvalidlArguments(this->line);
+    throw InvalidlArguments(this->argv[0]);
   }
   if(!is_num(argv[1].substr(1)))
   {
-    throw InvalidlArguments(this->line);
+    throw InvalidlArguments(this->argv[0]);
   }
 }
 
@@ -446,7 +442,7 @@ void KillCommand::execute()
   int signum = stoi(argv[1].substr(1));
   if(signum <= 0 || signum > 31)
   {
-    throw InvalidlArguments(this->line);
+    throw InvalidlArguments(this->argv[0]);
   }
   shared_ptr<JobEntry> job = SmallShell::getInstance().getJobs()->getJobById(job_id);
   if(job == nullptr)
@@ -463,17 +459,27 @@ void KillCommand::execute()
 ForegroundCommand::ForegroundCommand(const string cmd_line, shared_ptr<JobsList> jobs) : 
                                     BuiltInCommand(cmd_line), jobs_list(jobs)
 {
-  if(this->argv.size() > 2 || (this->argv.size() > 1 && !is_num(this->argv[1])))
+  if(this->argv.size() > 2)
   {
-    throw InvalidlArguments(this->line);
+    throw InvalidlArguments(this->argv[0]);
   }
-  else if(this->argv.size() > 1)
+  else if(this->argv.size() > 1 && is_num(this->argv[1]))
   {
     this->job_id = stoi(this->argv[1]);
   }
-  else
+  else if(this->argv.size() > 1 && this->argv[1].substr(0,1) == "-" && is_num(this->argv[1].substr(1)))
+  {
+    int job = stoi(this->argv[1].substr(1));
+    throw JobIdDoesntExist(this->argv[0], -job);
+  }
+
+  else if(this->argv.size() == 1)
   {
     this->job_id = NO_ID;
+  }
+  else
+  {
+    throw InvalidlArguments(this->argv[0]);
   }
 }
 
@@ -507,7 +513,7 @@ BackgroundCommand::BackgroundCommand(const string cmd_line, shared_ptr<JobsList>
 {
   if(this->argv.size() > 2)
   {
-    throw InvalidlArguments(this->line);
+    throw InvalidlArguments(this->argv[0]);
   }
   else if(this->argv.size() == 1)
   {
@@ -515,7 +521,7 @@ BackgroundCommand::BackgroundCommand(const string cmd_line, shared_ptr<JobsList>
   }
   else if (!is_num(this->argv[1]))
   {
-    throw InvalidlArguments(this->line);
+    throw InvalidlArguments(this->argv[0]);
   }
   else
   {
@@ -531,7 +537,7 @@ void BackgroundCommand::execute()
     job = this->jobs_list->getLastStoppedJob();
     if (job == nullptr)
     {
-      throw NoStoppedJobs(this->line);
+      throw NoStoppedJobs(this->argv[0]);
     }
   }
   else
@@ -568,18 +574,18 @@ TailCommand::TailCommand(const string cmd_line) : BuiltInCommand(cmd_line)
 {
   if(this->argv.size() > 3 || this->argv.size() < 2)
   {
-    throw InvalidlArguments(cmd_line);
+    throw InvalidlArguments(this->argv[0]);
   }
   if(this->argv.size() == 3)
   {
     if(!is_num(this->argv[1].substr(1)))
     {
-      throw InvalidlArguments(cmd_line);
+      throw InvalidlArguments(this->argv[0]);
     }
     this->num_lines = stoi(this->argv[1].substr(1));
     if(this->num_lines < 0)
     {
-      throw InvalidlArguments(cmd_line);
+      throw InvalidlArguments(this->argv[0]);
     }
     this->file_name = this->argv[2];
   }
@@ -629,11 +635,17 @@ int TailCommand::ReadNLines(int lines, int fd_read, int fd_write)
   {
     if(rv == 0) //EOF
     {
+        i++;
+        if(i == lines)
+        {
+          return rv;
+        }
         return -1;
     }
     else if(ch == '\n')
     {
         i++;
+
     }
     if(fd_write != -1 && write(fd_write, &ch, 1) == ERROR)
     {
@@ -656,7 +668,7 @@ TouchCommand::TouchCommand(const string cmd_line) :  BuiltInCommand(cmd_line), t
 {
   if(this->argv.size() != 3)
   {
-    throw InvalidlArguments(this->line);
+    throw InvalidlArguments(this->argv[0]);
   }
   this->file_name = this->argv[1];
   strptime(this->argv[2].c_str(), "%S:%M:%H:%d:%m:%Y", &this->timestamp);
@@ -681,7 +693,7 @@ TimeoutCommand::TimeoutCommand(const string cmd_line) : BuiltInCommand(cmd_line)
 {
   if(this->argv.size() < 2 || !is_num(this->argv[1]))
   {
-    throw InvalidlArguments(this->line);
+    throw InvalidlArguments(this->argv[0]);
   }
   this->duration = stoi(this->argv[1]);
   size_t found = this->line.find(this->argv[1]);

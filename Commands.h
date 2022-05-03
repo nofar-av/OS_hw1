@@ -29,7 +29,6 @@ class Command {
   Command(const string cmd_line, int duration = -1);
   virtual ~Command() = default;
   virtual void execute() = 0;
-  string getName();
   string getCommandLine();
   pid_t childExecute();
   //virtual void prepare();

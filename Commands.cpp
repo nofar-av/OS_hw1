@@ -369,8 +369,9 @@ RedirectionCommand::RedirectionCommand(const string cmd_line) : Command(cmd_line
   size_t index_end_cmd = this->line.find(">");
   this->cmd = this->line.substr(0,index_end_cmd);
   string str = this->cat ? ">>" : ">";
-  vector<string>::iterator it = find(this->argv.begin(),this->argv.end(), str);
-  this->filename = *(++it);
+  this->filename = this->line.substr(str + 1 + this->pipe_err);
+  /*vector<string>::iterator it = find(this->argv.begin(),this->argv.end(), str);
+  this->filename = *(++it);*/
 }
 
 void RedirectionCommand::execute()

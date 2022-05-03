@@ -89,9 +89,9 @@ void SmallShell::gotAlarm()
 {
   this->timed_jobs->gotAlarm();
 }
-int SmallShell::addTimedJob(int duration, shared_ptr<JobEntry> job)
+void SmallShell::addTimedJob(int duration, shared_ptr<JobEntry> job)
 {
-  return this->timed_jobs->addTimedJob(duration, job);
+  this->timed_jobs->addTimedJob(duration, job);
 }
 
 /**

@@ -139,6 +139,7 @@ void JobsList::removeFinishedJobs()
 
 int JobsList::getFGJobID()
 {
+    this->removeFinishedJobs();
     this->max_job_id++;
     return this->max_job_id;
 }
@@ -196,7 +197,7 @@ shared_ptr<JobEntry> JobsList::getLastStoppedJob()
 void JobsList::killAllJobs()
 {
     this->removeFinishedJobs();
-    cout << "sending SIGKILL signal to " << this->job_entries.size() << " jobs:" << endl;
+    cout << "smash: sending SIGKILL signal to " << this->job_entries.size() << " jobs:" << endl;
     for (auto it = this->job_entries.begin(); it != this->job_entries.end(); it++)
     {
         it->second->updateStatus();
@@ -218,15 +219,9 @@ void JobsList::removeJobById(int jobId)
 }
 
 
-int TimedJobsList::addTimedJob(int sec, shared_ptr<JobEntry> job)
+void TimedJobsList::addTimedJob(int sec, shared_ptr<JobEntry> job)
 {
-    if(this->job_entries.size() == 0)
-    {
-        if(alarm(sec) == -1)
-        {
-            throw SyscallException("alarm");
-        }
-    }
+    
     time_t to_die = sec + job->getTime();
     auto it = this->job_entries.find(to_die);
     if (it == this->job_entries.end())
@@ -235,7 +230,12 @@ int TimedJobsList::addTimedJob(int sec, shared_ptr<JobEntry> job)
     }
     this->job_entries[to_die].push_back(job);
     it = this->job_entries.begin();
-    return it->first - _getTime();
+    if(it == this->job_entries.end())
+    {
+        //TODO:: 
+        cout << "time problem!!!!!!" << endl;
+    }
+    alarm(it->first - _getTime());
 }
 
 void TimedJobsList::gotAlarm()
@@ -244,7 +244,7 @@ void TimedJobsList::gotAlarm()
     auto it = this->job_entries.find(curr);
     if (it != this->job_entries.end())
     {
-        for (auto itr = it->second.begin(); itr != it->second.end();)
+        for (auto itr = it->second.begin(); itr != it->second.end(); itr++)
         {
             (*itr)->updateStatus();
             if(!(*itr)->isFinished())
@@ -254,21 +254,16 @@ void TimedJobsList::gotAlarm()
                 throw SyscallException("kill");
                 }
                 cout << "smash: timeout "<< _getTime() - (*itr)->getTime() << " " << (*itr)->getLine() << " timed out!" << endl;
-                auto tmp_itr = itr++;
-                it->second.erase(itr);
-                itr = tmp_itr;
             }
-            else
-                itr++;
         }
+        it->second.clear();
+        this->job_entries.erase(it);
     }
+
     it = this->job_entries.begin();
     if(it == this->job_entries.end())
     {
         return;
     }
-    if(alarm(it->first - _getTime()) == -1)
-    {
-        throw SyscallException("alarm");
-    }
+    alarm(it->first - _getTime());
 }

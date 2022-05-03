@@ -12,7 +12,7 @@ using namespace std;
 
 #define EMPTY_JOB_ID 0
 #define NO_JOB 0
-enum JobStatus { STOPPED, FINISHED, BG_ACTIVE };
+enum JobStatus { STOPPED, FINISHED, BG_ACTIVE, FG_ACTIVE };//might be distructive
 
 class Command;
 
@@ -68,7 +68,7 @@ class TimedJobsList {
   public:
   TimedJobsList() = default;
   ~TimedJobsList() = default;
-  int addTimedJob(int alarm, shared_ptr<JobEntry> job);
+  void addTimedJob(int alarm, shared_ptr<JobEntry> job);
   void gotAlarm();
 };
 #endif //JOBS_H_

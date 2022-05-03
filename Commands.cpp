@@ -92,10 +92,17 @@ bool is_num (const string& str)
 }
 
 // TODO: Add your implementation for classes in Commands.h 
-void runInFg(pid_t pid, const string& line, int job_id)
+void runInFg(pid_t pid, const string& line, int job_id, time_t to_die = -1)
 {
   SmallShell& smash = SmallShell::getInstance(); 
   smash.setFgJob(pid, line, job_id);
+  shared_ptr<JobEntry> timed_job;
+  if(to_die - _getTime() > 0)
+  {
+    timed_job = shared_ptr<JobEntry>
+                              (new JobEntry(job_id, pid, line, _getTime(), FG_ACTIVE));
+    smash.addTimedJob(to_die - _getTime(), timed_job);
+  }
   int status;
   if (waitpid(pid, &status, WUNTRACED) == ERROR) {
     throw SyscallException("waitpid");
@@ -232,23 +239,19 @@ void ExternalCommand::execute()
         int job_id = smash.getJobs()->getFGJobID();
         smash.addJob(this->line, pid, false, job_id);
         shared_ptr<JobEntry> job = smash.getJobs()->getJobById(job_id);
-        int sec = smash.addTimedJob(this->duration, job);
-        //alarmHandler(sec);
+        smash.addTimedJob(this->duration, job);
       }
       else
       {
-        shared_ptr<JobEntry> job = shared_ptr<JobEntry>(new JobEntry(smash.getJobs()->getFGJobID(), pid, this->line, _getTime()));
-        runInFg(pid, this->line, smash.getJobs()->getFGJobID());
+        runInFg(pid, this->line, smash.getJobs()->getFGJobID(), this->duration + _getTime());
       }
     }
-
     else if (this->is_background)
     {
       smash.addJob(this->line, pid, false);
     }
     else
     {
-
       runInFg(pid, this->line, smash.getJobs()->getFGJobID());
     }
   }

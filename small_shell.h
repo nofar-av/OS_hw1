@@ -65,7 +65,7 @@ class SmallShell {
   void addFgJobToJobsList();
   void stopRun();
   bool isRunning() const;
-  int addTimedJob(int duration, shared_ptr<JobEntry> job);
+  void addTimedJob(int duration, shared_ptr<JobEntry> job);
   void gotAlarm();
 };
 

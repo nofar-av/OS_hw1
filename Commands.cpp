@@ -67,7 +67,7 @@ bool _isBackgroundComamnd(const string cmd_line) {
   const string str(cmd_line);
   return str[str.find_last_not_of(WHITESPACE)] == '&';
 }
-
+ 
 void _removeBackgroundSign(string&  cmd_line) {
   const string str(cmd_line);
   // find last character other than spaces
@@ -140,8 +140,13 @@ void Command::setDuration(int duration)
   this->duration = duration;
 }
 
-Command::Command(const string cmd_line, int duration)
-    : line(cmd_line), duration(duration) {
+void Command::setFullLine(string full_line)
+{
+  this->full_line = full_line;
+}
+
+Command::Command(const string cmd_line, int duration, string full_line)
+    : line(cmd_line), duration(duration), full_line(full_line) {
     _parseCommandLine(cmd_line, argv);
 }
 BuiltInCommand::BuiltInCommand(const string cmd_line) : Command(cmd_line) {}
@@ -233,13 +238,13 @@ void ExternalCommand::execute()
       if (this->is_background)
       {
         int job_id = smash.getJobs()->getFGJobID();
-        smash.addJob(this->line, pid, false, job_id);
+        smash.addJob(this->full_line, pid, false, job_id);
         shared_ptr<JobEntry> job = smash.getJobs()->getJobById(job_id);
         smash.addTimedJob(this->duration, job);
       }
       else
       {
-        runInFg(pid, this->line, smash.getJobs()->getFGJobID(), this->duration + _getTime());
+        runInFg(pid, this->full_line, smash.getJobs()->getFGJobID(), this->duration + _getTime());
       }
     }
     else if (this->is_background)
@@ -365,8 +370,9 @@ RedirectionCommand::RedirectionCommand(const string cmd_line) : Command(cmd_line
   size_t index_end_cmd = this->line.find(">");
   this->cmd = this->line.substr(0,index_end_cmd);
   string str = this->cat ? ">>" : ">";
-  vector<string>::iterator it = find(this->argv.begin(),this->argv.end(), str);
-  this->filename = *(++it);
+  this->filename = this->line.substr(str + 1 + this->pipe_err);
+  /*vector<string>::iterator it = find(this->argv.begin(),this->argv.end(), str);
+  this->filename = *(++it);*/
 }
 
 void RedirectionCommand::execute()
@@ -610,7 +616,7 @@ void TailCommand::execute()
   }
   else 
   {
-    while(this->ReadNLines(1, fd_faster) != ERROR)
+    while(this->ReadNLines(1, fd_faster) != ERROR)//we need - success, fail, last line
     {
       this->ReadNLines(1, fd);
     }
@@ -710,6 +716,7 @@ void TimeoutCommand::execute()
   }
   SmallShell& smash = SmallShell::getInstance();
   shared_ptr<Command> command = smash.createCommand(this->cmd);
+  command->setFullLine(this->line);
   command->setDuration(this->duration);
   command->execute();
 }

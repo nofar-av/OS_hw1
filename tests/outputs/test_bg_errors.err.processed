@@ -1,4 +1,10 @@
+<<<<<<< Updated upstream
 smash error: bg: invalid arguments
 smash error: bg: invalid arguments
 smash error: bg: there is no stopped jobs to resume
+=======
+smash error: bg 1 2: invalid arguments
+smash error: bg -1: invalid arguments
+smash error: bg:there is no stopped jobs to resume
+>>>>>>> Stashed changes
 smash error: bg: job-id 500 does not exist

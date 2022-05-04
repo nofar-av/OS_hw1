@@ -1,3 +1,7 @@
 smash error: cd: OLDPWD not set
+<<<<<<< Updated upstream
 smash error: cd: too many arguments
+=======
+smash error: cd:too many arguments
+>>>>>>> Stashed changes
 smash error: chdir failed: No such file or directory

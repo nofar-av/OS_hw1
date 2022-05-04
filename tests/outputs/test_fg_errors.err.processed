@@ -1,5 +1,12 @@
 smash error: fg: job-id 1 does not exist
+<<<<<<< Updated upstream
 smash error: fg: jobs list is empty
 smash error: fg: job-id -1 does not exist
 smash error: fg: invalid arguments
 smash error: fg: invalid arguments
+=======
+smash error: fg:jobs list is empty
+smash error: fg -1: invalid arguments
+smash error: fg 1 1: invalid arguments
+smash error: fg a: invalid arguments
+>>>>>>> Stashed changes

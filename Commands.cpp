@@ -140,8 +140,13 @@ void Command::setDuration(int duration)
   this->duration = duration;
 }
 
-Command::Command(const string cmd_line, int duration)
-    : line(cmd_line), duration(duration) {
+void Command::setFullLine(string full_line)
+{
+  this->full_line = full_line;
+}
+
+Command::Command(const string cmd_line, int duration, string full_line)
+    : line(cmd_line), duration(duration), full_line(full_line) {
     _parseCommandLine(cmd_line, argv);
 }
 BuiltInCommand::BuiltInCommand(const string cmd_line) : Command(cmd_line) {}
@@ -233,13 +238,13 @@ void ExternalCommand::execute()
       if (this->is_background)
       {
         int job_id = smash.getJobs()->getFGJobID();
-        smash.addJob(this->line, pid, false, job_id);
+        smash.addJob(this->full_line, pid, false, job_id);
         shared_ptr<JobEntry> job = smash.getJobs()->getJobById(job_id);
         smash.addTimedJob(this->duration, job);
       }
       else
       {
-        runInFg(pid, this->line, smash.getJobs()->getFGJobID(), this->duration + _getTime());
+        runInFg(pid, this->full_line, smash.getJobs()->getFGJobID(), this->duration + _getTime());
       }
     }
     else if (this->is_background)
@@ -611,7 +616,7 @@ void TailCommand::execute()
   }
   else 
   {
-    while(this->ReadNLines(1, fd_faster) != ERROR)
+    while(this->ReadNLines(1, fd_faster) != ERROR)//we need - success, fail, last line
     {
       this->ReadNLines(1, fd);
     }
@@ -711,6 +716,7 @@ void TimeoutCommand::execute()
   }
   SmallShell& smash = SmallShell::getInstance();
   shared_ptr<Command> command = smash.createCommand(this->cmd);
+  command->setFullLine(this->line);
   command->setDuration(this->duration);
   command->execute();
 }

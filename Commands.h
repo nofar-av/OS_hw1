@@ -22,11 +22,13 @@ class Command {
   string line;
   vector<string> argv;
   int duration;
+  string full_line;
   void removeRedirectionPart();
   
  public:
   void setDuration(int duration);
-  Command(const string cmd_line, int duration = -1);
+  void setFullLine(string full_line);
+  Command(const string cmd_line, int duration = -1, string full_line = "");
   virtual ~Command() = default;
   virtual void execute() = 0;
   string getCommandLine();

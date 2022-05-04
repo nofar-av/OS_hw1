@@ -1,0 +1,12 @@
+smash> submitted by Eran
+smash> smash> smash> smash> [1] ./printSignals.exe & : 28787 0 secs
+[2] sleep 200& : 28788 0 secs
+[3] sleep 300& : 28789 0 secs
+smash> signal number 9 was sent to pid 28788
+smash> smash> [1] ./printSignals.exe & : 28787 1 secs
+[3] sleep 300& : 28789 1 secs
+[4] sleep 400& : 28901 0 secs
+smash> smash> smash> smash> smash> smash> signal number 9 was sent to pid 28901
+smash> signal number 5 was sent to pid 28787
+smash> smash: got ctrl-Z
+received signal number: 5

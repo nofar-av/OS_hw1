@@ -1,0 +1,9 @@
+smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> signal number 9 was sent to pid 28193
+smash> signal number 9 was sent to pid 28193
+smash> smash> smash> smash> [1] sleep 7& : 28486 2 secs
+smash> smash> [1] sleep 7& : 28486 2 secs
+[2] sleep 5& : 28635 0 secs
+smash> smash> [1] sleep 7& : 28486 3 secs
+[2] sleep 5& : 28635 1 secs
+[3] sleep 3& : 28636 1 secs
+smash> smash> smash> smash: got ctrl-Z

@@ -10,7 +10,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/a.out",
+            "program": "${fileDirname}/smash",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

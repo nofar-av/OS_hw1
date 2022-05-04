@@ -15,7 +15,6 @@ using namespace std;
 enum JobStatus { STOPPED, FINISHED, BG_ACTIVE, FG_ACTIVE };//might be distructive
 
 class Command;
-
 time_t _getTime();
 
 class JobEntry {

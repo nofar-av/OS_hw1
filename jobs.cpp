@@ -27,10 +27,12 @@ void JobEntry::updateStatus()   //TODO:: is problematic
     {
         return;
     }
-    if (waitpid(this->pid, nullptr, WNOHANG) != 0)
+    pid_t pid = waitpid(this->pid, nullptr, WNOHANG);
+    if (pid != 0 && getpid() == SmallShell::getInstance().getPid())
     {
         this->job_status = FINISHED;
     }
+    
     else
     {
         this->job_status = BG_ACTIVE;
@@ -98,6 +100,7 @@ JobsList::JobsList() : job_entries(), max_job_id(EMPTY_JOB_ID) {}
 
 void JobsList::addJob(string cmd_line, pid_t pid, bool is_stopped, int job_id)
 {
+    this->removeFinishedJobs();
     int new_job_id = job_id;
     if(job_id == NO_JOB)
     {
@@ -171,21 +174,24 @@ shared_ptr<JobEntry> JobsList::getMaxJob()
 
 bool JobsList::isJobRunning(int job_id)
 {
-    if (this->job_entries.find(job_id) == this->job_entries.end())
+    this->removeFinishedJobs();
+
+    auto it = this->job_entries.find(job_id);
+    if (it == this->job_entries.end())
     {
         return false;
     }
-    shared_ptr<JobEntry> job = this->job_entries[job_id];
-    return (!(job->isStopped() || job->isFinished()));
-    //TODO: Eficciency
+    return !(it->second->isStopped());
 }
 shared_ptr<JobEntry> JobsList::getJobById(int job_id)
 {
-    if (this->job_entries.find(job_id) == this->job_entries.end())
+    this->removeFinishedJobs();
+    auto it = this->job_entries.find(job_id);
+    if (it == this->job_entries.end())
     {
         return nullptr;
     }
-    return this->job_entries.find(job_id)->second;
+    return it->second;
 }
 shared_ptr<JobEntry> JobsList::getLastStoppedJob()
 {
@@ -257,7 +263,7 @@ void TimedJobsList::gotAlarm()
                 {
                 throw SyscallException("kill");
                 }
-                cout << "smash: timeout "<< _getTime() - (*itr)->getTime() << " " << (*itr)->getLine() << " timed out!" << endl;
+                cout << "smash: " << (*itr)->getLine() << " timed out!" << endl;
             }
         }
         it->second.clear();

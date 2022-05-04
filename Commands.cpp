@@ -17,6 +17,8 @@ using namespace std;
 #define NO_FG -1
 #define NO_ID -1
 #define N 10
+#define SUCCESS 1
+#define LAST_LINE 2
 
 #if 0
 #define FUNC_ENTRY()  \
@@ -140,15 +142,16 @@ void Command::setDuration(int duration)
   this->duration = duration;
 }
 
-void Command::setFullLine(string full_line)
+void Command::setFullLine(const string full_line)
 {
   this->full_line = full_line;
 }
 
-Command::Command(const string cmd_line, int duration, string full_line)
-    : line(cmd_line), duration(duration), full_line(full_line) {
+Command::Command(const string cmd_line, int duration)
+    : line(cmd_line), full_line() ,duration(duration)  {
     _parseCommandLine(cmd_line, argv);
 }
+
 BuiltInCommand::BuiltInCommand(const string cmd_line) : Command(cmd_line) {}
 
 string Command::getCommandLine() 
@@ -307,12 +310,12 @@ void PipeCommand::execute()
     exit(0);
   }
 
-  else if (close(fd[1]) == ERROR)
-  {
-    throw SyscallException("close");
-  }
   else
   {
+    if (close(fd[1]) == ERROR)
+    {
+      throw SyscallException("close");
+    }
     right_pid = fork();
     if(right_pid < 0)
     {
@@ -324,10 +327,10 @@ void PipeCommand::execute()
       {
         throw SyscallException("setgrp");
       }
-      if(dup(0) == ERROR)
+      /*if(dup(0) == ERROR)
       {
         throw SyscallException("dup");
-      }
+      }*/
       if(close(0) == ERROR)
       {
         throw SyscallException("close");
@@ -370,9 +373,8 @@ RedirectionCommand::RedirectionCommand(const string cmd_line) : Command(cmd_line
   size_t index_end_cmd = this->line.find(">");
   this->cmd = this->line.substr(0,index_end_cmd);
   string str = this->cat ? ">>" : ">";
-  this->filename = this->line.substr(str + 1 + this->pipe_err);
-  /*vector<string>::iterator it = find(this->argv.begin(),this->argv.end(), str);
-  this->filename = *(++it);*/
+  this->filename = this->line.substr(index_end_cmd + 1 + this->cat);
+  this->filename = _trim(this->filename);
 }
 
 void RedirectionCommand::execute()
@@ -390,12 +392,11 @@ void RedirectionCommand::execute()
     {
       throw SyscallException("setgrp");
     }
-    dup(1);
     close(1);
     int fd;
     if (this->cat)
     {
-      fd = open(this->filename.c_str(), O_APPEND | O_CREAT | O_WRONLY, 00777);
+      fd = open(this->filename.c_str(), O_APPEND | O_CREAT | O_WRONLY, 00655);
       if (fd == ERROR)
       {
         this->cat = false;
@@ -403,12 +404,13 @@ void RedirectionCommand::execute()
     }
     if(!this->cat)
     {
-      fd = open(this->filename.c_str(), O_CREAT | O_WRONLY | O_TRUNC, 00777);
+      fd = open(this->filename.c_str(), O_CREAT | O_WRONLY | O_TRUNC, 00655);
       if (fd == ERROR)
       {
         throw SyscallException("open");
       }
     }
+
     cmd->execute();
     if(close(fd) == ERROR)
     {
@@ -432,14 +434,21 @@ void JobsCommand::execute()
 KillCommand::KillCommand(const string cmd_line, shared_ptr<JobsList> jobs) : 
                                     BuiltInCommand(cmd_line), jobs_list(jobs)
 {
-  if (argv.size() != 3 || (argv[1])[0] != '-' || !is_num(this->argv[2] ))
+  if (argv.size() != 3 || (argv[1])[0] != '-')
   {
     throw InvalidlArguments(this->argv[0]);
   }
-  if(!is_num(argv[1].substr(1)))
+  if(this->argv[2].substr(0,1) == "-" && is_num(this->argv[2].substr(1)))
+  {
+    int job = stoi(this->argv[2].substr(1));
+    throw JobIdDoesntExist(this->argv[0], -job);
+  }
+  if(!is_num(argv[1].substr(1)) || !is_num(argv[2]))
   {
     throw InvalidlArguments(this->argv[0]);
   }
+
+  
 }
 
 void KillCommand::execute()
@@ -525,6 +534,11 @@ BackgroundCommand::BackgroundCommand(const string cmd_line, shared_ptr<JobsList>
   {
     this->job_id = NO_ID;
   }
+  else if(this->argv.size() > 1 && this->argv[1].substr(0,1) == "-" && is_num(this->argv[1].substr(1)))
+  {
+    int job = stoi(this->argv[1].substr(1));
+    throw JobIdDoesntExist(this->argv[0], -job);
+  }
   else if (!is_num(this->argv[1]))
   {
     throw InvalidlArguments(this->argv[0]);
@@ -554,7 +568,7 @@ void BackgroundCommand::execute()
       throw JobIdDoesntExist(this->argv[0], this->job_id);
     }
     bool is_running = this->jobs_list->isJobRunning(this->job_id);
-    if (!is_running)
+    if (is_running)
     {
       throw JobAlreadyRunBG(this->argv[0], this->job_id);
     }
@@ -584,7 +598,7 @@ TailCommand::TailCommand(const string cmd_line) : BuiltInCommand(cmd_line)
   }
   if(this->argv.size() == 3)
   {
-    if(!is_num(this->argv[1].substr(1)))
+    if(this->argv[1].substr(0,1) != "-" || !is_num(this->argv[1].substr(1)))
     {
       throw InvalidlArguments(this->argv[0]);
     }
@@ -610,13 +624,18 @@ void TailCommand::execute()
     throw SyscallException("open");
   }
   int fd_faster = open(this->file_name.c_str(), O_RDONLY);
-  if(this->ReadNLines(this->num_lines, fd_faster) == ERROR) //file shorter than N lines
+  if(this->ReadNLines(this->num_lines, fd_faster) != SUCCESS) //file shorter than N lines
   {
     this->ReadNLines(this->num_lines, fd, 1);
   }
   else 
   {
-    while(this->ReadNLines(1, fd_faster) != ERROR)//we need - success, fail, last line
+    int status;
+    while((status = this->ReadNLines(1, fd_faster)) == SUCCESS)//we need - success, fail, last line
+    {
+      this->ReadNLines(1, fd);
+    }
+    if(status == LAST_LINE)
     {
       this->ReadNLines(1, fd);
     }
@@ -635,23 +654,33 @@ void TailCommand::execute()
 int TailCommand::ReadNLines(int lines, int fd_read, int fd_write)
 {
   int i = 0;
+  int chars_in_line = 0;
   char ch;
   ssize_t rv = read(fd_read, &ch, 1);
+  if(rv == ERROR)
+  {
+    throw SyscallException("read");
+  }
   while(rv != ERROR && i < lines)
   {
+    
     if(rv == 0) //EOF
     {
         i++;
-        if(i == lines)
+        if(i == lines && chars_in_line > 0)
         {
-          return rv;
+          return LAST_LINE;
         }
         return -1;
     }
     else if(ch == '\n')
     {
         i++;
-
+        chars_in_line = 0;
+    }
+    else 
+    {
+      chars_in_line++;
     }
     if(fd_write != -1 && write(fd_write, &ch, 1) == ERROR)
     {
@@ -677,6 +706,7 @@ TouchCommand::TouchCommand(const string cmd_line) :  BuiltInCommand(cmd_line), t
     throw InvalidlArguments(this->argv[0]);
   }
   this->file_name = this->argv[1];
+  this->timestamp.tm_isdst = -1;
   strptime(this->argv[2].c_str(), "%S:%M:%H:%d:%m:%Y", &this->timestamp);
 }
 
@@ -697,7 +727,7 @@ void TouchCommand::execute()
 }
 TimeoutCommand::TimeoutCommand(const string cmd_line) : BuiltInCommand(cmd_line)
 {
-  if(this->argv.size() < 2 || !is_num(this->argv[1]))
+  if(this->argv.size() <= 2 || !is_num(this->argv[1]))
   {
     throw InvalidlArguments(this->argv[0]);
   }
@@ -720,22 +750,3 @@ void TimeoutCommand::execute()
   command->setDuration(this->duration);
   command->execute();
 }
-/*pid_t Command::childExecute()  
-{
-  pid_t pid = fork();
-  if (pid == ERROR) //failed
-  {
-    throw SyscallException("fork");
-  }
-  else if (pid == 0) //child
-  {
-    if (setpgrp() == ERROR)
-    {
-      throw SyscallException("setgrp");
-    }
-    if (execlp("/bin/bash", "/bin/bash", "-c", line_no_background.c_str(), nullptr) == ERROR) {
-        throw SyscallException("execv");
-    }
-  }
-  return pid;
-}*/

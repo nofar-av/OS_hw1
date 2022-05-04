@@ -13,6 +13,8 @@ Instructions:
 
 Additional Info:
     - If you haven't implemented the timeout command, just remove the test inputs with "timeout" in their names.
+    - The test file test_2020_timeout.txt includes some test cases there we were told to not handle, 
+        so you may wanna remove it either way.
     - If you would like to run a single test, you may run ./tests/runner/runner.sh <test_name>
     - If you run the "./tests/runner/runner.sh" command inside VSCode, it will open a diff window for every test you failed.
     - You may see the error "runner: Timeout, killing child" in your .err file - 
@@ -29,8 +31,11 @@ Additional Info:
         See point above to see how to keep the original file.
     - There is a low chance that the python script that removes pids will replace a command output with a 
         relative pid as described above. If that happends, try to run ./tests/runner/runner.sh <test_name> again.
-    - The runner.sh script runs a number of tests at the same time. 
+    - The runner.sh script runs a number of tests at the same time (default: 8). 
         To change that amount, you may set the env variable TASKS.
         for example, you may run "TASKS=2 ./tests/runner/runner.sh" to run only two tests at the same time.
+    - The runner.sh script supports running valgrind. 
+        To use valgrind you need to set the env variable VALGRIND to 1.
+        Example: "VALGRIND=1 ./tests/runner/runner.sh"
 
 Thats it, good luck!

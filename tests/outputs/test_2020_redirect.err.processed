@@ -1,0 +1,934 @@
+smash error: kill: invalid arguments
+cat: k: No such file or directory
+smash error: kill: invalid arguments
+cat: t: No such file or directory
+smash error: open failed: No such file or directory
+smash error: open failed: No such file or directory
+/bin/bash: line 0: echo: write error: Bad file descriptor
+cat: standard output: Bad file descriptor
+smash error: open failed: Permission denied
+ls: write error: Bad file descriptor
+cat: standard output: Bad file descriptor
+ls: write error: Bad file descriptor
+cat: standard output: Bad file descriptor
+ls: write error: Bad file descriptor
+cat: standard output: Bad file descriptor
+cat: standard output: Bad file descriptor
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+/bin/bash: line 0: echo: write error: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+chmod: cannot access 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+/bin/bash: line 0: echo: write error: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+chmod: cannot access 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: new: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+chmod: cannot access 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: new: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: new: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+rm: cannot remove 'new': No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: new: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+mkdir: cannot create directory ‘test’: No such file or directory
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: standard output: Bad file descriptor
+smash error: open failed: No such file or directory
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+cat: test/again: No such file or directory
+smash error: open failed: No such file or directory

@@ -1,1 +1,24 @@
-smash> smash> smash> smash> 
+smash> smash> smash> smash> smash> test_redirect
+smash> smash> again_redirect
+smash> smash> again_redirect
+test_redirect
+smash> smash> smash pid is 1
+smash> smash> smash pid is 1
+smash pid is 1
+smash> smash> smash pid is 1
+smash> mypid
+new
+smash> smash> smash> [1] sleep 100& : 2 X secs
+smash> smash> smash> smash> smash> mypid
+new
+s
+smash> smash> mypid
+new
+p
+s
+smash> mypid
+new
+p
+s
+smash> smash> smash> before
+smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> 

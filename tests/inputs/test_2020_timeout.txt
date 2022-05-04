@@ -15,6 +15,7 @@ timeout 3 ../my_sleep 4
 ^C
 jobs
 timeout 3 ../my_sleep 4 &
+^1
 jobs
 ^4
 ^C
@@ -28,28 +29,6 @@ timeout 7 sleep 15&
 timeout 3 sleep 30
 ^7
 ^C
-timeout 5 ../my_sleep 20&
-^1
-bg
-^Z
-bg
-^6
-jobs
-timeout 5 ../my_sleep 20&
-^1
-fg
-^1
-^Z
-bg
-^5
-jobs
-timeout 5 ../my_sleep 20&
-^1
-fg
-^1
-^C
-jobs
-^4
 timeout 5 sleep 100&
 timeout 4 sleep 200&
 timeout 2 sleep 300&

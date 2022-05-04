@@ -20,6 +20,7 @@ class Command;
 class JobsList;
 
 
+
 class SmallShell {
  private:
   // TODO: Add your data members
@@ -49,7 +50,7 @@ class SmallShell {
   // TODO: add extra methods as needed
   void setPrompt(const string new_prompt = "smash");
   string getPrompt();
-  int getPid();
+  pid_t getPid();
   void changeCurrentDirectory(const string new_pwd);
   bool isOldPwdSet();
   string getOldPwd();

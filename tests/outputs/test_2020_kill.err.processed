@@ -1,4 +1,12 @@
-<<<<<<< Updated upstream
+smash error: kill: invalid arguments
+smash error: kill: job-id -1 does not exist
+smash error: kill: invalid arguments
+smash error: kill: job-id 1 does not exist
+smash error: kill: invalid arguments
+smash error: kill: invalid arguments
+smash error: kill: invalid arguments
+smash error: kill: invalid arguments
+smash error: kill: invalid arguments
 smash error: kill: invalid arguments
 smash error: kill: invalid arguments
 smash error: kill: invalid arguments
@@ -6,29 +14,4 @@ smash error: kill: job-id 1 does not exist
 smash error: kill: invalid arguments
 smash error: kill: invalid arguments
 smash error: kill: invalid arguments
-smash error: kill: invalid arguments
-smash error: kill: invalid arguments
-smash error: kill: invalid arguments
-smash error: kill: invalid arguments
-smash error: kill: invalid arguments
-smash error: kill: invalid arguments
-smash error: kill: invalid arguments
-smash error: kill: invalid arguments
 smash error: kill: job-id 1 does not exist
-=======
-smash error: kill 9 1: invalid arguments
-smash error: kill -9 -1: invalid arguments
-smash error: kill -9 abc: invalid arguments
-smash error: kill: job-id 1 does not exist
-smash error: kill -abc 1: invalid arguments
-smash error: kill abc abc: invalid arguments
-smash error: kill -abc abc: invalid arguments
-smash error: kill -9 abc: invalid arguments
-smash error: kill -abc 1: invalid arguments
-smash error: kill abc abc: invalid arguments
-smash error: kill -abc abc: invalid arguments
-smash error: kill 9 1: invalid arguments
-smash error: kill -90 1: invalid arguments
-smash error: kill -not_a_number 1: invalid arguments
-smash error: kill -9 1 2 3: invalid arguments
->>>>>>> Stashed changes

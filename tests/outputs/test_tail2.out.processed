@@ -1,9 +1,5 @@
 smash> submitted by Eran
-<<<<<<< Updated upstream
-smash> smash> smash> smash> smash> 
-=======
-smash> smash> smash> smash> smash> smash> line 15
-line 16
+smash> smash> smash> smash> smash> smash> line 16
 line 17
 line 18
 line 19
@@ -12,11 +8,9 @@ line 21
 line 22
 line 23
 line 24
-smash> line 22
-line 23
+line 25smash> line 23
 line 24
-smash> line 10
-line 11
+line 25smash> line 11
 line 12
 line 13
 line 14
@@ -30,7 +24,7 @@ line 21
 line 22
 line 23
 line 24
-smash> line 1
+line 25smash> line 1
 line 2
 line 3
 line 4
@@ -55,4 +49,3 @@ line 22
 line 23
 line 24
 line 25smash> 
->>>>>>> Stashed changes

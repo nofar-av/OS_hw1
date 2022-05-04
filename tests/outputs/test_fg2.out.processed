@@ -1,6 +1,5 @@
 smash> smash> smash> smash> smash> smash> sleep 300& : 2
 smash: got ctrl-C
-<<<<<<< Updated upstream
 smash: process 2 was killed
 smash> sleep 100& : 3
 smash: got ctrl-C
@@ -14,19 +13,4 @@ smash: process 5 was killed
 smash> sleep 500& : 6
 smash: got ctrl-C
 smash: process 6 was killed
-=======
-smash: proccess 2 was killed
-smash> sleep 100& : 3
-smash: got ctrl-C
-smash: proccess 3 was killed
-smash> sleep 200& : 4
-smash: got ctrl-C
-smash: proccess 4 was killed
-smash> sleep 400& : 5
-smash: got ctrl-C
-smash: proccess 5 was killed
-smash> sleep 500& : 6
-smash: got ctrl-C
-smash: proccess 6 was killed
->>>>>>> Stashed changes
 smash> smash: sending SIGKILL signal to 0 jobs:

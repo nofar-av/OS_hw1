@@ -7,6 +7,7 @@
 #include "small_shell.h"
 #define ERROR -1
 
+
 int main(int argc, char* argv[]) {
     if(signal(SIGTSTP , ctrlZHandler)==SIG_ERR) {
         perror("smash error: failed to set ctrl-Z handler");
@@ -18,6 +19,9 @@ int main(int argc, char* argv[]) {
     struct sigaction alarm;
     alarm.sa_handler = alarmHandler;
     alarm.sa_flags = SA_RESTART;
+
+    sigemptyset(&alarm.sa_mask);
+    sigaddset(&alarm.sa_mask, SIGALRM);
     if (sigaction(SIGALRM, &alarm, nullptr) == ERROR)
     {
         perror("smash error: failed to set ALARM handler");
@@ -27,7 +31,10 @@ int main(int argc, char* argv[]) {
     while(smash.isRunning()) {
         std::cout << smash.getPrompt() + "> ";
         std::string cmd_line;
-        std::getline(std::cin, cmd_line);
+        if(!std::getline(std::cin, cmd_line))
+        {
+            break;
+        }
         if(cmd_line == "")
         {
             continue;

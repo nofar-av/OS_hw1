@@ -1,6 +1,5 @@
 smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> smash> signal number 9 was sent to pid 2
-smash> signal number 9 was sent to pid 2
-smash> smash> smash> smash> [1] sleep 7& : 3 X secs
+smash> smash> smash> smash> smash> [1] sleep 7& : 3 X secs
 smash> smash> [1] sleep 7& : 3 X secs
 [2] sleep 5& : 4 X secs
 smash> smash> [1] sleep 7& : 3 X secs
@@ -9,7 +8,6 @@ smash> smash> [1] sleep 7& : 3 X secs
 smash> smash> smash> smash> smash> [1] sleep 10 & : 6 X secs
 smash> signal number 9 was sent to pid 6
 smash> smash> smash> smash> smash: got ctrl-Z
-<<<<<<< Updated upstream
 smash: process 7 was stopped
 smash> [1] sleep 5& : 8 X secs
 [2]           sleep        10   & : 9 X secs
@@ -26,19 +24,3 @@ smash: process 10 was killed
 smash> smash> smash: sending SIGKILL signal to 2 jobs:
 7: sleep 15
 11: sleep 20&
-=======
-smash: proccess 9 was stopped
-smash> [1] sleep 5& : 7 X secs
-[2]           sleep        10   & : 8 X secs
-[3] sleep 15 : 9 X secs
-smash> signal number 9 was sent to pid 7
-smash> [2]           sleep        10   & : 8 X secs
-[3] sleep 15 : 9 X secs
-smash> signal number 9 was sent to pid 8
-smash> [3] sleep 15 : 9 X secs
-smash> signal number 9 was sent to pid 9
-smash> smash> smash> smash: got ctrl-C
-smash: proccess 4510 was killed
-smash> signal number 9 was sent to pid 10
-smash> smash: sending SIGKILL signal to 0 jobs:
->>>>>>> Stashed changes

@@ -1,5 +1,4 @@
 smash> smash: got ctrl-Z
-<<<<<<< Updated upstream
 smash: process 2 was stopped
 smash> [1] sleep 10 : 2 X secs (stopped)
 smash> sleep 10 : 2
@@ -7,12 +6,4 @@ smash> [1] sleep 10 : 2 X secs
 smash> sleep 10 : 2
 smash: got ctrl-C
 smash: process 2 was killed
-=======
-smash: proccess 2 was stopped
-smash> [1] sleep 10 : 2 X secs
-smash> smash> [1] sleep 10 : 2 X secs
-smash> sleep 10 : 2
-smash: got ctrl-C
-smash: proccess 2 was killed
->>>>>>> Stashed changes
 smash> smash: sending SIGKILL signal to 0 jobs:

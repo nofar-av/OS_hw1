@@ -55,17 +55,17 @@ void SmallShell::setPrompt(string new_prompt)
 {
   this->current_prompt = new_prompt;
 }
-int SmallShell::getPid()
+pid_t SmallShell::getPid()
 {
   return this->pid;
 }
 void SmallShell::changeCurrentDirectory(string new_pwd)
 {
-  this->old_pwd = this->current_pwd;
   if(chdir(new_pwd.c_str()) == -1)
   {
     throw SyscallException("chdir");
   }
+  this->old_pwd = this->current_pwd;
   this->current_pwd = _getCwd();
 }
 bool SmallShell::isOldPwdSet()

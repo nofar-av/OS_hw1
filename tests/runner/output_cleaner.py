@@ -17,7 +17,7 @@ import re
 SHOWPID_REGEX = r".*smash pid is (\d+)\n"
 QUIT_KILL_REGEX = r".*smash: sending SIGKILL signal to \d jobs:\n"
 PID_EXTRACTOR_REGEX = r"(signal number \d+ was sent to pid (\d+)\n)|"\
-    "(\[\d+\] .* : (\d+) \d secs.*\n)|"\
+    "(\[\d+\] .* : (\d+) \d+ secs.*\n)|"\
     "(process (\d+) was stopped\n)|"\
     "(process (\d+) was killed\n)|"\
     "(signal number \d was sent to pid (\d+)\n)|"\

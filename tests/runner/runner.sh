@@ -18,6 +18,9 @@ SMASH=`pwd`/smash
 RUNNER=`pwd`/tests/runner/runner
 TMP_FOLDER=/tmp/smash_test
 KEEP_ORIG=${KEEP_ORIG:-0}
+VALGRIND=${VALGRIND:-0}
+VALGRIND_PATH=`which valgrind`
+VALGRIND_OK_LINE="All heap blocks were freed -- no leaks are possible"
 
 mkdir -p $TESTS_OUTPUT
 rm -rf $TMP_FOLDER
@@ -31,7 +34,13 @@ for test in $TESTS_GLOB; do
     done
     test=$(basename -- "$test" .txt)
     echo Running test "$test"
-    $RUNNER $SMASH < $TESTS_INPUT/$test.txt > $TESTS_OUTPUT/$test.out 2>$TESTS_OUTPUT/$test.err &
+    if [ $VALGRIND -eq 0 ] ; then 
+        $RUNNER $SMASH < $TESTS_INPUT/$test.txt > $TESTS_OUTPUT/$test.out 2>$TESTS_OUTPUT/$test.err &
+    else
+        $RUNNER $VALGRIND_PATH --leak-check=full --show-reachable=yes --num-callers=20 \
+        --track-fds=yes --log-file=$TESTS_OUTPUT/$test.valgrind --child-silent-after-fork=yes \
+        $SMASH < $TESTS_INPUT/$test.txt > $TESTS_OUTPUT/$test.out 2>$TESTS_OUTPUT/$test.err &
+    fi
 done
 
 echo ""
@@ -45,7 +54,11 @@ done
 do_diff()
 {
     status=0
-    echo "#:TEST NAME:STDOUT:STDERR\n"
+    if [ $VALGRIND -eq 0 ] ; then
+        echo "#:TEST NAME:STDOUT:STDERR\n"
+    else
+        echo "#:TEST NAME:STDOUT:STDERR:VALGRIND\n"
+    fi
     i=0
     for test in $TESTS_GLOB; do
         test=$(basename -- "$test" .txt)
@@ -77,14 +90,19 @@ do_diff()
                 err_result="${GREEN}PASSED${NC}"
             fi
         fi
+        if [ $VALGRIND -ne 0 ] ; then
+            if grep -q "$VALGRIND_OK_LINE" $TESTS_OUTPUT/$test.valgrind ; then
+                valgrind_result=":${GREEN}PASSED${NC}"
+            else
+                valgrind_result=":${RED}FAILED${NC}"
+                status=1
+            fi
+        fi
         (( i++ ))
-        echo "$i:$test:$output_result:$err_result\n"
+        echo "$i:$test:$output_result:$err_result$valgrind_result\n"
     done
     return $status
 }
-
-cd -
-rm -rf $TMP_FOLDER
 
 # now do diff
 output="$(do_diff)"

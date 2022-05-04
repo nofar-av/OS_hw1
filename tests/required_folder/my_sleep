@@ -1,5 +1,6 @@
 #! /bin/sh
 
+sleep 0.2
 END=$(( $1 - 2 ))
 for i in $(seq 0 2 $END)
 do

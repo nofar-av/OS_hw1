@@ -15,24 +15,25 @@
 
 using namespace std;
 
-string findFileName(const vector<string>&  argv);
+string findFileName(const vector<string>& argv);
 class Command {
 // TODO: Add your data members 
  protected:
   string line;
+  string full_line;
   vector<string> argv;
   int duration;
-  string full_line;
+  
   void removeRedirectionPart();
   
  public:
   void setDuration(int duration);
-  void setFullLine(string full_line);
-  Command(const string cmd_line, int duration = -1, string full_line = "");
+  void setFullLine(const string full_line);
+  Command(const string cmd_line, int duration = -1);
   virtual ~Command() = default;
   virtual void execute() = 0;
   string getCommandLine();
-  pid_t childExecute();
+
   //virtual void prepare();
   //virtual void cleanup();
   // TODO: Add your extra methods if needed

@@ -21,7 +21,7 @@ JobEntry::JobEntry(int job_id, pid_t pid, string cmd_line,
     : job_id(job_id), pid(pid), cmd_line(cmd_line),
       insertion_time(insertion_time), job_status(job_status) {}
 
-void JobEntry::updateStatus()   //TODO:: is problematic 
+void JobEntry::updateStatus()   
 {
     if(this->job_status == STOPPED)
     {
@@ -32,7 +32,6 @@ void JobEntry::updateStatus()   //TODO:: is problematic
     {
         this->job_status = FINISHED;
     }
-    
     else
     {
         this->job_status = BG_ACTIVE;
@@ -124,6 +123,10 @@ void JobsList::printJobsList()
 
 void JobsList::removeFinishedJobs()
 {
+    if (getpid() != SmallShell::getInstance().getPid())
+    {
+        return;
+    }
     int max = EMPTY_JOB_ID;
     vector<int> jobs_to_erase;
     for (auto it = this->job_entries.begin(); it != this->job_entries.end(); it++)

@@ -33,6 +33,8 @@ using namespace std;
 
 const string WHITESPACE = " \n\r\t\f\v";
 
+
+
 string _ltrim(const string& s)
 {
   size_t start = s.find_first_not_of(WHITESPACE);
@@ -225,13 +227,20 @@ void ExternalCommand::execute()
   }
   else if (pid == 0) //child
   {
-    if (setpgrp() == ERROR)
+    try
     {
-      throw SyscallException("setgrp");
+      if (setpgrp() == ERROR)
+      {
+        throw SyscallException("setgrp");
+      }
+      if (execlp("/bin/bash", "/bin/bash", "-c", line_no_background.c_str(), nullptr) == ERROR) {
+          throw SyscallException("execv");
+      }
+    } catch (...) {
+        ;
     }
-    if (execlp("/bin/bash", "/bin/bash", "-c", line_no_background.c_str(), nullptr) == ERROR) {
-        throw SyscallException("execv");
-    }
+    exit(0);
+    
   }
   else //father
   {
@@ -273,8 +282,6 @@ void PipeCommand::execute()
   SmallShell& smash = SmallShell::getInstance();
   _removeBackgroundSign(this->left_cmd);
   _removeBackgroundSign(this->right_cmd);
-  shared_ptr<Command> left = smash.createCommand(this->left_cmd);
-  shared_ptr<Command> right = smash.createCommand(this->right_cmd);
   int fd[2];
   if(pipe(fd) == ERROR)
   {
@@ -288,25 +295,34 @@ void PipeCommand::execute()
   }
   else if(left_pid == 0)//left cmd
   {
-    if (setpgrp() == ERROR)
+    try
     {
-      throw SyscallException("setgrp");
+      if (setpgrp() == ERROR)
+      {
+        throw SyscallException("setgrp");
+      }
+      int fd_to_close = this->pipe_err ? 2 : 1;
+      if(close(fd_to_close) == ERROR)
+      {
+        throw SyscallException("close");
+      }
+      if(dup2(fd[1],fd_to_close) == ERROR)
+      {
+        throw SyscallException("dup2");
+      }
+      if(close(fd[1]) == ERROR)
+      {
+        throw SyscallException("close");
+      }
+      shared_ptr<Command> left = smash.createCommand(this->left_cmd);
+      left->execute();
+    } catch (SyscallException &err) {
+        perror(err.what()); // TODO: check prints to stderr
+    } catch (SmashException &err) {
+        cerr << err.what(); // TODO: check prints to stderr
+    } catch(...) {
+      ;
     }
-    int fd_to_close = this->pipe_err ? 2 : 1;
-    if(close(fd_to_close) == ERROR)
-    {
-      throw SyscallException("close");
-    }
-    if(dup2(fd[1],fd_to_close) == ERROR)
-    {
-      throw SyscallException("dup2");
-    }
-    if(close(fd[1]) == ERROR)
-    {
-      throw SyscallException("close");
-    }
-    left->execute();
-  
     exit(0);
   }
 
@@ -323,30 +339,36 @@ void PipeCommand::execute()
     }
     if(right_pid == 0)//right cmd
     {
-      if (setpgrp() == ERROR)
+      try
       {
-        throw SyscallException("setgrp");
-      }
-      /*if(dup(0) == ERROR)
-      {
-        throw SyscallException("dup");
-      }*/
-      if(close(0) == ERROR)
-      {
-        throw SyscallException("close");
-      }
-      if(dup2(fd[0],0) == ERROR)
-      {
-        throw SyscallException("dup2");
-      }
-      if(close(fd[0]) == ERROR)
-      {
-        throw SyscallException("close");
-      }
-      right->execute();
-      if(close(0) == ERROR)
-      {
-        throw SyscallException("close");
+        if (setpgrp() == ERROR)
+        {
+          throw SyscallException("setgrp");
+        }
+        if(close(0) == ERROR)
+        {
+          throw SyscallException("close");
+        }
+        if(dup2(fd[0],0) == ERROR)
+        {
+          throw SyscallException("dup2");
+        }
+        if(close(fd[0]) == ERROR)
+        {
+          throw SyscallException("close");
+        }
+        shared_ptr<Command> right = smash.createCommand(this->right_cmd);
+        right->execute();
+        if(close(0) == ERROR)// TODO: check if close need to be outside
+        {
+          throw SyscallException("close");
+        }
+      } catch (SyscallException &err) {
+          perror(err.what()); // TODO: check prints to stderr
+      } catch (SmashException &err) {
+          cerr << err.what(); // TODO: check prints to stderr
+      } catch(...) {
+        ;
       }
       
       exit(0);
@@ -380,40 +402,49 @@ RedirectionCommand::RedirectionCommand(const string cmd_line) : Command(cmd_line
 void RedirectionCommand::execute()
 {
   SmallShell& smash = SmallShell::getInstance();
-  shared_ptr<Command> cmd = smash.createCommand(this->cmd);
+  int fd;
+  if (this->cat)
+  {
+    fd = open(this->filename.c_str(), O_APPEND | O_CREAT | O_WRONLY, 00655);
+    if (fd == ERROR)
+    {
+      this->cat = false;
+    }
+  }
+  if(!this->cat)
+  {
+    fd = open(this->filename.c_str(), O_CREAT | O_WRONLY | O_TRUNC, 00655);
+    if (fd == ERROR)
+    {
+      throw SyscallException("open");
+    }
+  }
   pid_t pid = fork();
   if(pid < 0)
   {
     throw SyscallException("fork");
   }
+  
   if(pid == 0)
   {
-    if (setpgrp() == ERROR)
-    {
-      throw SyscallException("setgrp");
-    }
-    close(1);
-    int fd;
-    if (this->cat)
-    {
-      fd = open(this->filename.c_str(), O_APPEND | O_CREAT | O_WRONLY, 00655);
-      if (fd == ERROR)
-      {
-        this->cat = false;
+    try {
+      if (setpgrp() == ERROR)
+      { 
+        throw SyscallException("setgrp");
       }
+      close(1);
+      dup2(fd, 1);
+      shared_ptr<Command> cmd = smash.createCommand(this->cmd);
+      cmd->execute();
+    } catch (SyscallException &err) {
+        perror(err.what()); // TODO: check prints to stderr
+    } catch (SmashException &err) {
+        cerr << err.what(); // TODO: check prints to stderr
+    } catch (...) {
+        ;
     }
-    if(!this->cat)
-    {
-      fd = open(this->filename.c_str(), O_CREAT | O_WRONLY | O_TRUNC, 00655);
-      if (fd == ERROR)
-      {
-        throw SyscallException("open");
-      }
-    }
-
-    cmd->execute();
     if(close(fd) == ERROR)
-    {
+    { 
       throw SyscallException("close");
     }
     exit(0);
@@ -434,6 +465,7 @@ void JobsCommand::execute()
 KillCommand::KillCommand(const string cmd_line, shared_ptr<JobsList> jobs) : 
                                     BuiltInCommand(cmd_line), jobs_list(jobs)
 {
+  this->jobs_list->removeFinishedJobs(); //// added
   if (argv.size() != 3 || (argv[1])[0] != '-')
   {
     throw InvalidlArguments(this->argv[0]);
@@ -447,28 +479,36 @@ KillCommand::KillCommand(const string cmd_line, shared_ptr<JobsList> jobs) :
   {
     throw InvalidlArguments(this->argv[0]);
   }
-
   
 }
 
 void KillCommand::execute()
 {
+  SmallShell& smash = SmallShell::getInstance();
   int job_id = stoi(argv[2]);
   int signum = stoi(argv[1].substr(1));
   if(signum <= 0 || signum > 31)
   {
     throw InvalidlArguments(this->argv[0]);
   }
-  shared_ptr<JobEntry> job = SmallShell::getInstance().getJobs()->getJobById(job_id);
+  shared_ptr<JobEntry> job = smash.getJobs()->getJobById(job_id);
   if(job == nullptr)
   {
     throw JobIdDoesntExist(this->argv[0], job_id);
   }
+
   if (kill(job->getPid(), signum) == ERROR)
   {
     throw SyscallException("kill");
   }
+  
+  if(signum == SIGKILL)
+  {
+    this->jobs_list->removeJobById(job->getJobId());
+  }
+  this->jobs_list->removeFinishedJobs();
   cout << "signal number " << signum << " was sent to pid " << job->getPid() << endl;
+
 }
 
 ForegroundCommand::ForegroundCommand(const string cmd_line, shared_ptr<JobsList> jobs) : 
@@ -503,6 +543,7 @@ void ForegroundCommand::execute()
   shared_ptr<JobEntry> job;
   if(this->job_id != NO_ID)
   {
+    this->jobs_list->removeFinishedJobs(); // added
     job = this->jobs_list->getJobById(this->job_id);
     if(job == nullptr)
     {
@@ -513,7 +554,7 @@ void ForegroundCommand::execute()
   {
     if(this->jobs_list->isEmpty())
     {
-      throw JobsListEmpty(this->line);
+      throw JobsListEmpty(this->argv[0]);
     }
     job = this->jobs_list->getMaxJob();
   }
@@ -552,6 +593,7 @@ BackgroundCommand::BackgroundCommand(const string cmd_line, shared_ptr<JobsList>
 void BackgroundCommand::execute() 
 {
   shared_ptr<JobEntry> job;
+  this->jobs_list->removeFinishedJobs(); // added
   if (this->job_id == NO_ID)
   {
     job = this->jobs_list->getLastStoppedJob();

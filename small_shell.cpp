@@ -205,6 +205,7 @@ void SmallShell::addFgJobToJobsList()
   {
     throw SyscallException("kill");
   }
+  
   cout << "smash: process " << pid << " was stopped" << endl;
 }
 pid_t SmallShell::getFgPid()

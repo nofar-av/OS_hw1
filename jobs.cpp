@@ -154,10 +154,6 @@ int JobsList::getFGJobID()
     return this->max_job_id;
 }
 
-void JobsList::removeFgJob()
-{
-    this->max_job_id--;
-}
 pid_t JobsList::getPid(int job_id)
 {
     if (this->job_entries.find(job_id) == this->job_entries.end())
@@ -230,6 +226,8 @@ void JobsList::removeJobById(int jobId)
 {
     this->job_entries.erase(jobId);
 }
+
+
 
 
 void TimedJobsList::addTimedJob(int sec, shared_ptr<JobEntry> job)

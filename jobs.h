@@ -52,7 +52,6 @@ class JobsList {
   void removeJobById(int jobId);
   shared_ptr<JobEntry> getLastJob();
   shared_ptr<JobEntry> getLastStoppedJob();
-  void removeFgJob();
   int getFGJobID();
   pid_t getPid(int job_id);
   bool isEmpty() const;

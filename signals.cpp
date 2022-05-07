@@ -10,6 +10,7 @@ void ctrlZHandler(int sig_num) {
   cout << "smash: got ctrl-Z" << endl;
   SmallShell& smash = SmallShell::getInstance();
   smash.addFgJobToJobsList();
+  //smash.getJobs()->removeFinishedJobs(); // added
 }
 
 void ctrlCHandler(int sig_num) {
@@ -25,6 +26,7 @@ void ctrlCHandler(int sig_num) {
   {
     throw SyscallException("kill");
   }
+  smash.getJobs()->removeFinishedJobs(); // added
   cout << "smash: process " << pid << " was killed" << endl;
   smash.setFgJob();
 }

@@ -23,12 +23,12 @@ JobEntry::JobEntry(int job_id, pid_t pid, string cmd_line,
 
 void JobEntry::updateStatus()   
 {
-    if(this->job_status == STOPPED)
+    if(this->job_status == STOPPED || getpid() != SmallShell::getInstance().getPid())
     {
         return;
     }
     pid_t pid = waitpid(this->pid, nullptr, WNOHANG);
-    if (pid != 0 && getpid() == SmallShell::getInstance().getPid())
+    if (pid != 0)
     {
         this->job_status = FINISHED;
     }

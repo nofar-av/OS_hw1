@@ -543,7 +543,6 @@ void ForegroundCommand::execute()
   shared_ptr<JobEntry> job;
   if(this->job_id != NO_ID)
   {
-    this->jobs_list->removeFinishedJobs(); // added
     job = this->jobs_list->getJobById(this->job_id);
     if(job == nullptr)
     {

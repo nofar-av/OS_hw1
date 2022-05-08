@@ -183,8 +183,9 @@ GetCurrDirCommand::GetCurrDirCommand(const string cmd_line) : BuiltInCommand(cmd
 
 void GetCurrDirCommand::execute()
 {
-  string dir = getcwd(nullptr,0);		// memory leak?
+  char* dir = getcwd(nullptr,0);		// memory leak? ### indeed!
   cout << dir << endl;
+  free(dir);
 }
 
 ChangeDirCommand::ChangeDirCommand(const string cmd_line) : BuiltInCommand(cmd_line)

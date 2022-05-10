@@ -488,7 +488,7 @@ void KillCommand::execute()
   SmallShell& smash = SmallShell::getInstance();
   int job_id = stoi(argv[2]);
   int signum = stoi(argv[1].substr(1));
-  if(signum <= 0 || signum > 31)
+  if(signum <= 0 || signum > 64)
   {
     throw InvalidlArguments(this->argv[0]);
   }

@@ -76,6 +76,10 @@ string SmallShell::getOldPwd()
 {
   return this->old_pwd;
 }
+string SmallShell::getCurrPwd()
+{
+  return this->current_pwd;
+}
 void SmallShell::stopRun()
 {
   this->is_running = false;

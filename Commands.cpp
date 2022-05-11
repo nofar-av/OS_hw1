@@ -178,7 +178,7 @@ GetCurrDirCommand::GetCurrDirCommand(const string cmd_line) : BuiltInCommand(cmd
 
 void GetCurrDirCommand::execute()
 {
-  string dir = _getCwd();
+  string dir = SmallShell::getInstance().getCurrPwd();
   cout << dir << endl;
 }
 

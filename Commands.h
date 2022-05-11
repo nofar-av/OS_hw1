@@ -16,7 +16,6 @@
 using namespace std;
 
 
-string _getCwd();
 string findFileName(const vector<string>& argv);
 class Command {
 // TODO: Add your data members 

@@ -4,7 +4,7 @@
 #include <memory>
 #include <iostream>
 #include <string.h>
-//#include <sys/wait.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include "Commands.h"
 #include "exceptions.h"
@@ -54,6 +54,7 @@ class SmallShell {
   void changeCurrentDirectory(const string new_pwd);
   bool isOldPwdSet();
   string getOldPwd();
+  string getCurrPwd();
   void addJob (string cmd_line, pid_t pid, bool is_stopped, int job_id = NO_JOB); 
   void updateJobsList();
   void sendSignal(const string signal);

@@ -1,0 +1,41 @@
+==28756== Memcheck, a memory error detector
+==28756== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==28756== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==28756== Command: /home/omer/OS_wet1/smash
+==28756== Parent PID: 28754
+==28756== 
+==28756== 
+==28756== FILE DESCRIPTORS: 6 open at exit.
+==28756== Open file descriptor 5: ..
+==28756==    at 0x54EEC3E: open (open64.c:47)
+==28756==    by 0x1132C3: TailCommand::execute() (Commands.cpp:678)
+==28756==    by 0x11A30C: SmallShell::executeCommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (small_shell.cpp:171)
+==28756==    by 0x118C97: main (smash.cpp:42)
+==28756== 
+==28756== Open file descriptor 4: ..
+==28756==    at 0x54EEC3E: open (open64.c:47)
+==28756==    by 0x11322B: TailCommand::execute() (Commands.cpp:673)
+==28756==    by 0x11A30C: SmallShell::executeCommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (small_shell.cpp:171)
+==28756==    by 0x118C97: main (smash.cpp:42)
+==28756== 
+==28756== Open file descriptor 3: /home/omer/OS_wet1/tests/outputs/test_tail_folders.valgrind
+==28756==    <inherited from parent>
+==28756== 
+==28756== Open file descriptor 2: /home/omer/OS_wet1/tests/outputs/test_tail_folders.err
+==28756==    <inherited from parent>
+==28756== 
+==28756== Open file descriptor 1: /home/omer/OS_wet1/tests/outputs/test_tail_folders.out
+==28756==    <inherited from parent>
+==28756== 
+==28756== Open file descriptor 0:
+==28756==    <inherited from parent>
+==28756== 
+==28756== 
+==28756== HEAP SUMMARY:
+==28756==     in use at exit: 0 bytes in 0 blocks
+==28756==   total heap usage: 54 allocs, 54 frees, 83,495 bytes allocated
+==28756== 
+==28756== All heap blocks were freed -- no leaks are possible
+==28756== 
+==28756== For counts of detected and suppressed errors, rerun with: -v
+==28756== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

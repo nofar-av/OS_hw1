@@ -1,0 +1,35 @@
+==26274== Memcheck, a memory error detector
+==26274== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==26274== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==26274== Command: /home/omer/OS_wet1/smash
+==26274== Parent PID: 26270
+==26274== 
+==26274== 
+==26274== FILE DESCRIPTORS: 5 open at exit.
+==26274== Open file descriptor 4: my_pid
+==26274==    at 0x54EEC3E: open (open64.c:47)
+==26274==    by 0x110B19: RedirectionCommand::execute() (Commands.cpp:426)
+==26274==    by 0x11A30C: SmallShell::executeCommand(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (small_shell.cpp:171)
+==26274==    by 0x118C97: main (smash.cpp:42)
+==26274== 
+==26274== Open file descriptor 3: /home/omer/OS_wet1/tests/outputs/test_2020_showpid.valgrind
+==26274==    <inherited from parent>
+==26274== 
+==26274== Open file descriptor 2: /home/omer/OS_wet1/tests/outputs/test_2020_showpid.err
+==26274==    <inherited from parent>
+==26274== 
+==26274== Open file descriptor 1: /home/omer/OS_wet1/tests/outputs/test_2020_showpid.out
+==26274==    <inherited from parent>
+==26274== 
+==26274== Open file descriptor 0:
+==26274==    <inherited from parent>
+==26274== 
+==26274== 
+==26274== HEAP SUMMARY:
+==26274==     in use at exit: 0 bytes in 0 blocks
+==26274==   total heap usage: 86 allocs, 86 frees, 84,331 bytes allocated
+==26274== 
+==26274== All heap blocks were freed -- no leaks are possible
+==26274== 
+==26274== For counts of detected and suppressed errors, rerun with: -v
+==26274== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

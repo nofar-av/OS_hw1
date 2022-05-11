@@ -1,1 +1,15 @@
-smash> smash> smash> 
+smash> smash> smash> smash> smash> timeout_sample_file1.txt
+timeout_sample_file2.txt
+smash> before
+smash> smash: got an alarm
+after
+smash> 0
+end: 2
+smash> smash: got an alarm
+after
+smash> 0
+2
+smash: got an alarm
+smash: timeout 3 ../my_sleep 4 timed out!
+smash> smash: got ctrl-C
+smash> smash> 0

@@ -165,10 +165,10 @@ void SmallShell::executeCommand(const string cmd_line) {
   //   jobs.updateJobList();
   try {
       shared_ptr<Command> cmd = SmallShell::createCommand(cmd_line);
-      if (cmd == nullptr) {
-          return;
+      if (cmd != nullptr) {
+        cmd->execute();
+
       }
-      cmd->execute();
   } catch (SyscallException &err) {
       perror(err.what()); // TODO: check prints to stderr
   } catch (SmashException &err) {
@@ -199,7 +199,7 @@ void SmallShell::addFgJobToJobsList()
   {
     return;
   }
-  //this->addJob(this->fg_cmd, this->fg_pid, true, this->fg_job_id);
+  this->addJob(this->fg_cmd, this->fg_pid, true, this->fg_job_id);
   this->setFgJob();
   if (kill(pid, SIGSTOP) == ERROR)
   {

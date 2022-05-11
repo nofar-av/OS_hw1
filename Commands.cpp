@@ -107,14 +107,8 @@ void runInFg(pid_t pid, const string& line, int job_id, time_t to_die = -1)
                               (new JobEntry(job_id, pid, line, _getTime(), FG_ACTIVE));
     smash.addTimedJob(to_die - _getTime(), timed_job);
   }
-  int status;
-  if (waitpid(pid, &status, WUNTRACED) == ERROR) {
-    throw SyscallException("waitpid");
-  }
-  if (WIFSTOPPED(status)) {
-    smash.addJob(line, pid, true, job_id);
-  }
-  smash.setFgJob();//TODO: function for this
+  waitpid(pid, nullptr, WUNTRACED);
+  smash.setFgJob();
   smash.getJobs()->removeFinishedJobs();
 }
 
@@ -160,6 +154,7 @@ string Command::getCommandLine()
 { 
   return this->line; 
 }
+
 ChangePromptCommand::ChangePromptCommand (const string cmd_line) : BuiltInCommand(cmd_line){}
 
 void ChangePromptCommand::execute()
@@ -270,6 +265,7 @@ void ExternalCommand::execute()
     }
   }
 }
+
 PipeCommand::PipeCommand(const string cmd_line) : Command(cmd_line)
 {
   this->pipe_err = (this->line.find("|&") != string::npos);

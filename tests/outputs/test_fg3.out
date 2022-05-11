@@ -1,26 +1,26 @@
-smash> smash> smash> smash> smash> smash> sleep 300& : 28418
+smash> smash> smash> smash> smash> smash> sleep 300& : 5480
 smash: got ctrl-C
-smash: process 28418 was killed
-smash> [1] sleep 100& : 28416 0 secs
-[2] sleep 200& : 28417 0 secs
-[4] sleep 400& : 28420 0 secs
-[5] sleep 500& : 28421 0 secs
-smash> sleep 100& : 28416
+smash: process 5480 was killed
+smash> [1] sleep 100& : 5477 0 secs
+[2] sleep 200& : 5479 0 secs
+[4] sleep 400& : 5481 0 secs
+[5] sleep 500& : 5482 0 secs
+smash> sleep 100& : 5477
 smash: got ctrl-C
-smash: process 28416 was killed
-smash> [2] sleep 200& : 28417 0 secs
-[4] sleep 400& : 28420 0 secs
-[5] sleep 500& : 28421 0 secs
-smash> sleep 200& : 28417
+smash: process 5477 was killed
+smash> [2] sleep 200& : 5479 1 secs
+[4] sleep 400& : 5481 1 secs
+[5] sleep 500& : 5482 1 secs
+smash> sleep 200& : 5479
 smash: got ctrl-C
-smash: process 28417 was killed
-smash> [4] sleep 400& : 28420 0 secs
-[5] sleep 500& : 28421 0 secs
-smash> sleep 500& : 28421
+smash: process 5479 was killed
+smash> [4] sleep 400& : 5481 1 secs
+[5] sleep 500& : 5482 1 secs
+smash> sleep 500& : 5482
 smash: got ctrl-C
-smash: process 28421 was killed
-smash> [4] sleep 400& : 28420 0 secs
-smash> sleep 400& : 28420
+smash: process 5482 was killed
+smash> [4] sleep 400& : 5481 2 secs
+smash> sleep 400& : 5481
 smash: got ctrl-C
-smash: process 28420 was killed
+smash: process 5481 was killed
 smash> smash> smash: sending SIGKILL signal to 0 jobs:

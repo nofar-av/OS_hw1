@@ -1,3 +1,4 @@
-smash> smash> smash> signal number 1 was sent to pid 28633
+smash> smash> smash> signal number 1 was sent to pid 5671
 smash> received signal number: 1
-smash: got ctrl-Z
+smash> smash: sending SIGKILL signal to 1 jobs:
+5671: ./printSignals.exe &

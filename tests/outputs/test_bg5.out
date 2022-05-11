@@ -1,28 +1,31 @@
 smash> smash: got ctrl-Z
-smash: process 28245 was stopped
+smash: process 5310 was stopped
 smash> smash: got ctrl-Z
-smash: process 28252 was stopped
+smash: process 5364 was stopped
 smash> smash: got ctrl-Z
-smash: process 28274 was stopped
+smash: process 5405 was stopped
 smash> smash: got ctrl-Z
-smash: process 28299 was stopped
+smash: process 5460 was stopped
 smash> smash: got ctrl-Z
-smash: process 28335 was stopped
-smash> [1] sleep 100 : 28245 0 secs (stopped)
-[2] sleep 200 : 28252 0 secs (stopped)
-[3] sleep 300 : 28274 0 secs (stopped)
-[4] sleep 400 : 28299 0 secs (stopped)
-[5] sleep 500 : 28335 0 secs (stopped)
-smash> smash> smash> smash> sleep 500 : 28335
-smash> sleep 400 : 28299
-smash> [1] sleep 100 : 28245 0 secs (stopped)
-[2] sleep 200 : 28252 0 secs (stopped)
-[3] sleep 300 : 28274 0 secs (stopped)
-[4] sleep 400 : 28299 0 secs
-[5] sleep 500 : 28335 0 secs
+smash: process 5497 was stopped
+smash> [1] sleep 100 : 5310 2 secs (stopped)
+[2] sleep 200 : 5364 2 secs (stopped)
+[3] sleep 300 : 5405 1 secs (stopped)
+[4] sleep 400 : 5460 1 secs (stopped)
+[5] sleep 500 : 5497 0 secs (stopped)
+smash> sleep 300 : 5405
+smash> sleep 400 : 5460
+smash> sleep 200 : 5364
+smash> sleep 500 : 5497
+smash> sleep 100 : 5310
+smash> [1] sleep 100 : 5310 2 secs
+[2] sleep 200 : 5364 2 secs
+[3] sleep 300 : 5405 1 secs
+[4] sleep 400 : 5460 1 secs
+[5] sleep 500 : 5497 0 secs
 smash> smash: sending SIGKILL signal to 5 jobs:
-28245: sleep 100
-28252: sleep 200
-28274: sleep 300
-28299: sleep 400
-28335: sleep 500
+5310: sleep 100
+5364: sleep 200
+5405: sleep 300
+5460: sleep 400
+5497: sleep 500

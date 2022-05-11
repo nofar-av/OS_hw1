@@ -11,8 +11,9 @@ using namespace std;
 
 string _getCwd() {
     char current_path[MAX_PATH_SIZE];
-    if (getcwd(current_path, MAX_PATH_SIZE) == NULL) {
-        throw SyscallException("getcwd");
+    if (getcwd(current_path, MAX_PATH_SIZE) == nullptr)
+    {
+      throw SyscallException("getcwd");
     }
     return string(current_path);
 }
@@ -31,7 +32,7 @@ bool _isIOCmd(const string cmd_line) {
 SmallShell::SmallShell() {
   this->pid = getpid();
   this->current_prompt = "smash";
-  this->current_pwd = _getCwd(); 
+  this->current_pwd = PWD_NOT_SET; 
   this->old_pwd = PWD_NOT_SET;
   this->fg_job_id = NO_FG;
   this->fg_pid = NO_FG;
@@ -61,6 +62,10 @@ pid_t SmallShell::getPid()
 }
 void SmallShell::changeCurrentDirectory(string new_pwd)
 {
+  if (this->current_pwd == PWD_NOT_SET)
+  {
+    this->current_pwd = _getCwd();
+  }
   if(chdir(new_pwd.c_str()) == -1)
   {
     throw SyscallException("chdir");
@@ -78,6 +83,10 @@ string SmallShell::getOldPwd()
 }
 string SmallShell::getCurrPwd()
 {
+  if (this->current_pwd == PWD_NOT_SET)
+  {
+    this->current_pwd = _getCwd();
+  }
   return this->current_pwd;
 }
 void SmallShell::stopRun()
